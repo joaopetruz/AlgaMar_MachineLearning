@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>AlgarMar — Previsão Sazonal de Floração de Algas</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(160deg, #e0f7fa 0%, #b2ebf2 45%, #80deea 100%);
+    min-height: 100vh;
+    padding: 32px 16px;
+  }
+  .wrapper {
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  header h1 {
+    color: #00695c;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  header p {
+    color: #37474f;
+    font-size: 14px;
+    margin-top: 6px;
+  }
+
+  .painel {
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+
+  .painel h2 {
+    font-size: 16px;
+    color: #00695c;
+    margin-bottom: 16px;
+  }
+
+  .grid-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .campo label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #455a64;
+    margin-bottom: 4px;
+  }
+  .campo input {
+    width: 100%;
+    padding: 9px 11px;
+    border: 1px solid #cfd8dc;
+    border-radius: 8px;
+    font-size: 13px;
+  }
+  .campo input:focus {
+    outline: none;
+    border-color: #00897b;
+  }
+  .campo input[readonly] {
+    background: #f5f7f8;
+    color: #607d8b;
+  }
+  .campo select {
+    width: 100%;
+    padding: 9px 11px;
+    border: 1px solid #cfd8dc;
+    border-radius: 8px;
+    font-size: 13px;
+    background: white;
+    cursor: pointer;
+  }
+  .campo select:focus {
+    outline: none;
+    border-color: #00897b;
+  }
+
+  button.btn-principal {
+    width: 100%;
+    padding: 14px;
+    background: #00897b;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  button.btn-principal:hover { background: #00695c; }
+  button.btn-principal:disabled { background: #b0bec5; cursor: not-allowed; }
+
+  .erro {
+    display: none;
+    margin-top: 14px;
+    padding: 12px;
+    background: #ffebee;
+    color: #c62828;
+    border-radius: 8px;
+    font-size: 13px;
+    text-align: center;
+  }
+  .erro.mostrar { display: block; }
+
+  .legenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+    margin-bottom: 18px;
+    font-size: 12px;
+  }
+  .legenda-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #455a64;
+  }
+  .bolinha {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .grid-meses {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+  }
+
+  .card-mes {
+    border-radius: 14px;
+    padding: 18px 14px;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: entrar 0.4s forwards;
+  }
+  @keyframes entrar {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-mes .nome-mes {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+  .card-mes .emoji {
+    font-size: 28px;
+    margin-bottom: 6px;
+  }
+  .card-mes .nivel {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .card-mes .prob {
+    font-size: 12px;
+    opacity: 0.9;
+  }
+
+  .placeholder {
+    text-align: center;
+    color: #78909c;
+    padding: 40px 20px;
+    font-size: 14px;
+  }
+
+  .skeleton {
+    background: #eceff1;
+    border-radius: 14px;
+    height: 130px;
+    animation: pulse 1.2s infinite ease-in-out;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+  <header>
+    <h1>🌊 AlgarMar</h1>
+    <p>Previsão sazonal de risco de floração de algas tóxicas — litoral de São Paulo</p>
+  </header>
+
+  <div class="painel">
+    <h2>Dados históricos do local</h2>
+    <div class="grid-inputs">
+      <div class="campo" style="grid-column: 1 / -1;">
+        <label>Local (litoral de São Paulo)</label>
+        <select id="localSelect" onchange="atualizarLocal()">
+          <option value="0">Santos / Baixada Santista (hotspot)</option>
+          <option value="1">Ilhabela / São Sebastião / Ubatuba (hotspot)</option>
+          <option value="2">Guarujá</option>
+          <option value="3">Cananéia / Iguape</option>
+          <option value="4">Bertioga</option>
+          <option value="5">Praia Grande</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label>Latitude</label>
+        <input type="number" id="latitude" step="0.01" value="-23.98" readonly>
+      </div>
+      <div class="campo">
+        <label>Longitude</label>
+        <input type="number" id="longitude" step="0.01" value="-46.35" readonly>
+      </div>
+      <div class="campo">
+        <label>Distância do hotspot (graus)</label>
+        <input type="number" id="dist_hotspot" step="0.01" value="0.05" readonly>
+      </div>
+      <div class="campo">
+        <label>Clorofila média (ano anterior)</label>
+        <input type="number" id="clorofila_media_ano_anterior" step="0.1" value="1.2">
+      </div>
+      <div class="campo">
+        <label>Clorofila máxima (ano anterior)</label>
+        <input type="number" id="clorofila_maxima_ano_anterior" step="0.1" value="3.5">
+      </div>
+      <div class="campo">
+        <label>Temperatura (ano anterior, °C)</label>
+        <input type="number" id="temperatura_ano_anterior" step="0.1" value="24">
+      </div>
+      <div class="campo">
+        <label>Clorofila média histórica do mês</label>
+        <input type="number" id="clorofila_media_historica_mes" step="0.1" value="1.5">
+      </div>
+      <div class="campo">
+        <label>Clorofila média (últimos 3 anos)</label>
+        <input type="number" id="clorofila_media_3anos" step="0.1" value="1.4">
+      </div>
+    </div>
+
+    <button class="btn-principal" id="btnPrever" onclick="preverAno()">Gerar previsão para os próximos 12 meses</button>
+    <div class="erro" id="erro"></div>
+  </div>
+
+  <div class="painel">
+    <h2>Previsão por mês</h2>
+    <div class="legenda">
+      <div class="legenda-item"><span class="bolinha" style="background:#2e7d32;"></span> Muito baixo</div>
+      <div class="legenda-item"><span class="bolinha" style="background:#7cb342;"></span> Baixo</div>
+      <div class="legenda-item"><span class="bolinha" style="background:#f9a825;"></span> Moderado</div>
+      <div class="legenda-item"><span class="bolinha" style="background:#ef6c00;"></span> Alto</div>
+      <div class="legenda-item"><span class="bolinha" style="background:#c62828;"></span> Muito alto</div>
+    </div>
+
+    <div id="areaResultado">
+      <div class="placeholder">Preencha os dados acima e clique em "Gerar previsão" para ver o risco estimado de cada mês do próximo ano.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const MESES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+
+const niveis = [
+  { max: 0.05, texto: "Muito baixo", cor: "#2e7d32", emoji: "✅" },
+  { max: 0.15, texto: "Baixo",        cor: "#7cb342", emoji: "🟢" },
+  { max: 0.35, texto: "Moderado",     cor: "#f9a825", emoji: "🟡" },
+  { max: 0.60, texto: "Alto",         cor: "#ef6c00", emoji: "🟠" },
+  { max: 1.01, texto: "Muito alto",   cor: "#c62828", emoji: "🔴" },
+];
+
+function classificar(prob) {
+  return niveis.find(n => prob <= n.max);
+}
+
+const LOCAIS = [
+  { nome: "Santos / Baixada Santista", lat: -23.98, lon: -46.35, dist: 0.05 },
+  { nome: "Ilhabela / São Sebastião / Ubatuba", lat: -23.45, lon: -45.75, dist: 0.05 },
+  { nome: "Guarujá", lat: -23.99, lon: -46.25, dist: 0.11 },
+  { nome: "Cananéia / Iguape", lat: -24.90, lon: -47.85, dist: 1.55 },
+  { nome: "Bertioga", lat: -23.85, lon: -46.14, dist: 0.24 },
+  { nome: "Praia Grande", lat: -24.00, lon: -46.40, dist: 0.07 },
+];
+
+function atualizarLocal() {
+  const indice = parseInt(document.getElementById("localSelect").value);
+  const local = LOCAIS[indice];
+  document.getElementById("latitude").value = local.lat;
+  document.getElementById("longitude").value = local.lon;
+  document.getElementById("dist_hotspot").value = local.dist;
+}
+
+function pegarDadosBase() {
+  return {
+    latitude: parseFloat(document.getElementById("latitude").value),
+    longitude: parseFloat(document.getElementById("longitude").value),
+    dist_hotspot: parseFloat(document.getElementById("dist_hotspot").value),
+    clorofila_media_ano_anterior: parseFloat(document.getElementById("clorofila_media_ano_anterior").value),
+    clorofila_maxima_ano_anterior: parseFloat(document.getElementById("clorofila_maxima_ano_anterior").value),
+    temperatura_ano_anterior: parseFloat(document.getElementById("temperatura_ano_anterior").value),
+    clorofila_media_historica_mes: parseFloat(document.getElementById("clorofila_media_historica_mes").value),
+    clorofila_media_3anos: parseFloat(document.getElementById("clorofila_media_3anos").value),
+  };
+}
+
+async function preverMes(mes, dadosBase) {
+  const dados = { mes, ...dadosBase };
+  const resposta = await fetch("http://127.0.0.1:8000/predict", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(dados)
+  });
+  if (!resposta.ok) throw new Error("Erro na API");
+  return await resposta.json();
+}
+
+async function preverAno() {
+  const btn = document.getElementById("btnPrever");
+  const erroDiv = document.getElementById("erro");
+  const area = document.getElementById("areaResultado");
+
+  erroDiv.classList.remove("mostrar");
+
+  const dadosBase = pegarDadosBase();
+  if (Object.values(dadosBase).some(v => Number.isNaN(v))) {
+    erroDiv.textContent = "Preencha todos os campos com valores numéricos válidos.";
+    erroDiv.classList.add("mostrar");
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Calculando previsão dos 12 meses...";
+
+  area.innerHTML = "";
+  const grid = document.createElement("div");
+  grid.className = "grid-meses";
+  for (let i = 0; i < 12; i++) {
+    const sk = document.createElement("div");
+    sk.className = "skeleton";
+    grid.appendChild(sk);
+  }
+  area.appendChild(grid);
+
+  try {
+    const resultados = await Promise.all(
+      MESES.map((_, i) => preverMes(i + 1, dadosBase))
+    );
+
+    grid.innerHTML = "";
+    resultados.forEach((resultado, i) => {
+      const prob = resultado.probability;
+      const nivel = classificar(prob);
+
+      const card = document.createElement("div");
+      card.className = "card-mes";
+      card.style.background = nivel.cor;
+      card.style.animationDelay = `${i * 0.05}s`;
+      card.innerHTML = `
+        <div class="nome-mes">${MESES[i]}</div>
+        <div class="emoji">${nivel.emoji}</div>
+        <div class="nivel">${nivel.texto}</div>
+        <div class="prob">${(prob * 100).toFixed(1)}%</div>
+      `;
+      grid.appendChild(card);
+    });
+  } catch (e) {
+    area.innerHTML = "";
+    erroDiv.textContent = "Não foi possível conectar à API. Verifique se ela está rodando em http://127.0.0.1:8000";
+    erroDiv.classList.add("mostrar");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Gerar previsão para os próximos 12 meses";
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+venv/
+__pycache__/
+*.pyc
+.env
+
+
+__pycache__/
+*.pyc
+
+*.pkl
+*.csv
+*.txt
+*.nc
