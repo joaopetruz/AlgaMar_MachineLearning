@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix, f1_score, recall_score
 
-tabela = pd.read_csv("dados/dados_features_sazonal_sp.csv")
+tabela = pd.read_csv("dados/dados_features_sazonal_sp_com_salinidade.csv")
 
 features = [
     "mes",
@@ -12,14 +12,19 @@ features = [
     "clorofila_media_ano_anterior",
     "clorofila_maxima_ano_anterior",
     "temperatura_ano_anterior",
+    "salinidade_ano_anterior",
+    "vento_velocidade_ano_anterior",
     "clorofila_media_historica_mes",
+    "salinidade_media_historica_mes",
+    "vento_media_historica_mes",
     "clorofila_media_3anos",
+    "salinidade_media_3anos",
+    "vento_media_3anos",
 ]
 
 X = tabela[features]
 y = tabela["floracao"]
 
-# Treino = até 2021, teste = 2022-2024
 treino = tabela["ano"] <= 2021
 teste = tabela["ano"] > 2021
 
@@ -51,7 +56,6 @@ for limiar in [0.5, 0.3, 0.2, 0.1]:
     recall = recall_score(y_teste, y_pred)
     print(f"Limiar {limiar}: F1={f1:.4f} | Recall={recall:.4f}")
 
-# ===== Limiar final escolhido: 0.2 (melhor F1 com recall mais alto) =====
 LIMIAR_ESCOLHIDO = 0.2
 y_pred_final = (probabilidades >= LIMIAR_ESCOLHIDO).astype(int)
 

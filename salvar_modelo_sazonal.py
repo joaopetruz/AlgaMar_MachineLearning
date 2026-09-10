@@ -2,7 +2,7 @@ import pandas as pd
 import joblib
 from sklearn.ensemble import RandomForestClassifier
 
-tabela = pd.read_csv("dados/dados_features_sazonal_sp.csv")
+tabela = pd.read_csv("dados/dados_features_sazonal_sp_com_salinidade.csv")
 
 features = [
     "mes",
@@ -12,14 +12,17 @@ features = [
     "clorofila_media_ano_anterior",
     "clorofila_maxima_ano_anterior",
     "temperatura_ano_anterior",
+    "salinidade_ano_anterior",
     "clorofila_media_historica_mes",
+    "salinidade_media_historica_mes",
     "clorofila_media_3anos",
+    "salinidade_media_3anos",
 ]
 
 X = tabela[features]
 y = tabela["floracao"]
 
-print("Treinando modelo final (sazonal, todos os dados)...")
+print("Treinando modelo final (sazonal, com salinidade, sem vento)...")
 modelo = RandomForestClassifier(
     n_estimators=300,
     class_weight="balanced_subsample",
@@ -40,6 +43,6 @@ LIMIAR_DECISAO = 0.2
 joblib.dump(LIMIAR_DECISAO, "limiar_decisao_sazonal.pkl")
 print(f"Limiar de decisão salvo: {LIMIAR_DECISAO}")
 
-VERSAO_MODELO = "3.0.0-sazonal-25anos"
+VERSAO_MODELO = "4.0.0-sazonal-25anos-salinidade"
 joblib.dump(VERSAO_MODELO, "versao_modelo.pkl")
 print(f"Versão do modelo salva: {VERSAO_MODELO}")

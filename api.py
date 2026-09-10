@@ -19,8 +19,8 @@ features = joblib.load("features_modelo_sazonal.pkl")
 limiar = joblib.load("limiar_decisao_sazonal.pkl")
 versao = joblib.load("versao_modelo.pkl")
 
-# Carregar a base de dados ambientais processada (uma vez, ao iniciar a API)
-dados_ambientais = pd.read_csv("dados/dados_features_sazonal_sp.csv")
+# Carregar a base de dados ambientais processada
+dados_ambientais = pd.read_csv("dados/dados_features_sazonal_sp_com_salinidade.csv")
 
 class DadosSazonais(BaseModel):
     mes: int
@@ -30,13 +30,16 @@ class DadosSazonais(BaseModel):
     clorofila_media_ano_anterior: float
     clorofila_maxima_ano_anterior: float
     temperatura_ano_anterior: float
+    salinidade_ano_anterior: float
     clorofila_media_historica_mes: float
+    salinidade_media_historica_mes: float
     clorofila_media_3anos: float
+    salinidade_media_3anos: float
 
 
 @app.get("/")
 def raiz():
-    return {"mensagem": "API AlgarMar (modelo sazonal) funcionando! Acesse /docs para testar."}
+    return {"mensagem": "API AlgarMar (modelo sazonal com salinidade) funcionando! Acesse /docs para testar."}
 
 
 @app.get("/health")
@@ -46,10 +49,6 @@ def health():
 
 @app.get("/marine-data")
 def marine_data(limit: int = 100):
-    """
-    Retorna os dados ambientais coletados (agregados mensalmente).
-    Parâmetro opcional 'limit' controla quantos registros retornar (padrão: 100).
-    """
     amostra = dados_ambientais.tail(limit)
 
     resultado = []
@@ -62,6 +61,7 @@ def marine_data(limit: int = 100):
             "temperature_celsius": round(float(linha["temperatura_media"]), 2),
             "chlorophyll_mg_m3": round(float(linha["clorofila_media"]), 4),
             "chlorophyll_max_mg_m3": round(float(linha["clorofila_maxima"]), 4),
+            "salinity_psu": round(float(linha["salinidade_media"]), 3),
             "source": "Copernicus Marine Service"
         })
 
@@ -70,10 +70,6 @@ def marine_data(limit: int = 100):
 
 @app.get("/predictions")
 def predictions(limit: int = 100):
-    """
-    Retorna previsões de risco de floração já calculadas para os dados mais recentes.
-    Parâmetro opcional 'limit' controla quantos registros retornar (padrão: 100).
-    """
     amostra = dados_ambientais.tail(limit).copy()
 
     X = amostra[features]
