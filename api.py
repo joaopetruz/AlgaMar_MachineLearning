@@ -19,8 +19,8 @@ features = joblib.load("features_modelo_sazonal.pkl")
 limiar = joblib.load("limiar_decisao_sazonal.pkl")
 versao = joblib.load("versao_modelo.pkl")
 
-# Carregar a base de dados ambientais processada
-dados_ambientais = pd.read_csv("dados/dados_features_sazonal_sp_com_salinidade.csv")
+# Carregar a base de dados ambientais disponível
+dados_ambientais = pd.read_csv("dados/dados_features_sazonal_sp.csv")
 
 class DadosSazonais(BaseModel):
     mes: int
@@ -39,7 +39,7 @@ class DadosSazonais(BaseModel):
 
 @app.get("/")
 def raiz():
-    return {"mensagem": "API AlgarMar (modelo sazonal com salinidade) funcionando! Acesse /docs para testar."}
+    return {"mensagem": "API AlgarMar funcionando! Acesse /docs para testar."}
 
 
 @app.get("/health")
@@ -53,15 +53,21 @@ def marine_data(limit: int = 100):
 
     resultado = []
     for _, linha in amostra.iterrows():
+        # Verifica com segurança se as colunas existem no DataFrame atual
+        salinidade = linha.get("salinidade_media", linha.get("salinidade", 0.0))
+        temp = linha.get("temperatura_media", linha.get("temperatura", 0.0))
+        cloro_med = linha.get("clorofila_media", 0.0)
+        cloro_max = linha.get("clorofila_maxima", 0.0)
+
         resultado.append({
             "latitude": round(float(linha["latitude"]), 4),
             "longitude": round(float(linha["longitude"]), 4),
             "year": int(linha["ano"]),
             "month": int(linha["mes"]),
-            "temperature_celsius": round(float(linha["temperatura_media"]), 2),
-            "chlorophyll_mg_m3": round(float(linha["clorofila_media"]), 4),
-            "chlorophyll_max_mg_m3": round(float(linha["clorofila_maxima"]), 4),
-            "salinity_psu": round(float(linha["salinidade_media"]), 3),
+            "temperature_celsius": round(float(temp), 2),
+            "chlorophyll_mg_m3": round(float(cloro_med), 4),
+            "chlorophyll_max_mg_m3": round(float(cloro_max), 4),
+            "salinity_psu": round(float(salinidade), 3),
             "source": "Copernicus Marine Service"
         })
 
