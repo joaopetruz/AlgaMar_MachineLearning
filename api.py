@@ -13,14 +13,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Carregar modelo e configurações salvas
 modelo = joblib.load("modelo_floracao_sazonal.pkl")
 features = joblib.load("features_modelo_sazonal.pkl")
 limiar = joblib.load("limiar_decisao_sazonal.pkl")
 versao = joblib.load("versao_modelo.pkl")
 
-# Carregar a base de dados ambientais processada
-dados_ambientais = pd.read_csv("dados/dados_features_sazonal_sp_com_salinidade.csv")
+dados_ambientais = pd.read_csv("dados/dados_features_sazonal_sp_completo.csv")
 
 class DadosSazonais(BaseModel):
     mes: int
@@ -31,15 +29,18 @@ class DadosSazonais(BaseModel):
     clorofila_maxima_ano_anterior: float
     temperatura_ano_anterior: float
     salinidade_ano_anterior: float
+    vento_velocidade_ano_anterior: float
     clorofila_media_historica_mes: float
     salinidade_media_historica_mes: float
+    vento_media_historica_mes: float
     clorofila_media_3anos: float
     salinidade_media_3anos: float
+    vento_media_3anos: float
 
 
 @app.get("/")
 def raiz():
-    return {"mensagem": "API AlgarMar (modelo sazonal com salinidade) funcionando! Acesse /docs para testar."}
+    return {"mensagem": "API AlgarMar (modelo sazonal completo) funcionando! Acesse /docs para testar."}
 
 
 @app.get("/health")
@@ -62,6 +63,7 @@ def marine_data(limit: int = 100):
             "chlorophyll_mg_m3": round(float(linha["clorofila_media"]), 4),
             "chlorophyll_max_mg_m3": round(float(linha["clorofila_maxima"]), 4),
             "salinity_psu": round(float(linha["salinidade_media"]), 3),
+            "wind_speed_ms": round(float(linha["vento_velocidade"]), 3),
             "source": "Copernicus Marine Service"
         })
 

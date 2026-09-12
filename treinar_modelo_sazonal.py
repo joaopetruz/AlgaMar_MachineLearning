@@ -2,24 +2,17 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix, f1_score, recall_score
 
-tabela = pd.read_csv("dados/dados_features_sazonal_sp_com_salinidade.csv")
+tabela = pd.read_csv("dados/dados_features_sazonal_sp_completo.csv")
 
 features = [
-    "mes",
-    "latitude",
-    "longitude",
-    "dist_hotspot",
-    "clorofila_media_ano_anterior",
-    "clorofila_maxima_ano_anterior",
-    "temperatura_ano_anterior",
-    "salinidade_ano_anterior",
-    "vento_velocidade_ano_anterior",
-    "clorofila_media_historica_mes",
-    "salinidade_media_historica_mes",
-    "vento_media_historica_mes",
-    "clorofila_media_3anos",
-    "salinidade_media_3anos",
-    "vento_media_3anos",
+    "mes", "latitude", "longitude", "dist_hotspot",
+    "clorofila_media_ano_anterior", "clorofila_maxima_ano_anterior",
+    "temperatura_ano_anterior", "salinidade_ano_anterior",
+    "vento_velocidade_ano_anterior", "corrente_velocidade_ano_anterior",
+    "clorofila_media_historica_mes", "salinidade_media_historica_mes",
+    "vento_media_historica_mes", "corrente_media_historica_mes",
+    "clorofila_media_3anos", "salinidade_media_3anos",
+    "vento_media_3anos", "corrente_media_3anos",
 ]
 
 X = tabela[features]
@@ -38,11 +31,8 @@ print(f"Casos de floração no teste: {y_teste.sum()}")
 
 print("\nTreinando Random Forest...")
 modelo = RandomForestClassifier(
-    n_estimators=300,
-    class_weight="balanced_subsample",
-    min_samples_leaf=2,
-    random_state=42,
-    n_jobs=-1
+    n_estimators=300, class_weight="balanced_subsample",
+    min_samples_leaf=2, random_state=42, n_jobs=-1
 )
 modelo.fit(X_treino, y_treino)
 print("Treinamento concluído!")
@@ -52,9 +42,7 @@ probabilidades = modelo.predict_proba(X_teste)[:, 1]
 print("\n=== Testando diferentes limiares de decisão ===")
 for limiar in [0.5, 0.3, 0.2, 0.1]:
     y_pred = (probabilidades >= limiar).astype(int)
-    f1 = f1_score(y_teste, y_pred)
-    recall = recall_score(y_teste, y_pred)
-    print(f"Limiar {limiar}: F1={f1:.4f} | Recall={recall:.4f}")
+    print(f"Limiar {limiar}: F1={f1_score(y_teste, y_pred):.4f} | Recall={recall_score(y_teste, y_pred):.4f}")
 
 LIMIAR_ESCOLHIDO = 0.2
 y_pred_final = (probabilidades >= LIMIAR_ESCOLHIDO).astype(int)

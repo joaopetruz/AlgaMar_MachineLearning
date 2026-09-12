@@ -11,132 +11,64 @@
     min-height: 100vh;
     padding: 32px 16px;
   }
-  .wrapper {
-    max-width: 980px;
-    margin: 0 auto;
-  }
-  header {
-    text-align: center;
-    margin-bottom: 28px;
-  }
+  .wrapper { max-width: 980px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 28px; }
   header h1 {
-    color: #00695c;
-    font-size: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+    color: #00695c; font-size: 28px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
   }
-  header p {
-    color: #37474f;
-    font-size: 14px;
-    margin-top: 6px;
-  }
+  header p { color: #37474f; font-size: 14px; margin-top: 6px; }
 
   .painel {
-    background: white;
-    border-radius: 18px;
+    background: white; border-radius: 18px;
     box-shadow: 0 10px 35px rgba(0,0,0,0.12);
-    padding: 28px;
-    margin-bottom: 24px;
+    padding: 28px; margin-bottom: 24px;
   }
-
-  .painel h2 {
-    font-size: 16px;
-    color: #00695c;
-    margin-bottom: 16px;
-  }
+  .painel h2 { font-size: 16px; color: #00695c; margin-bottom: 16px; }
 
   .grid-inputs {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 14px;
-    margin-bottom: 18px;
+    gap: 14px; margin-bottom: 18px;
   }
 
   .campo label {
-    display: block;
-    font-size: 12px;
-    font-weight: 600;
-    color: #455a64;
-    margin-bottom: 4px;
+    display: block; font-size: 12px; font-weight: 600;
+    color: #455a64; margin-bottom: 4px;
   }
   .campo input {
-    width: 100%;
-    padding: 9px 11px;
-    border: 1px solid #cfd8dc;
-    border-radius: 8px;
-    font-size: 13px;
+    width: 100%; padding: 9px 11px; border: 1px solid #cfd8dc;
+    border-radius: 8px; font-size: 13px;
   }
-  .campo input:focus {
-    outline: none;
-    border-color: #00897b;
-  }
-  .campo input[readonly] {
-    background: #f5f7f8;
-    color: #607d8b;
-  }
+  .campo input:focus { outline: none; border-color: #00897b; }
+  .campo input[readonly] { background: #f5f7f8; color: #607d8b; }
   .campo select {
-    width: 100%;
-    padding: 9px 11px;
-    border: 1px solid #cfd8dc;
-    border-radius: 8px;
-    font-size: 13px;
-    background: white;
-    cursor: pointer;
+    width: 100%; padding: 9px 11px; border: 1px solid #cfd8dc;
+    border-radius: 8px; font-size: 13px; background: white; cursor: pointer;
   }
-  .campo select:focus {
-    outline: none;
-    border-color: #00897b;
-  }
+  .campo select:focus { outline: none; border-color: #00897b; }
 
   button.btn-principal {
-    width: 100%;
-    padding: 14px;
-    background: #00897b;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.2s;
+    width: 100%; padding: 14px; background: #00897b; color: white;
+    border: none; border-radius: 10px; font-size: 15px; font-weight: 700;
+    cursor: pointer; transition: background 0.2s;
   }
   button.btn-principal:hover { background: #00695c; }
   button.btn-principal:disabled { background: #b0bec5; cursor: not-allowed; }
 
   .erro {
-    display: none;
-    margin-top: 14px;
-    padding: 12px;
-    background: #ffebee;
-    color: #c62828;
-    border-radius: 8px;
-    font-size: 13px;
-    text-align: center;
+    display: none; margin-top: 14px; padding: 12px;
+    background: #ffebee; color: #c62828; border-radius: 8px;
+    font-size: 13px; text-align: center;
   }
   .erro.mostrar { display: block; }
 
   .legenda {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px;
-    justify-content: center;
-    margin-bottom: 18px;
-    font-size: 12px;
+    display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
+    margin-bottom: 18px; font-size: 12px;
   }
-  .legenda-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: #455a64;
-  }
-  .bolinha {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    display: inline-block;
-  }
+  .legenda-item { display: flex; align-items: center; gap: 6px; color: #455a64; }
+  .bolinha { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 
   .grid-meses {
     display: grid;
@@ -145,65 +77,29 @@
   }
 
   .card-mes {
-    border-radius: 14px;
-    padding: 18px 14px;
-    text-align: center;
-    color: white;
-    position: relative;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(8px);
-    animation: entrar 0.4s forwards;
+    border-radius: 14px; padding: 18px 14px; text-align: center; color: white;
+    position: relative; overflow: hidden;
+    opacity: 0; transform: translateY(8px); animation: entrar 0.4s forwards;
   }
-  @keyframes entrar {
-    to { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes entrar { to { opacity: 1; transform: translateY(0); } }
 
   .card-mes .nome-mes {
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 10px;
+    font-size: 14px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; margin-bottom: 10px;
   }
-  .card-mes .emoji {
-    font-size: 28px;
-    margin-bottom: 6px;
-  }
-  .card-mes .nivel {
-    font-size: 13px;
-    font-weight: 700;
-    margin-bottom: 4px;
-  }
-  .card-mes .prob {
-    font-size: 12px;
-    opacity: 0.9;
-  }
+  .card-mes .emoji { font-size: 28px; margin-bottom: 6px; }
+  .card-mes .nivel { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .card-mes .prob { font-size: 12px; opacity: 0.9; }
 
-  .placeholder {
-    text-align: center;
-    color: #78909c;
-    padding: 40px 20px;
-    font-size: 14px;
-  }
+  .placeholder { text-align: center; color: #78909c; padding: 40px 20px; font-size: 14px; }
 
   .skeleton {
-    background: #eceff1;
-    border-radius: 14px;
-    height: 130px;
+    background: #eceff1; border-radius: 14px; height: 130px;
     animation: pulse 1.2s infinite ease-in-out;
   }
-  @keyframes pulse {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-  }
+  @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
-  .aviso-versao {
-    text-align: center;
-    font-size: 11px;
-    color: #90a4ae;
-    margin-top: 20px;
-  }
+  .aviso-versao { text-align: center; font-size: 11px; color: #90a4ae; margin-top: 20px; }
 </style>
 </head>
 <body>
@@ -257,6 +153,10 @@
         <input type="number" id="salinidade_ano_anterior" step="0.1" value="35.9">
       </div>
       <div class="campo">
+        <label>Vento (ano anterior, m/s)</label>
+        <input type="number" id="vento_velocidade_ano_anterior" step="0.1" value="5.2">
+      </div>
+      <div class="campo">
         <label>Clorofila média histórica do mês</label>
         <input type="number" id="clorofila_media_historica_mes" step="0.1" value="1.5">
       </div>
@@ -265,12 +165,20 @@
         <input type="number" id="salinidade_media_historica_mes" step="0.1" value="35.9">
       </div>
       <div class="campo">
+        <label>Vento médio histórico do mês</label>
+        <input type="number" id="vento_media_historica_mes" step="0.1" value="5.2">
+      </div>
+      <div class="campo">
         <label>Clorofila média (últimos 3 anos)</label>
         <input type="number" id="clorofila_media_3anos" step="0.1" value="1.4">
       </div>
       <div class="campo">
         <label>Salinidade média (últimos 3 anos)</label>
         <input type="number" id="salinidade_media_3anos" step="0.1" value="35.9">
+      </div>
+      <div class="campo">
+        <label>Vento médio (últimos 3 anos)</label>
+        <input type="number" id="vento_media_3anos" step="0.1" value="5.2">
       </div>
     </div>
 
@@ -293,7 +201,7 @@
     </div>
   </div>
 
-  <div class="aviso-versao">Modelo: 4.0.0-sazonal-25anos-salinidade — Litoral de São Paulo</div>
+  <div class="aviso-versao">Modelo: 5.0.0-sazonal-25anos-completo — Litoral de São Paulo</div>
 </div>
 
 <script>
@@ -337,10 +245,13 @@ function pegarDadosBase() {
     clorofila_maxima_ano_anterior: parseFloat(document.getElementById("clorofila_maxima_ano_anterior").value),
     temperatura_ano_anterior: parseFloat(document.getElementById("temperatura_ano_anterior").value),
     salinidade_ano_anterior: parseFloat(document.getElementById("salinidade_ano_anterior").value),
+    vento_velocidade_ano_anterior: parseFloat(document.getElementById("vento_velocidade_ano_anterior").value),
     clorofila_media_historica_mes: parseFloat(document.getElementById("clorofila_media_historica_mes").value),
     salinidade_media_historica_mes: parseFloat(document.getElementById("salinidade_media_historica_mes").value),
+    vento_media_historica_mes: parseFloat(document.getElementById("vento_media_historica_mes").value),
     clorofila_media_3anos: parseFloat(document.getElementById("clorofila_media_3anos").value),
     salinidade_media_3anos: parseFloat(document.getElementById("salinidade_media_3anos").value),
+    vento_media_3anos: parseFloat(document.getElementById("vento_media_3anos").value),
   };
 }
 

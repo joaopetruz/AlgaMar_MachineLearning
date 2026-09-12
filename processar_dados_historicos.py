@@ -1,5 +1,6 @@
 import xarray as xr
 import pandas as pd
+import numpy as np
 
 anos = list(range(2000, 2025))
 tabelas_mensais = []
@@ -11,12 +12,18 @@ for ano in anos:
     temperatura = xr.open_dataset(f"dados/temperatura_{ano}_sp.nc")
     salinidade = xr.open_dataset(f"dados/salinidade_{ano}_sp.nc")
     vento = xr.open_dataset(f"dados/vento_{ano}_sp.nc")
+    correntes = xr.open_dataset(f"dados/correntes_{ano}_sp.nc")
+
+    # Remover dimensão de profundidade das correntes (pegamos só superfície)
+    if "depth" in correntes.dims:
+        correntes = correntes.isel(depth=0)
 
     temperatura_ajustada = temperatura.interp(latitude=clorofila.latitude, longitude=clorofila.longitude)
     salinidade_ajustada = salinidade.interp(latitude=clorofila.latitude, longitude=clorofila.longitude)
     vento_ajustado = vento.interp(latitude=clorofila.latitude, longitude=clorofila.longitude)
+    correntes_ajustadas = correntes.interp(latitude=clorofila.latitude, longitude=clorofila.longitude)
 
-    dados = xr.merge([clorofila, temperatura_ajustada, salinidade_ajustada], join="outer")
+    dados = xr.merge([clorofila, temperatura_ajustada, salinidade_ajustada])
     dados["analysed_sst"] = dados["analysed_sst"] - 273.15
 
     tabela = dados.to_dataframe().reset_index()
@@ -42,19 +49,22 @@ for ano in anos:
         salinidade_media=("salinidade", "mean")
     ).reset_index()
 
-    # Processar vento separadamente (já é mensal, só precisa virar tabela)
+    # Vento
     tabela_vento = vento_ajustado.to_dataframe().reset_index()
-    tabela_vento = tabela_vento.rename(columns={
-        "wind_speed": "vento_velocidade",
-        "eastward_wind": "vento_leste",
-        "northward_wind": "vento_norte"
-    })
+    tabela_vento = tabela_vento.rename(columns={"wind_speed": "vento_velocidade"})
     tabela_vento["ano"] = tabela_vento["time"].dt.year
     tabela_vento["mes"] = tabela_vento["time"].dt.month
-    tabela_vento = tabela_vento[["latitude", "longitude", "ano", "mes", "vento_velocidade", "vento_leste", "vento_norte"]]
+    tabela_vento = tabela_vento[["latitude", "longitude", "ano", "mes", "vento_velocidade"]]
 
-    # Juntar vento com o resto (por local + ano + mês)
+    # Correntes: calcular velocidade total a partir de uo (leste) e vo (norte)
+    tabela_correntes = correntes_ajustadas.to_dataframe().reset_index()
+    tabela_correntes["corrente_velocidade"] = np.sqrt(tabela_correntes["uo"]**2 + tabela_correntes["vo"]**2)
+    tabela_correntes["ano"] = tabela_correntes["time"].dt.year
+    tabela_correntes["mes"] = tabela_correntes["time"].dt.month
+    tabela_correntes = tabela_correntes[["latitude", "longitude", "ano", "mes", "corrente_velocidade"]]
+
     mensal = mensal.merge(tabela_vento, on=["latitude", "longitude", "ano", "mes"], how="left")
+    mensal = mensal.merge(tabela_correntes, on=["latitude", "longitude", "ano", "mes"], how="left")
 
     tabelas_mensais.append(mensal)
     print(f"Ano {ano} processado: {len(mensal)} linhas mensais")

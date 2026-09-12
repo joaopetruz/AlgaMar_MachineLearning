@@ -46,7 +46,7 @@ print(f"\nEventos com mês identificado (utilizáveis para o modelo mensal): {le
 print(eventos_com_mes[["anoOcorrencia", "mes_num", "cidade", "latitude", "longitude"]])
 
 # ===== 3. Carregar nossa base sazonal e cruzar por proximidade =====
-base = pd.read_csv("dados/dados_features_sazonal_sp_com_salinidade.csv")
+base = pd.read_csv("dados/dados_features_sazonal_sp_completo.csv")
 
 def achar_ponto_mais_proximo(lat_evento, lon_evento, ano_evento, mes_evento, base):
     candidatos = base[(base["ano"] == ano_evento) & (base["mes"] == mes_evento)]
