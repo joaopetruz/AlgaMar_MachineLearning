@@ -1,0 +1,16 @@
+# API e validacao de dados
+fastapi>=0.100,<1
+uvicorn[standard]>=0.23,<1
+pydantic>=2,<3
+
+# Analise, engenharia de atributos e modelos
+joblib>=1.3,<2
+matplotlib>=3.7,<4
+numpy>=1.24,<3
+pandas>=2,<3
+scikit-learn>=1.3,<2
+
+# Dados cientificos e acesso ao Copernicus Marine
+xarray>=2023.1,<2027
+netCDF4>=1.6,<2
+copernicusmarine>=1.2,<2
