@@ -25,6 +25,9 @@
     padding: 28px; margin-bottom: 24px;
   }
   .painel h2 { font-size: 16px; color: #00695c; margin-bottom: 16px; }
+  .painel .nota {
+    font-size: 12px; color: #78909c; margin-bottom: 16px; line-height: 1.5;
+  }
 
   .grid-inputs {
     display: grid;
@@ -112,6 +115,10 @@
 
   <div class="painel">
     <h2>Dados históricos do local</h2>
+    <p class="nota">
+      A climatologia mensal (clorofila e salinidade históricas de cada mês) é buscada automaticamente
+      da base de dados real ao escolher o local — não precisa digitar.
+    </p>
     <div class="grid-inputs">
       <div class="campo" style="grid-column: 1 / -1;">
         <label>Local (litoral de São Paulo)</label>
@@ -153,32 +160,12 @@
         <input type="number" id="salinidade_ano_anterior" step="0.1" value="35.9">
       </div>
       <div class="campo">
-        <label>Vento (ano anterior, m/s)</label>
-        <input type="number" id="vento_velocidade_ano_anterior" step="0.1" value="5.2">
-      </div>
-      <div class="campo">
-        <label>Clorofila média histórica do mês</label>
-        <input type="number" id="clorofila_media_historica_mes" step="0.1" value="1.5">
-      </div>
-      <div class="campo">
-        <label>Salinidade média histórica do mês</label>
-        <input type="number" id="salinidade_media_historica_mes" step="0.1" value="35.9">
-      </div>
-      <div class="campo">
-        <label>Vento médio histórico do mês</label>
-        <input type="number" id="vento_media_historica_mes" step="0.1" value="5.2">
-      </div>
-      <div class="campo">
         <label>Clorofila média (últimos 3 anos)</label>
         <input type="number" id="clorofila_media_3anos" step="0.1" value="1.4">
       </div>
       <div class="campo">
         <label>Salinidade média (últimos 3 anos)</label>
         <input type="number" id="salinidade_media_3anos" step="0.1" value="35.9">
-      </div>
-      <div class="campo">
-        <label>Vento médio (últimos 3 anos)</label>
-        <input type="number" id="vento_media_3anos" step="0.1" value="5.2">
       </div>
     </div>
 
@@ -201,7 +188,7 @@
     </div>
   </div>
 
-  <div class="aviso-versao">Modelo: 5.0.0-sazonal-25anos-completo — Litoral de São Paulo</div>
+  <div class="aviso-versao">Modelo: 7.0.0-xgboost-sazonal-salinidade — Litoral de São Paulo</div>
 </div>
 
 <script>
@@ -245,18 +232,25 @@ function pegarDadosBase() {
     clorofila_maxima_ano_anterior: parseFloat(document.getElementById("clorofila_maxima_ano_anterior").value),
     temperatura_ano_anterior: parseFloat(document.getElementById("temperatura_ano_anterior").value),
     salinidade_ano_anterior: parseFloat(document.getElementById("salinidade_ano_anterior").value),
-    vento_velocidade_ano_anterior: parseFloat(document.getElementById("vento_velocidade_ano_anterior").value),
-    clorofila_media_historica_mes: parseFloat(document.getElementById("clorofila_media_historica_mes").value),
-    salinidade_media_historica_mes: parseFloat(document.getElementById("salinidade_media_historica_mes").value),
-    vento_media_historica_mes: parseFloat(document.getElementById("vento_media_historica_mes").value),
     clorofila_media_3anos: parseFloat(document.getElementById("clorofila_media_3anos").value),
     salinidade_media_3anos: parseFloat(document.getElementById("salinidade_media_3anos").value),
-    vento_media_3anos: parseFloat(document.getElementById("vento_media_3anos").value),
   };
 }
 
-async function preverMes(mes, dadosBase) {
-  const dados = { mes, ...dadosBase };
+async function buscarClimatologia(lat, lon) {
+  const url = `http://127.0.0.1:8000/climatologia?latitude=${lat}&longitude=${lon}`;
+  const resposta = await fetch(url);
+  if (!resposta.ok) throw new Error("Erro ao buscar climatologia");
+  return await resposta.json();
+}
+
+async function preverMes(mes, dadosBase, climatologiaDoMes) {
+  const dados = {
+    mes,
+    ...dadosBase,
+    clorofila_media_historica_mes: climatologiaDoMes.clorofila_media_historica_mes,
+    salinidade_media_historica_mes: climatologiaDoMes.salinidade_media_historica_mes,
+  };
   const resposta = await fetch("http://127.0.0.1:8000/predict", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -281,7 +275,7 @@ async function preverAno() {
   }
 
   btn.disabled = true;
-  btn.textContent = "Calculando previsão dos 12 meses...";
+  btn.textContent = "Buscando climatologia e calculando...";
 
   area.innerHTML = "";
   const grid = document.createElement("div");
@@ -294,8 +288,17 @@ async function preverAno() {
   area.appendChild(grid);
 
   try {
+    // 1. Buscar a climatologia real (12 meses) para o local escolhido
+    const climatologia = await buscarClimatologia(dadosBase.latitude, dadosBase.longitude);
+    const porMes = climatologia.climatologia_por_mes;
+
+    // 2. Gerar a previsão de cada mês usando o valor real daquele mês
     const resultados = await Promise.all(
-      MESES.map((_, i) => preverMes(i + 1, dadosBase))
+      MESES.map((_, i) => {
+        const mesNum = i + 1;
+        const climaDoMes = porMes[mesNum] || porMes[String(mesNum)];
+        return preverMes(mesNum, dadosBase, climaDoMes);
+      })
     );
 
     grid.innerHTML = "";

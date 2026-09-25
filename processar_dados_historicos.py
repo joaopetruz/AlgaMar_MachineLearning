@@ -1,9 +1,13 @@
 import xarray as xr
 import pandas as pd
-import numpy as np
 
 anos = list(range(2000, 2025))
 tabelas_mensais = []
+
+precipitacao = pd.read_csv("dados/precipitacao_2000_2024_sp.csv")
+# Arredondar coordenadas da precipitação para bater com a grade principal
+precipitacao["latitude"] = precipitacao["latitude"].round(5)
+precipitacao["longitude"] = precipitacao["longitude"].round(5)
 
 for ano in anos:
     print(f"Processando ano {ano}...")
@@ -11,17 +15,9 @@ for ano in anos:
     clorofila = xr.open_dataset(f"dados/clorofila_{ano}_sp.nc")
     temperatura = xr.open_dataset(f"dados/temperatura_{ano}_sp.nc")
     salinidade = xr.open_dataset(f"dados/salinidade_{ano}_sp.nc")
-    vento = xr.open_dataset(f"dados/vento_{ano}_sp.nc")
-    correntes = xr.open_dataset(f"dados/correntes_{ano}_sp.nc")
-
-    # Remover dimensão de profundidade das correntes (pegamos só superfície)
-    if "depth" in correntes.dims:
-        correntes = correntes.isel(depth=0)
 
     temperatura_ajustada = temperatura.interp(latitude=clorofila.latitude, longitude=clorofila.longitude)
     salinidade_ajustada = salinidade.interp(latitude=clorofila.latitude, longitude=clorofila.longitude)
-    vento_ajustado = vento.interp(latitude=clorofila.latitude, longitude=clorofila.longitude)
-    correntes_ajustadas = correntes.interp(latitude=clorofila.latitude, longitude=clorofila.longitude)
 
     dados = xr.merge([clorofila, temperatura_ajustada, salinidade_ajustada])
     dados["analysed_sst"] = dados["analysed_sst"] - 273.15
@@ -49,22 +45,12 @@ for ano in anos:
         salinidade_media=("salinidade", "mean")
     ).reset_index()
 
-    # Vento
-    tabela_vento = vento_ajustado.to_dataframe().reset_index()
-    tabela_vento = tabela_vento.rename(columns={"wind_speed": "vento_velocidade"})
-    tabela_vento["ano"] = tabela_vento["time"].dt.year
-    tabela_vento["mes"] = tabela_vento["time"].dt.month
-    tabela_vento = tabela_vento[["latitude", "longitude", "ano", "mes", "vento_velocidade"]]
+    # Arredondar as coordenadas da grade principal também, para bater exatamente
+    mensal["latitude"] = mensal["latitude"].round(5)
+    mensal["longitude"] = mensal["longitude"].round(5)
 
-    # Correntes: calcular velocidade total a partir de uo (leste) e vo (norte)
-    tabela_correntes = correntes_ajustadas.to_dataframe().reset_index()
-    tabela_correntes["corrente_velocidade"] = np.sqrt(tabela_correntes["uo"]**2 + tabela_correntes["vo"]**2)
-    tabela_correntes["ano"] = tabela_correntes["time"].dt.year
-    tabela_correntes["mes"] = tabela_correntes["time"].dt.month
-    tabela_correntes = tabela_correntes[["latitude", "longitude", "ano", "mes", "corrente_velocidade"]]
-
-    mensal = mensal.merge(tabela_vento, on=["latitude", "longitude", "ano", "mes"], how="left")
-    mensal = mensal.merge(tabela_correntes, on=["latitude", "longitude", "ano", "mes"], how="left")
+    precip_ano = precipitacao[precipitacao["ano"] == ano]
+    mensal = mensal.merge(precip_ano, on=["latitude", "longitude", "ano", "mes"], how="left")
 
     tabelas_mensais.append(mensal)
     print(f"Ano {ano} processado: {len(mensal)} linhas mensais")
@@ -78,7 +64,7 @@ print(tabela_final.isna().sum())
 tabela_final = tabela_final.dropna()
 print(f"\nLinhas finais: {len(tabela_final)}")
 
-tabela_final.to_csv("dados/dados_mensais_2000_2024_sp_completo.csv", index=False)
-print("\nArquivo salvo: dados/dados_mensais_2000_2024_sp_completo.csv")
+tabela_final.to_csv("dados/dados_mensais_2000_2024_sp_precipitacao.csv", index=False)
+print("\nArquivo salvo: dados/dados_mensais_2000_2024_sp_precipitacao.csv")
 print("\nPrimeiras linhas:")
 print(tabela_final.head(10))
