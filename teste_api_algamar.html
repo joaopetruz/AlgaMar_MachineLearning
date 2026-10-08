@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlgarMar — teste da API</title>
+<style>
+  :root { --bg:#f2f5f5; --painel:#fff; --tinta:#14303a; --suave:#5d727a; --linha:#d5dfe1;
+          --ok:#2c7a58; --falha:#b3261e; --acao:#14303a; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0f1e24; --painel:#162a32; --tinta:#e4eef0; --suave:#93a9b0; --linha:#274049;
+            --ok:#7fd1aa; --falha:#ff8a80; --acao:#e4eef0; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--tinta); font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  main { max-width:980px; margin:0 auto; padding:24px 16px 64px; }
+  h1 { font:600 28px/1.2 Georgia,serif; margin:0 0 4px; }
+  h2 { font:600 19px/1.3 Georgia,serif; margin:0 0 12px; }
+  p.sub { margin:0 0 20px; color:var(--suave); }
+  section { background:var(--painel); border:1px solid var(--linha); border-radius:6px; padding:18px; margin-bottom:18px; }
+  .linha { display:flex; flex-wrap:wrap; gap:8px; align-items:end; }
+  label { display:flex; flex-direction:column; font-size:13px; color:var(--suave); gap:3px; }
+  input { font:inherit; padding:7px 9px; border:1px solid var(--linha); border-radius:4px; background:var(--bg); color:var(--tinta); }
+  button { font:inherit; padding:8px 14px; border-radius:4px; cursor:pointer; border:1px solid var(--acao); background:var(--acao); color:var(--bg); }
+  button:disabled { opacity:.5; cursor:wait; }
+  input:focus-visible, button:focus-visible { outline:2px solid var(--acao); outline-offset:2px; }
+  ul.testes { list-style:none; margin:14px 0 0; padding:0; }
+  ul.testes li { display:grid; grid-template-columns:70px 1fr; gap:10px; padding:8px 0; border-bottom:1px solid var(--linha); }
+  .tag { font-weight:600; } .ok { color:var(--ok); } .falha { color:var(--falha); } .espera { color:var(--suave); }
+  .det { color:var(--suave); font-size:13px; display:block; }
+  .rolagem { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; font-size:14px; margin-top:10px; }
+  th,td { text-align:right; padding:6px 10px; border-bottom:1px solid var(--linha); white-space:nowrap; }
+  th:first-child,td:first-child { text-align:left; } th { color:var(--suave); font-weight:600; }
+  svg { width:100%; max-width:520px; height:auto; display:block; margin-top:10px; border:1px solid var(--linha); border-radius:4px; background:var(--bg); }
+  .leg { font-size:13px; color:var(--suave); margin:8px 0 0; }
+  circle.pt { cursor:pointer; }
+  circle.pt:hover, circle.pt:focus-visible { stroke:var(--tinta); stroke-width:2; outline:none; }
+  circle.pt.sel { stroke:var(--tinta); stroke-width:3; }
+  #info { margin-top:12px; padding:12px 14px; border:1px solid var(--linha); border-radius:4px; max-width:520px; min-height:3.5em; }
+  #info b { display:block; font:600 17px/1.3 Georgia,serif; margin-bottom:4px; }
+  #info span { display:block; font-size:14px; color:var(--suave); }
+  [hidden] { display:none !important; }
+  select { font:inherit; padding:7px 9px; border:1px solid var(--linha); border-radius:4px; background:var(--bg); color:var(--tinta); }
+  select:focus-visible { outline:2px solid var(--acao); outline-offset:2px; }
+  .abas { display:flex; gap:6px; margin-bottom:14px; }
+  .abas button { background:transparent; color:var(--tinta); border:1px solid var(--linha); }
+  .abas button[aria-selected="true"] { background:var(--acao); color:var(--bg); border-color:var(--acao); }
+  #loc-resumo b { display:block; font:600 17px/1.3 Georgia,serif; margin-bottom:4px; }
+  #loc-resumo span { display:block; font-size:14px; color:var(--suave); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Teste da API AlgarMar</h1>
+  <p class="sub">Roda uma bateria de testes e mostra se os dados cobrem o litoral inteiro ou só o extremo norte.</p>
+
+  <section>
+    <div class="linha">
+      <label>Endereço da API <input id="url" value="http://127.0.0.1:8000" style="min-width:260px" spellcheck="false"></label>
+    </div>
+  </section>
+
+  <div class="abas" role="tablist">
+    <button role="tab" data-aba="testes" aria-selected="true">Testes</button>
+    <button role="tab" data-aba="local" aria-selected="false">Escolher local</button>
+  </div>
+
+  <div id="aba-testes">
+  <section>
+    <div class="linha">
+      <label>Pontos por consulta <input id="limite" type="number" min="10" max="5000" value="100" style="width:110px"></label>
+      <button id="rodar">Rodar testes</button>
+    </div>
+    <ul class="testes" id="lista"></ul>
+  </section>
+
+  <section>
+    <h2>Cobertura da costa</h2>
+    <p class="leg" id="leg-mapa">Rode os testes para ver onde estão os pontos devolvidos por /predictions.</p>
+    <svg id="mapa" viewBox="0 0 520 400" aria-label="Mapa de pontos devolvidos pela API"></svg>
+    <div id="info" aria-live="polite">Clique em uma bolinha para ver o local e a coordenada.</div>
+    <div class="rolagem"><table id="faixas"></table></div>
+  </section>
+  </div>
+
+  <div id="aba-local" hidden>
+    <section>
+      <h2>Escolher local</h2>
+      <div class="linha">
+        <label>Local <select id="sel-local"></select></label>
+        <label>Latitude <input id="loc-lat" type="number" step="any" style="width:110px"></label>
+        <label>Longitude <input id="loc-lon" type="number" step="any" style="width:110px"></label>
+        <button id="ver-local">Ver dados</button>
+      </div>
+      <p class="leg" id="loc-msg">Escolha um local ou digite uma coordenada e clique em Ver dados.</p>
+    </section>
+    <section>
+      <h2 id="loc-titulo">Resultado</h2>
+      <div id="loc-resumo"></div>
+      <svg id="mapa-local" viewBox="0 0 520 400" aria-label="Mapa com o local escolhido e os pontos de dados"></svg>
+      <p class="leg">Círculo = local escolhido. Ponto colorido = ponto de dados mais próximo. Cinza = demais pontos da grade.</p>
+      <div class="rolagem"><table id="loc-clim"></table></div>
+    </section>
+  </div>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const base = () => $("url").value.trim().replace(/\/+$/, "");
+const FAIXAS = [
+  { nome: "Litoral Sul (lat < -24,3)", teste: l => l < -24.3 },
+  { nome: "Centro / Baixada (-24,3 a -23,8)", teste: l => l >= -24.3 && l < -23.8 },
+  { nome: "Litoral Norte (lat ≥ -23,8)", teste: l => l >= -23.8 },
+];
+const PONTOS_CLIM = [
+  ["Santos", -23.98, -46.35], ["Ubatuba", -23.45, -45.05],
+  ["Ilhabela", -23.78, -45.35], ["Peruíbe", -24.32, -46.99],
+];
+
+async function get(caminho) {
+  const r = await fetch(base() + caminho);
+  let corpo = null;
+  try { corpo = await r.json(); } catch (_) {}
+  return { status: r.status, corpo };
+}
+
+function novaLinha(titulo) {
+  const li = document.createElement("li");
+  li.innerHTML = `<span class="tag espera">…</span><span><b></b><span class="det"></span></span>`;
+  li.querySelector("b").textContent = titulo;
+  $("lista").appendChild(li);
+  return (ok, detalhe) => {
+    const t = li.querySelector(".tag");
+    t.textContent = ok ? "OK" : "FALHA";
+    t.className = "tag " + (ok ? "ok" : "falha");
+    li.querySelector(".det").textContent = detalhe;
+  };
+}
+
+function resumoLat(pontos) {
+  const lats = pontos.map(p => p.latitude);
+  const min = Math.min(...lats), max = Math.max(...lats);
+  return { min, max, span: max - min };
+}
+
+function desenharMapa(pontos) {
+  const lons = pontos.map(p => p.longitude), lats = pontos.map(p => p.latitude);
+  const x0 = Math.min(...lons), x1 = Math.max(...lons), y0 = Math.min(...lats), y1 = Math.max(...lats);
+  const m = 24, W = 520, H = 400;
+  const sx = v => m + ((v - x0) / ((x1 - x0) || 1)) * (W - 2 * m);
+  const sy = v => H - m - ((v - y0) / ((y1 - y0) || 1)) * (H - 2 * m);
+  const cor = p => p.risk_level === "ALTO" ? "var(--falha)" : "var(--ok)";
+  $("mapa").innerHTML =
+    pontos.map((p, i) => `<circle class="pt" data-i="${i}" tabindex="0" role="button" aria-label="Ponto ${p.latitude}, ${p.longitude}" cx="${sx(p.longitude).toFixed(1)}" cy="${sy(p.latitude).toFixed(1)}" r="6" fill="${cor(p)}" fill-opacity=".8"/>`).join("") +
+    `<text x="${m}" y="14" font-size="11" fill="currentColor">lat ${y1.toFixed(2)} (norte)</text>` +
+    `<text x="${m}" y="${H - 6}" font-size="11" fill="currentColor">lat ${y0.toFixed(2)} (sul)</text>`;
+  pontosMapa = pontos;
+  $("info").textContent = "Clique em uma bolinha para ver o local e a coordenada.";
+  $("leg-mapa").textContent = `${pontos.length} pontos. Verde = risco baixo, vermelho = risco alto. Clique em uma bolinha para ver o local. Se todos estiverem amontoados no topo, a API só está devolvendo o norte.`;
+}
+
+function tabelaFaixas(pontos) {
+  const linhas = FAIXAS.map(f => ({ nome: f.nome, n: pontos.filter(p => f.teste(p.latitude)).length }));
+  $("faixas").innerHTML = "<tr><th>Faixa</th><th>Pontos</th><th>Parcela</th></tr>" +
+    linhas.map(l => `<tr><td>${l.nome}</td><td>${l.n}</td><td>${(100 * l.n / pontos.length).toFixed(0)}%</td></tr>`).join("");
+}
+
+async function rodar() {
+  const btn = $("rodar"); btn.disabled = true;
+  $("lista").innerHTML = ""; $("mapa").innerHTML = ""; $("faixas").innerHTML = "";
+  const limite = Math.max(10, Number($("limite").value) || 100);
+
+  // 1. health
+  let r = novaLinha("API responde em /health");
+  try {
+    const h = await get("/health");
+    r(h.status === 200 && h.corpo && h.corpo.status === "ok", `HTTP ${h.status}`);
+    if (h.status !== 200) throw new Error("sem API");
+  } catch (e) {
+    r(false, "Sem conexão. Confira se o uvicorn está rodando e o endereço acima.");
+    btn.disabled = false; return;
+  }
+
+  // 2. marine-data
+  r = novaLinha(`/marine-data cobre a costa toda (limit=${limite})`);
+  try {
+    const d = await get(`/marine-data?limit=${limite}`);
+    const pts = (d.corpo && d.corpo.data) || [];
+    if (!pts.length) throw new Error("nenhum ponto devolvido");
+    const s = resumoLat(pts);
+    r(s.span >= 1.0, `Latitudes de ${s.min.toFixed(2)} a ${s.max.toFixed(2)} (amplitude ${s.span.toFixed(2)}°). Esperado: maior que 1,0°.`);
+  } catch (e) { r(false, e.message); }
+
+  // 3. predictions
+  r = novaLinha(`/predictions cobre a costa toda (limit=${limite})`);
+  try {
+    const d = await get(`/predictions?limit=${limite}`);
+    const pts = (d.corpo && d.corpo.predictions) || [];
+    if (!pts.length) throw new Error("nenhum ponto devolvido");
+    const s = resumoLat(pts);
+    const faixasComDados = FAIXAS.filter(f => pts.some(p => f.teste(p.latitude))).length;
+    r(s.span >= 1.0 && faixasComDados >= 2,
+      `Latitudes de ${s.min.toFixed(2)} a ${s.max.toFixed(2)}; ${faixasComDados} de 3 faixas com dados.`);
+    desenharMapa(pts); tabelaFaixas(pts);
+  } catch (e) { r(false, e.message); }
+
+  // 4. climatologia em pontos conhecidos
+  for (const [nome, lat, lon] of PONTOS_CLIM) {
+    r = novaLinha(`/climatologia em ${nome}`);
+    try {
+      const d = await get(`/climatologia?latitude=${lat}&longitude=${lon}`);
+      if (d.status !== 200) { r(false, `HTTP ${d.status}: ${(d.corpo && d.corpo.detail) || "sem detalhe"}`); continue; }
+      const meses = Object.keys(d.corpo.climatologia_por_mes).length;
+      const dist = Math.hypot(d.corpo.latitude_encontrada - lat, d.corpo.longitude_encontrada - lon);
+      r(meses === 12 && dist < 0.5, `${meses} meses; ponto da grade a ${dist.toFixed(3)}° (~${(dist * 111).toFixed(0)} km) do pedido.`);
+    } catch (e) { r(false, e.message); }
+  }
+
+  // 5. coordenada fora da área deve dar 404
+  r = novaLinha("/climatologia fora da área (0, 0) devolve 404");
+  try {
+    const d = await get("/climatologia?latitude=0&longitude=0");
+    r(d.status === 404, d.status === 404
+      ? "Recusou corretamente."
+      : `HTTP ${d.status}. Se for 200, você ainda está com o api.py antigo.`);
+  } catch (e) { r(false, e.message); }
+
+  btn.disabled = false;
+}
+
+// Municípios do litoral de SP (coordenadas aproximadas, só para dar nome ao ponto)
+const LOCAIS = [
+  ["Ubatuba", -23.43, -45.08], ["Caraguatatuba", -23.62, -45.41], ["Ilhabela", -23.78, -45.36],
+  ["São Sebastião", -23.81, -45.41], ["Bertioga", -23.85, -46.14], ["Guarujá", -23.99, -46.26],
+  ["Santos", -23.96, -46.33], ["São Vicente", -23.96, -46.39], ["Praia Grande", -24.01, -46.41],
+  ["Mongaguá", -24.09, -46.62], ["Itanhaém", -24.18, -46.79], ["Peruíbe", -24.32, -47.00],
+];
+
+function localMaisProximo(lat, lon) {
+  let melhor = null;
+  for (const [nome, la, lo] of LOCAIS) {
+    const dx = (lon - lo) * 111 * Math.cos(lat * Math.PI / 180), dy = (lat - la) * 111;
+    const km = Math.hypot(dx, dy);
+    if (!melhor || km < melhor.km) melhor = { nome, km };
+  }
+  return melhor;
+}
+
+let pontosMapa = [];
+
+function mostrarPonto(i) {
+  const p = pontosMapa[i];
+  if (!p) return;
+  document.querySelectorAll("circle.pt").forEach(c => c.classList.toggle("sel", c.dataset.i === String(i)));
+  const loc = localMaisProximo(p.latitude, p.longitude);
+  const titulo = loc.km <= 5 ? loc.nome : `Mar aberto, a ~${Math.round(loc.km)} km de ${loc.nome}`;
+  const linhas = [
+    `Coordenada: ${p.latitude.toFixed(4)}, ${p.longitude.toFixed(4)}`,
+    `Período: ${String(p.month).padStart(2, "0")}/${p.year}`,
+    `Risco: ${p.risk_level} (probabilidade ${p.probability.toFixed(4)})`,
+  ];
+  const info = $("info");
+  info.textContent = "";
+  const b = document.createElement("b");
+  b.textContent = titulo;
+  info.appendChild(b);
+  for (const t of linhas) {
+    const s = document.createElement("span");
+    s.textContent = t;
+    info.appendChild(s);
+  }
+}
+
+$("mapa").addEventListener("click", e => {
+  const c = e.target.closest("circle.pt");
+  if (c) mostrarPonto(Number(c.dataset.i));
+});
+$("mapa").addEventListener("keydown", e => {
+  const c = e.target.closest && e.target.closest("circle.pt");
+  if (c && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); mostrarPonto(Number(c.dataset.i)); }
+});
+
+// ===== Abas =====
+document.querySelectorAll(".abas button").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll(".abas button").forEach(x => x.setAttribute("aria-selected", String(x === b)));
+  $("aba-testes").hidden = b.dataset.aba !== "testes";
+  $("aba-local").hidden = b.dataset.aba !== "local";
+}));
+
+// ===== Aba "Escolher local" =====
+const MESES = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+const km = (la1, lo1, la2, lo2) =>
+  Math.hypot((lo1 - lo2) * 111 * Math.cos(la1 * Math.PI / 180), (la1 - la2) * 111);
+const fmtN = (v, c) => (v === null || v === undefined ? "—" : Number(v).toFixed(c));
+
+const sel = $("sel-local");
+sel.innerHTML = LOCAIS.map((l, i) => `<option value="${i}">${l[0]}</option>`).join("") +
+  '<option value="custom">Outra coordenada…</option>';
+sel.value = String(LOCAIS.findIndex(l => l[0] === "Santos"));
+
+function aplicarSelecao() {
+  if (sel.value === "custom") return;
+  const l = LOCAIS[Number(sel.value)];
+  $("loc-lat").value = l[1];
+  $("loc-lon").value = l[2];
+}
+sel.addEventListener("change", aplicarSelecao);
+["loc-lat", "loc-lon"].forEach(id => $(id).addEventListener("input", () => { sel.value = "custom"; }));
+aplicarSelecao();
+
+function preencher(el, titulo, linhas) {
+  el.textContent = "";
+  const b = document.createElement("b");
+  b.textContent = titulo;
+  el.appendChild(b);
+  for (const t of linhas) {
+    const s = document.createElement("span");
+    s.textContent = t;
+    el.appendChild(s);
+  }
+}
+
+function desenharMapaLocal(todos, lugar, nome, proximo) {
+  const lons = todos.map(p => p.longitude).concat(lugar.lon);
+  const lats = todos.map(p => p.latitude).concat(lugar.lat);
+  const x0 = Math.min(...lons), x1 = Math.max(...lons), y0 = Math.min(...lats), y1 = Math.max(...lats);
+  const m = 28, W = 520, H = 400;
+  const sx = v => m + ((v - x0) / ((x1 - x0) || 1)) * (W - 2 * m);
+  const sy = v => H - m - ((v - y0) / ((y1 - y0) || 1)) * (H - 2 * m);
+  const lx = sx(lugar.lon), ly = sy(lugar.lat);
+  const ancora = lx > W / 2 ? "end" : "start";
+  const dx = lx > W / 2 ? -15 : 15;
+  let svg = todos.map(p =>
+    `<circle cx="${sx(p.longitude).toFixed(1)}" cy="${sy(p.latitude).toFixed(1)}" r="3" fill="var(--suave)" fill-opacity=".45"/>`).join("");
+  if (proximo) {
+    const cor = proximo.risk_level === "ALTO" ? "var(--falha)" : "var(--ok)";
+    svg += `<circle cx="${sx(proximo.longitude).toFixed(1)}" cy="${sy(proximo.latitude).toFixed(1)}" r="6" fill="${cor}"/>`;
+  }
+  svg += `<circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="11" fill="none" stroke="var(--tinta)" stroke-width="2"/>`;
+  svg += `<text x="${(lx + dx).toFixed(1)}" y="${(ly + 4).toFixed(1)}" text-anchor="${ancora}" font-size="12" fill="currentColor">${nome}</text>`;
+  $("mapa-local").innerHTML = svg;
+}
+
+async function verLocal() {
+  const btn = $("ver-local"), msg = $("loc-msg");
+  const lat = parseFloat($("loc-lat").value), lon = parseFloat($("loc-lon").value);
+  if (isNaN(lat) || isNaN(lon)) { msg.textContent = "Preencha latitude e longitude."; return; }
+  const nome = sel.value === "custom" ? "Local escolhido" : LOCAIS[Number(sel.value)][0];
+
+  btn.disabled = true;
+  msg.textContent = "Carregando…";
+  $("loc-titulo").textContent = nome;
+  $("loc-resumo").textContent = "";
+  $("loc-clim").innerHTML = "";
+  $("mapa-local").innerHTML = "";
+
+  try {
+    const [c, p] = await Promise.all([
+      get(`/climatologia?latitude=${lat}&longitude=${lon}`),
+      get("/predictions?limit=5000"),
+    ]);
+    const todos = (p.corpo && p.corpo.predictions) || [];
+
+    if (c.status !== 200) {
+      preencher($("loc-resumo"), `${nome}: sem dados por perto`, [
+        (c.corpo && c.corpo.detail) || `HTTP ${c.status}`,
+        "Veja acima o ponto mais próximo e a área coberta pelos dados.",
+      ]);
+      if (todos.length) desenharMapaLocal(todos, { lat, lon }, nome, null);
+      msg.textContent = "A API recusou esta coordenada.";
+      return;
+    }
+
+    const alvo = c.corpo;
+    let proximo = null, melhor = Infinity;
+    for (const q of todos) {
+      const d = km(alvo.latitude_encontrada, alvo.longitude_encontrada, q.latitude, q.longitude);
+      if (d < melhor) { melhor = d; proximo = q; }
+    }
+
+    const dist = km(lat, lon, alvo.latitude_encontrada, alvo.longitude_encontrada);
+    const linhas = [
+      `Ponto de dados mais próximo: ${fmtN(alvo.latitude_encontrada, 4)}, ${fmtN(alvo.longitude_encontrada, 4)}`,
+      `Distância do local escolhido: ~${dist.toFixed(1)} km`,
+    ];
+    if (proximo) {
+      linhas.push(`Último período (${String(proximo.month).padStart(2, "0")}/${proximo.year}): risco ${proximo.risk_level}, probabilidade ${fmtN(proximo.probability, 4)}`);
+    }
+    if (dist > 5) {
+      linhas.push("Esse ponto fica no mar. A grade é de satélite (4 km) e provavelmente não tem dados sobre terra ou estuário, então o dado mostrado é o do mar mais próximo.");
+    }
+    preencher($("loc-resumo"), nome, linhas);
+    if (todos.length) desenharMapaLocal(todos, { lat, lon }, nome, proximo);
+
+    const meses = Object.entries(alvo.climatologia_por_mes);
+    $("loc-clim").innerHTML = "<tr><th>Mês</th><th>Clorofila histórica (mg/m³)</th><th>Salinidade histórica (PSU)</th></tr>" +
+      meses.map(([mes, v]) =>
+        `<tr><td>${MESES[Number(mes) - 1]}</td><td>${fmtN(v.clorofila_media_historica_mes, 4)}</td><td>${fmtN(v.salinidade_media_historica_mes, 3)}</td></tr>`
+      ).join("");
+    msg.textContent = "Pronto.";
+  } catch (e) {
+    msg.textContent = "Não foi possível falar com a API. Confira se o servidor está rodando.";
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+$("ver-local").addEventListener("click", verLocal);
+$("rodar").addEventListener("click", rodar);
+</script>
+</body>
+</html>
