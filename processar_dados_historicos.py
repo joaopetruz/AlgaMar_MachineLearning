@@ -13,6 +13,11 @@ for ano in anos:
     temperatura = xr.open_dataset(f"dados/temperatura_{ano}_sp.nc")
     salinidade = xr.open_dataset(f"dados/salinidade_{ano}_sp.nc")
 
+    if ano == anos[0]:
+        print("Primeiro timestamp -> clorofila:", clorofila.time.values[0],
+              "| temperatura:", temperatura.time.values[0],
+              "| salinidade:", salinidade.time.values[0])
+
     temperatura_ajustada = temperatura.interp(latitude=clorofila.latitude, longitude=clorofila.longitude)
     salinidade_ajustada = salinidade.interp(latitude=clorofila.latitude, longitude=clorofila.longitude)
 
@@ -77,8 +82,11 @@ print(f"\nTotal de linhas: {len(tabela_final)}")
 print("\nValores faltando:")
 print(tabela_final.isna().sum())
 
+pontos_antes = tabela_final[["latitude", "longitude"]].drop_duplicates().shape[0]
 tabela_final = tabela_final.dropna()
+pontos_depois = tabela_final[["latitude", "longitude"]].drop_duplicates().shape[0]
 print(f"\nLinhas finais: {len(tabela_final)}")
+print(f"Pontos únicos: {pontos_antes} -> {pontos_depois} (perdidos no dropna: {pontos_antes - pontos_depois})")
 
 # Nome que o feature_engineering_sazonal.py espera ler
 tabela_final.to_csv("dados/dados_mensais_2000_2024_sp_com_salinidade.csv", index=False)
