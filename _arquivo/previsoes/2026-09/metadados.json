@@ -1,0 +1,29 @@
+{
+ "issue_month": "2026-09",
+ "meses_previstos": [
+  "2026-10",
+  "2026-11",
+  "2026-12",
+  "2027-01",
+  "2027-02",
+  "2027-03",
+  "2027-04",
+  "2027-05",
+  "2027-06",
+  "2027-07",
+  "2027-08",
+  "2027-09"
+ ],
+ "model_version": "baseline-hist-api-v1",
+ "status_modelo": "BASE DE ARQUITETURA — NÃO É O MODELO FINAL: haverá retreino após a integração do Navier–Stokes",
+ "fontes_mes_emissao": "CHL=cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D(MY); SST=METOFFICE-GLO-SST-L4-NRT-OBS-SST-V2(NRT); SSS=cmems_obs-mob_glo_phy-sss_nrt_multi_P1D(NRT)",
+ "pontos": 1790,
+ "pontos_com_estado_incompleto": 0,
+ "limiar_alto": 0.39,
+ "limiar_moderado": 0.195,
+ "campos_nao_disponiveis": [
+  "município",
+  "estação de coleta",
+  "espécie/toxicidade"
+ ]
+}

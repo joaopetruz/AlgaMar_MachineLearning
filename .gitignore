@@ -12,3 +12,10 @@ __pycache__/
 *.txt
 *.nc
 !requirements.txt
+# dados locais e features do CROCO (ficam fora do Git; ver contrato_croco/LEIAME.md)
+dados/
+*.parquet
+/modelos/
+/previsoes/
+/saidas/
+/logs/

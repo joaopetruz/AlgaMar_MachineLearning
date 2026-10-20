@@ -1,0 +1,68 @@
+C:\Users\Tulio\OneDrive\Desktop\Algamar_Page_Software\ML\repo\algamar_ml\features\horizonte.py:282: RuntimeWarning: Mean of empty slice
+  return np.nanmean(base[anteriores], axis=0).astype(np.float32) if len(anteriores) else np.full(base.shape[1], np.nan, np.float32)
+[    12s] linhas 8,733,780 | treino 6,048,684 | validação 851,724 | teste 1,458,036
+[    12s] treinando risco-sat-clim-sp-v2-ens (k = 8, seed_mestra = 42)
+[   326s] registrada risco-sat-clim-sp-v2-ens: ['cartao.json', 'membro_00.json', 'membro_01.json', 'membro_02.json', 'membro_03.json', 'membro_04.json', 'membro_05.json', 'membro_06.json', 'membro_07.json', 'modelo.json']
+[   329s] treinando ensemble extra seed_mestra = 1
+[   631s] treinando ensemble extra seed_mestra = 2
+[   926s] treinando ensemble extra seed_mestra = 3
+[  1224s] treinando ensemble extra seed_mestra = 4
+[  1513s] membros prontos
+[  1535s] variância entre ordens
+                            n  pr_auc_media  pr_auc_dp  pr_auc_min  pr_auc_max  brier_media  brier_dp  pr_auc_amplitude
+tipo                                                                                                                   
+ensemble de 8 (bruto)       5        0.8797     0.0002      0.8796      0.8802       0.0823    0.0001            0.0006
+ensemble de 8 (isotônica)   5        0.8712     0.0008      0.8699      0.8720       0.0839    0.0001            0.0022
+modelo simples (1 ordem)   40        0.8793     0.0008      0.8779      0.8817       0.0825    0.0004            0.0039
+oficial (ordem original)    1        0.8801        NaN      0.8801      0.8801       0.0824       NaN            0.0000
+[  1546s] variância por horizonte
+     h  dp_simples  amplitude_simples  dp_ensemble8  amplitude_ensemble8
+0    1      0.0012             0.0046        0.0003               0.0007
+1    2      0.0009             0.0040        0.0003               0.0007
+2    3      0.0008             0.0035        0.0003               0.0006
+3    4      0.0008             0.0035        0.0003               0.0006
+4    5      0.0007             0.0034        0.0002               0.0006
+5    6      0.0007             0.0034        0.0002               0.0006
+6    7      0.0008             0.0037        0.0003               0.0006
+7    8      0.0010             0.0046        0.0003               0.0009
+8    9      0.0010             0.0046        0.0003               0.0009
+9   10      0.0010             0.0047        0.0003               0.0007
+10  11      0.0010             0.0046        0.0003               0.0008
+11  12      0.0011             0.0046        0.0003               0.0007
+[  1568s] h = 1: PR-AUC of 0.8852 v2 0.8765 clim 0.8757 | Δv2−of -0.0087 [-0.0118 -0.005 ] | Δv2−clim +0.0008 [-0.0029  0.0047] | ΔBrier +0.00163 [-0.00322  0.00647]
+[  1588s] h = 2: PR-AUC of 0.8863 v2 0.8776 clim 0.8783 | Δv2−of -0.0087 [-0.0121 -0.0056] | Δv2−clim -0.0007 [-0.0046  0.0029] | ΔBrier +0.00183 [-0.00291  0.00795]
+[  1606s] h = 3: PR-AUC of 0.8845 v2 0.8764 clim 0.8776 | Δv2−of -0.0081 [-0.0106 -0.0053] | Δv2−clim -0.0012 [-0.0052  0.0026] | ΔBrier +0.00163 [-0.00279  0.00618]
+[  1624s] h = 4: PR-AUC of 0.8826 v2 0.8743 clim 0.8757 | Δv2−of -0.0083 [-0.011  -0.0055] | Δv2−clim -0.0014 [-0.0047  0.0023] | ΔBrier +0.00155 [-0.00324  0.00665]
+[  1641s] h = 5: PR-AUC of 0.8801 v2 0.8721 clim 0.8738 | Δv2−of -0.0080 [-0.0109 -0.0054] | Δv2−clim -0.0017 [-0.0059  0.0029] | ΔBrier +0.00135 [-0.00286  0.00739]
+[  1657s] h = 6: PR-AUC of 0.8785 v2 0.8704 clim 0.8720 | Δv2−of -0.0081 [-0.0105 -0.0057] | Δv2−clim -0.0016 [-0.0062  0.0023] | ΔBrier +0.00128 [-0.00261  0.00717]
+[  1673s] h = 7: PR-AUC of 0.8788 v2 0.8708 clim 0.8722 | Δv2−of -0.0081 [-0.011  -0.0056] | Δv2−clim -0.0014 [-0.0053  0.0034] | ΔBrier +0.00154 [-0.00295  0.00673]
+[  1688s] h = 8: PR-AUC of 0.8775 v2 0.8698 clim 0.8710 | Δv2−of -0.0078 [-0.0105 -0.005 ] | Δv2−clim -0.0012 [-0.0044  0.0031] | ΔBrier +0.00164 [-0.00268  0.00746]
+[  1703s] h = 9: PR-AUC of 0.8760 v2 0.8685 clim 0.8696 | Δv2−of -0.0075 [-0.0107 -0.0047] | Δv2−clim -0.0011 [-0.0052  0.0033] | ΔBrier +0.00150 [-0.00311  0.00782]
+[  1717s] h = 10: PR-AUC of 0.8759 v2 0.8685 clim 0.8699 | Δv2−of -0.0074 [-0.0105 -0.0049] | Δv2−clim -0.0014 [-0.0056  0.0034] | ΔBrier +0.00164 [-0.00289  0.00858]
+[  1731s] h = 11: PR-AUC of 0.8761 v2 0.8685 clim 0.8698 | Δv2−of -0.0076 [-0.0103 -0.0047] | Δv2−clim -0.0013 [-0.0065  0.0036] | ΔBrier +0.00176 [-0.00397  0.00943]
+[  1745s] h = 12: PR-AUC of 0.8767 v2 0.8687 clim 0.8700 | Δv2−of -0.0080 [-0.011  -0.0047] | Δv2−clim -0.0012 [-0.0057  0.0033] | ΔBrier +0.00173 [-0.00375  0.00765]
+[  1970s] h = todos: PR-AUC of 0.8801 v2 0.8720 clim 0.8732 | Δv2−of -0.0080 [-0.0109 -0.0051] | Δv2−clim -0.0012 [-0.0049  0.0027] | ΔBrier +0.00159 [-0.0031   0.00671]
+[  1972s] calibração (ECE)
+     conjunto        modelo  prob_prevista  freq_observada     ece
+10  validacao       oficial         0.2808          0.2448  0.0425
+21  validacao  v2_ens_bruto         0.2772          0.2448  0.0396
+32  validacao    v2_ens_iso         0.2448          0.2448  0.0000
+43  validacao  climatologia         0.2818          0.2448  0.0381
+54      teste       oficial         0.2785          0.2703  0.0159
+65      teste  v2_ens_bruto         0.2736          0.2703  0.0119
+76      teste    v2_ens_iso         0.2427          0.2703  0.0277
+87      teste  climatologia         0.2814          0.2703  0.0123
+[  1972s] confiabilidade no teste
+modelo   climatologia  oficial  v2_ens_bruto  v2_ens_iso
+faixa                                                   
+0.0-0.1         0.028    0.029         0.029       0.044
+0.1-0.2         0.116    0.134         0.150       0.221
+0.2-0.3         0.239    0.216         0.226       0.348
+0.3-0.4         0.281    0.316         0.333       0.419
+0.4-0.5         0.394    0.439         0.436       0.509
+0.5-0.6         0.535    0.518         0.552       0.588
+0.6-0.7         0.619    0.639         0.650       0.655
+0.7-0.8         0.752    0.757         0.760       0.736
+0.8-0.9         0.867    0.882         0.883       0.858
+0.9-1.0         0.985    0.990         0.990       0.986
+[  1972s] ok

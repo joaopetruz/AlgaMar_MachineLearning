@@ -1,0 +1,30 @@
+{
+ "protocolo": "treino <= 2021, sem validação, limiar fixo 0,5 (como no repositório original)",
+ "features": "constroi_features_original (com vazamento)",
+ "linhas": {
+  "treino": 437430,
+  "teste": 64440
+ },
+ "teste": {
+  "n": 64440,
+  "positivos": 13446,
+  "pr_auc": 0.7997722037751794,
+  "roc_auc": 0.9107632114993759,
+  "brier": 0.09367454051971436,
+  "log_loss": 0.3232489228248596,
+  "limiar": 0.5,
+  "f1": 0.7019193106149628,
+  "recall": 0.7330060984679458,
+  "precision": 0.6733620277379244,
+  "matriz_confusao": [
+   [
+    46213,
+    4781
+   ],
+   [
+    3590,
+    9856
+   ]
+  ]
+ }
+}

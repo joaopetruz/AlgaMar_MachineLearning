@@ -1,0 +1,6 @@
+{
+ "descricao": "PR-AUC no teste (emissões >= 2022-01, h 1..12) só nos 1 790 pontos do CSV da equipe, painel SP total (dados idênticos aos da equipe nesses pontos). Sem bootstrap; IC na comparacao.csv (caixa da equipe, 1 855 pontos).",
+ "linhas": 1084740,
+ "pr_auc": {"baseline-hist-api-v1": 0.7833, "risco-sat-clim-v1": 0.7863, "risco-sat-clim-sp-v1": 0.7899, "climatologia": 0.7805},
+ "pontos_extras_na_caixa_da_equipe": {"n": 65, "sem_sst_em_nenhum_mes": 31, "taxa_floracao": 0.921, "nota": "células costeiras que o CSV da equipe não tinha; água turva, floram quase sempre pelo satélite"}
+}

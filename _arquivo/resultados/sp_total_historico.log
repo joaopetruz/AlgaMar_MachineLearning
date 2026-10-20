@@ -1,0 +1,60 @@
+2000 48288
+2001 48288
+2002 48288
+2003 48288
+2004 48288
+2005 48288
+2006 48288
+2007 48288
+2008 48288
+2009 48288
+2010 48288
+2011 48288
+2012 48288
+2013 48288
+2014 48288
+2015 48288
+2016 48288
+2017 48288
+2018 48288
+2019 48288
+2020 48288
+2021 48288
+2022 48288
+2023 48288
+2024 48288
+{"linhas": 721800, "pontos": 2406, "periodo": ["2000-01", "2024-12"]}
+{
+ "pontos_equipe": 1790,
+ "pontos_equipe_no_novo": 1790,
+ "pontos_novo": 2406,
+ "linhas_comparadas": 523425,
+ "clorofila_media": {
+  "dif_abs_mediana": 1.9188690192351032e-08,
+  "dif_abs_p99": 2.606475830724264e-07,
+  "dif_abs_max": 2.2931518550706187e-06,
+  "iguais_1e-4": 1.0,
+  "nan_novo_com_equipe_valido": 0
+ },
+ "clorofila_maxima": {
+  "dif_abs_mediana": 4.825439436917378e-09,
+  "dif_abs_p99": 1.7297363321233662e-07,
+  "dif_abs_max": 1.8920898412488896e-06,
+  "iguais_1e-4": 1.0,
+  "nan_novo_com_equipe_valido": 0
+ },
+ "temperatura_media": {
+  "dif_abs_mediana": 3.552713678800501e-15,
+  "dif_abs_p99": 1.0658141036401503e-14,
+  "dif_abs_max": 2.4868995751603507e-14,
+  "iguais_1e-4": 1.0,
+  "nan_novo_com_equipe_valido": 0
+ },
+ "salinidade_media": {
+  "dif_abs_mediana": 7.105427357601002e-15,
+  "dif_abs_p99": 1.4210854715202004e-14,
+  "dif_abs_max": 3.552713678800501e-14,
+  "iguais_1e-4": 1.0,
+  "nan_novo_com_equipe_valido": 0
+ }
+}

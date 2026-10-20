@@ -1,0 +1,434 @@
+{
+ "hoje": "2026-10-09",
+ "versao_modelo": "baseline-hist-api-v1",
+ "etapas": {
+  "api_ingestion": {
+   "catalogo": {
+    "cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D": {
+     "tipo": "MY",
+     "de": "1997-09-04",
+     "ate": "2026-10-01",
+     "status": "OK"
+    },
+    "cmems_obs-oc_glo_bgc-plankton_nrt_l4-gapfree-multi-4km_P1D": {
+     "tipo": "NRT",
+     "de": "2026-09-30",
+     "ate": "2026-10-07",
+     "status": "OK"
+    },
+    "METOFFICE-GLO-SST-L4-REP-OBS-SST": {
+     "tipo": "MY",
+     "de": "1981-10-01",
+     "ate": "2026-03-31",
+     "status": "OK"
+    },
+    "METOFFICE-GLO-SST-L4-NRT-OBS-SST-V2": {
+     "tipo": "NRT",
+     "de": "2024-01-17",
+     "ate": "2026-10-07",
+     "status": "OK"
+    },
+    "cmems_obs-mob_glo_phy-sss_my_multi_P1D": {
+     "tipo": "MY",
+     "de": "1993-01-01",
+     "ate": "2024-12-15",
+     "status": "OK"
+    },
+    "cmems_obs-mob_glo_phy-sss_nrt_multi_P1D": {
+     "tipo": "NRT",
+     "de": "2024-01-01",
+     "ate": "2026-10-03",
+     "status": "OK"
+    }
+   },
+   "download": "não solicitado (--baixar ausente): usa os brutos já baixados"
+  },
+  "validation": {
+   "arquivos": 87,
+   "por_status": {
+    "OK": 86,
+    "FALHA": 1
+   },
+   "falhas": [
+    {
+     "variavel": "temperatura",
+     "dataset_id": "METOFFICE-GLO-SST-L4-NRT-OBS-SST-V2",
+     "tipo": "NRT",
+     "ano": 2024,
+     "mes": 1,
+     "status": "FALHA",
+     "cobertura_dias": 0.484,
+     "checagens": [
+      [
+       "fuso",
+       "OK",
+       "sem fuso: tratado como UTC (convenção CF/Copernicus)"
+      ],
+      [
+       "duplicatas_tempo",
+       "OK",
+       "0 tempos repetidos"
+      ],
+      [
+       "monotonico",
+       "OK",
+       ""
+      ],
+      [
+       "dentro_do_mes",
+       "OK",
+       "0 tempos fora de 2024-01"
+      ],
+      [
+       "cobertura_dias",
+       "FALHA",
+       "48% dos dias"
+      ]
+     ]
+    }
+   ]
+  },
+  "temporal_alignment": {
+   "regra": "mês civil UTC; médias mensais de dias UTC; arquivo com < 80 % dos dias ou tempo inválido → variável NaN no mês",
+   "variaveis_anuladas": []
+  },
+  "spatial_alignment": {
+   "grade": "CHL L4 4 km, 1 790 pontos do histórico; T e S interpoladas (bilinear) na grade CHL",
+   "validacao_t0": [
+    [
+     "duplicatas_chave",
+     "OK",
+     "0"
+    ],
+    [
+     "coordenadas_na_caixa",
+     "OK",
+     "0 fora da caixa do ML"
+    ],
+    [
+     "alinhado_grade_ml",
+     "OK",
+     "0 pontos fora da grade CHL do ML"
+    ],
+    [
+     "pontos_presentes",
+     "OK",
+     "0 de 1790 pontos sem linha"
+    ],
+    [
+     "cobertura_regioes",
+     "OK",
+     ""
+    ]
+   ]
+  },
+  "feature_generation": {
+   "features": [
+    "h",
+    "mes_emissao",
+    "mes_alvo",
+    "latitude",
+    "longitude",
+    "chl_media_t0",
+    "chl_max_t0",
+    "sst_t0",
+    "chl_media_t0m1",
+    "chl_media_t0m2",
+    "sst_t0m1",
+    "sst_t0m2",
+    "chl_media_3m",
+    "sst_3m",
+    "chl_media_36m",
+    "chl_media_anom_t0",
+    "chl_max_anom_t0",
+    "sst_anom_t0",
+    "clim_chl_media_alvo",
+    "clim_chl_max_alvo",
+    "freq_floracao_alvo",
+    "n_anos_alvo",
+    "clim_sst_alvo",
+    "chl_max_alvo_ano_anterior",
+    "floracao_alvo_ano_anterior"
+   ],
+   "proveniencia": {
+    "h": {
+     "variavel": "fixo",
+     "fontes": [
+      "grade/configuração"
+     ],
+     "meses": []
+    },
+    "mes_emissao": {
+     "variavel": "fixo",
+     "fontes": [
+      "grade/configuração"
+     ],
+     "meses": []
+    },
+    "mes_alvo": {
+     "variavel": "fixo",
+     "fontes": [
+      "grade/configuração"
+     ],
+     "meses": []
+    },
+    "latitude": {
+     "variavel": "fixo",
+     "fontes": [
+      "grade/configuração"
+     ],
+     "meses": []
+    },
+    "longitude": {
+     "variavel": "fixo",
+     "fontes": [
+      "grade/configuração"
+     ],
+     "meses": []
+    },
+    "chl_media_t0": {
+     "variavel": "clorofila",
+     "meses_de": "2026-09",
+     "meses_ate": "2026-09",
+     "n_meses": 1,
+     "todos_ate_t0": true,
+     "fontes": [
+      "cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D(MY)"
+     ]
+    },
+    "chl_max_t0": {
+     "variavel": "clorofila",
+     "meses_de": "2026-09",
+     "meses_ate": "2026-09",
+     "n_meses": 1,
+     "todos_ate_t0": true,
+     "fontes": [
+      "cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D(MY)"
+     ]
+    },
+    "sst_t0": {
+     "variavel": "temperatura",
+     "meses_de": "2026-09",
+     "meses_ate": "2026-09",
+     "n_meses": 1,
+     "todos_ate_t0": true,
+     "fontes": [
+      "METOFFICE-GLO-SST-L4-NRT-OBS-SST-V2(NRT)"
+     ]
+    },
+    "chl_media_t0m1": {
+     "variavel": "clorofila",
+     "meses_de": "2026-08",
+     "meses_ate": "2026-08",
+     "n_meses": 1,
+     "todos_ate_t0": true,
+     "fontes": [
+      "cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D(MY)"
+     ]
+    },
+    "chl_media_t0m2": {
+     "variavel": "clorofila",
+     "meses_de": "2026-07",
+     "meses_ate": "2026-07",
+     "n_meses": 1,
+     "todos_ate_t0": true,
+     "fontes": [
+      "cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D(MY)"
+     ]
+    },
+    "sst_t0m1": {
+     "variavel": "temperatura",
+     "meses_de": "2026-08",
+     "meses_ate": "2026-08",
+     "n_meses": 1,
+     "todos_ate_t0": true,
+     "fontes": [
+      "METOFFICE-GLO-SST-L4-NRT-OBS-SST-V2(NRT)"
+     ]
+    },
+    "sst_t0m2": {
+     "variavel": "temperatura",
+     "meses_de": "2026-07",
+     "meses_ate": "2026-07",
+     "n_meses": 1,
+     "todos_ate_t0": true,
+     "fontes": [
+      "METOFFICE-GLO-SST-L4-NRT-OBS-SST-V2(NRT)"
+     ]
+    },
+    "chl_media_3m": {
+     "variavel": "clorofila",
+     "meses_de": "2026-07",
+     "meses_ate": "2026-09",
+     "n_meses": 3,
+     "todos_ate_t0": true,
+     "fontes": [
+      "cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D(MY)"
+     ]
+    },
+    "sst_3m": {
+     "variavel": "temperatura",
+     "meses_de": "2026-07",
+     "meses_ate": "2026-09",
+     "n_meses": 3,
+     "todos_ate_t0": true,
+     "fontes": [
+      "METOFFICE-GLO-SST-L4-NRT-OBS-SST-V2(NRT)"
+     ]
+    },
+    "chl_media_36m": {
+     "variavel": "clorofila",
+     "meses_de": "2023-10",
+     "meses_ate": "2026-09",
+     "n_meses": 36,
+     "todos_ate_t0": true,
+     "fontes": [
+      "cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D(MY)",
+      "historico_equipe(MY/REP, até 2024-12)"
+     ]
+    },
+    "chl_media_anom_t0": {
+     "variavel": "clorofila",
+     "meses_de": "2000-09",
+     "meses_ate": "2026-09",
+     "n_meses": 27,
+     "todos_ate_t0": true,
+     "fontes": [
+      "cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D(MY)",
+      "historico_equipe(MY/REP, até 2024-12)"
+     ]
+    },
+    "chl_max_anom_t0": {
+     "variavel": "clorofila",
+     "meses_de": "2000-09",
+     "meses_ate": "2026-09",
+     "n_meses": 27,
+     "todos_ate_t0": true,
+     "fontes": [
+      "cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D(MY)",
+      "historico_equipe(MY/REP, até 2024-12)"
+     ]
+    },
+    "sst_anom_t0": {
+     "variavel": "temperatura",
+     "meses_de": "2000-09",
+     "meses_ate": "2026-09",
+     "n_meses": 27,
+     "todos_ate_t0": true,
+     "fontes": [
+      "METOFFICE-GLO-SST-L4-NRT-OBS-SST-V2(NRT)",
+      "METOFFICE-GLO-SST-L4-REP-OBS-SST(MY)",
+      "historico_equipe(MY/REP, até 2024-12)"
+     ]
+    },
+    "clim_chl_media_alvo": {
+     "variavel": "clorofila",
+     "meses_de": "2000-09",
+     "meses_ate": "2026-09",
+     "n_meses": 53,
+     "todos_ate_t0": true,
+     "fontes": [
+      "cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D(MY)",
+      "historico_equipe(MY/REP, até 2024-12)"
+     ]
+    },
+    "clim_chl_max_alvo": {
+     "variavel": "clorofila",
+     "meses_de": "2000-09",
+     "meses_ate": "2026-09",
+     "n_meses": 53,
+     "todos_ate_t0": true,
+     "fontes": [
+      "cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D(MY)",
+      "historico_equipe(MY/REP, até 2024-12)"
+     ]
+    },
+    "freq_floracao_alvo": {
+     "variavel": "clorofila",
+     "meses_de": "2000-09",
+     "meses_ate": "2026-09",
+     "n_meses": 53,
+     "todos_ate_t0": true,
+     "fontes": [
+      "cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D(MY)",
+      "historico_equipe(MY/REP, até 2024-12)"
+     ]
+    },
+    "n_anos_alvo": {
+     "variavel": "clorofila",
+     "meses_de": "2000-09",
+     "meses_ate": "2026-09",
+     "n_meses": 53,
+     "todos_ate_t0": true,
+     "fontes": [
+      "cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D(MY)",
+      "historico_equipe(MY/REP, até 2024-12)"
+     ]
+    },
+    "clim_sst_alvo": {
+     "variavel": "temperatura",
+     "meses_de": "2000-09",
+     "meses_ate": "2026-09",
+     "n_meses": 53,
+     "todos_ate_t0": true,
+     "fontes": [
+      "METOFFICE-GLO-SST-L4-NRT-OBS-SST-V2(NRT)",
+      "METOFFICE-GLO-SST-L4-REP-OBS-SST(MY)",
+      "historico_equipe(MY/REP, até 2024-12)"
+     ]
+    },
+    "chl_max_alvo_ano_anterior": {
+     "variavel": "clorofila",
+     "meses_de": "2025-10",
+     "meses_ate": "2026-09",
+     "n_meses": 2,
+     "todos_ate_t0": true,
+     "fontes": [
+      "cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D(MY)"
+     ]
+    },
+    "floracao_alvo_ano_anterior": {
+     "variavel": "clorofila",
+     "meses_de": "2025-10",
+     "meses_ate": "2026-09",
+     "n_meses": 2,
+     "todos_ate_t0": true,
+     "fontes": [
+      "cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D(MY)"
+     ]
+    }
+   }
+  },
+  "forecast": {
+   "pasta": "C:\\Users\\Tulio\\OneDrive\\Desktop\\Algamar_Page_Software\\ML\\repo\\previsoes\\operacional_2026-09",
+   "linhas": 21480,
+   "meses_previstos": [
+    "2026-10",
+    "2026-11",
+    "2026-12",
+    "2027-01",
+    "2027-02",
+    "2027-03",
+    "2027-04",
+    "2027-05",
+    "2027-06",
+    "2027-07",
+    "2027-08",
+    "2027-09"
+   ],
+   "pontos_estado_incompleto": 0
+  }
+ },
+ "emissao": {
+  "t0": 24320,
+  "issue_month": "2026-09",
+  "atraso_meses": 0,
+  "status": "OK",
+  "tentativas": [
+   {
+    "mes": "2026-09",
+    "status_validacao": "OK"
+   }
+  ]
+ }
+}

@@ -1,0 +1,362 @@
+INFO - 2026-10-09T15:48:53Z - Selected dataset version: "202603"
+INFO - 2026-10-09T15:48:53Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:48:53Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T15:49:01Z - Total size of the download: 6.64 MB.
+clorofila 2001 7.0 MB 13s
+INFO - 2026-10-09T15:49:06Z - Selected dataset version: "202003"
+INFO - 2026-10-09T15:49:06Z - Selected dataset part: "default"
+INFO - 2026-10-09T15:49:14Z - Total size of the download: 4.19 MB.
+temperatura 2001 4.4 MB 13s
+INFO - 2026-10-09T15:49:19Z - Selected dataset version: "202311"
+INFO - 2026-10-09T15:49:19Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:49:19Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T15:49:19Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T15:49:26Z - Total size of the download: 1.42 MB.
+salinidade 2001 1.5 MB 12s
+INFO - 2026-10-09T15:49:31Z - Selected dataset version: "202603"
+INFO - 2026-10-09T15:49:31Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:49:31Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T15:49:43Z - Total size of the download: 6.64 MB.
+clorofila 2002 7.0 MB 16s
+INFO - 2026-10-09T15:49:48Z - Selected dataset version: "202003"
+INFO - 2026-10-09T15:49:48Z - Selected dataset part: "default"
+INFO - 2026-10-09T15:49:55Z - Total size of the download: 4.19 MB.
+temperatura 2002 4.4 MB 13s
+INFO - 2026-10-09T15:50:01Z - Selected dataset version: "202311"
+INFO - 2026-10-09T15:50:01Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:50:01Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T15:50:01Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T15:50:08Z - Total size of the download: 1.42 MB.
+salinidade 2002 1.5 MB 12s
+INFO - 2026-10-09T15:50:13Z - Selected dataset version: "202603"
+INFO - 2026-10-09T15:50:13Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:50:13Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T15:50:22Z - Total size of the download: 6.64 MB.
+clorofila 2003 7.0 MB 15s
+INFO - 2026-10-09T15:50:27Z - Selected dataset version: "202003"
+INFO - 2026-10-09T15:50:27Z - Selected dataset part: "default"
+INFO - 2026-10-09T15:50:35Z - Total size of the download: 4.19 MB.
+temperatura 2003 4.4 MB 13s
+INFO - 2026-10-09T15:50:40Z - Selected dataset version: "202311"
+INFO - 2026-10-09T15:50:40Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:50:40Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T15:50:40Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T15:50:47Z - Total size of the download: 1.42 MB.
+salinidade 2003 1.5 MB 12s
+INFO - 2026-10-09T15:50:52Z - Selected dataset version: "202603"
+INFO - 2026-10-09T15:50:52Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:50:52Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T15:51:00Z - Total size of the download: 6.66 MB.
+clorofila 2004 7.0 MB 13s
+INFO - 2026-10-09T15:51:05Z - Selected dataset version: "202003"
+INFO - 2026-10-09T15:51:05Z - Selected dataset part: "default"
+INFO - 2026-10-09T15:51:13Z - Total size of the download: 4.20 MB.
+temperatura 2004 4.4 MB 13s
+INFO - 2026-10-09T15:51:18Z - Selected dataset version: "202311"
+INFO - 2026-10-09T15:51:18Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:51:18Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T15:51:18Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T15:51:26Z - Total size of the download: 1.42 MB.
+salinidade 2004 1.5 MB 13s
+INFO - 2026-10-09T15:51:31Z - Selected dataset version: "202603"
+INFO - 2026-10-09T15:51:31Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:51:31Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T15:51:39Z - Total size of the download: 6.64 MB.
+clorofila 2005 7.0 MB 13s
+INFO - 2026-10-09T15:51:44Z - Selected dataset version: "202003"
+INFO - 2026-10-09T15:51:44Z - Selected dataset part: "default"
+INFO - 2026-10-09T15:51:52Z - Total size of the download: 4.19 MB.
+temperatura 2005 4.4 MB 12s
+INFO - 2026-10-09T15:51:56Z - Selected dataset version: "202311"
+INFO - 2026-10-09T15:51:56Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:51:56Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T15:51:56Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T15:52:04Z - Total size of the download: 1.42 MB.
+salinidade 2005 1.5 MB 12s
+INFO - 2026-10-09T15:52:09Z - Selected dataset version: "202603"
+INFO - 2026-10-09T15:52:09Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:52:09Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T15:52:18Z - Total size of the download: 6.64 MB.
+clorofila 2006 7.0 MB 14s
+INFO - 2026-10-09T15:52:22Z - Selected dataset version: "202003"
+INFO - 2026-10-09T15:52:22Z - Selected dataset part: "default"
+INFO - 2026-10-09T15:52:35Z - Total size of the download: 4.19 MB.
+temperatura 2006 4.4 MB 17s
+INFO - 2026-10-09T15:52:40Z - Selected dataset version: "202311"
+INFO - 2026-10-09T15:52:40Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:52:40Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T15:52:40Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T15:52:47Z - Total size of the download: 1.42 MB.
+salinidade 2006 1.5 MB 12s
+INFO - 2026-10-09T15:52:52Z - Selected dataset version: "202603"
+INFO - 2026-10-09T15:52:52Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:52:52Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T15:53:01Z - Total size of the download: 6.64 MB.
+clorofila 2007 7.0 MB 14s
+INFO - 2026-10-09T15:53:05Z - Selected dataset version: "202003"
+INFO - 2026-10-09T15:53:05Z - Selected dataset part: "default"
+INFO - 2026-10-09T15:53:13Z - Total size of the download: 4.19 MB.
+temperatura 2007 4.4 MB 12s
+INFO - 2026-10-09T15:53:18Z - Selected dataset version: "202311"
+INFO - 2026-10-09T15:53:18Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:53:18Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T15:53:18Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T15:53:26Z - Total size of the download: 1.42 MB.
+salinidade 2007 1.5 MB 13s
+INFO - 2026-10-09T15:53:30Z - Selected dataset version: "202603"
+INFO - 2026-10-09T15:53:30Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:53:30Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T15:53:42Z - Total size of the download: 6.66 MB.
+clorofila 2008 7.0 MB 16s
+INFO - 2026-10-09T15:53:47Z - Selected dataset version: "202003"
+INFO - 2026-10-09T15:53:47Z - Selected dataset part: "default"
+INFO - 2026-10-09T15:53:55Z - Total size of the download: 4.20 MB.
+temperatura 2008 4.4 MB 13s
+INFO - 2026-10-09T15:54:00Z - Selected dataset version: "202311"
+INFO - 2026-10-09T15:54:00Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:54:00Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T15:54:00Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T15:54:07Z - Total size of the download: 1.42 MB.
+salinidade 2008 1.5 MB 12s
+INFO - 2026-10-09T15:54:12Z - Selected dataset version: "202603"
+INFO - 2026-10-09T15:54:12Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:54:12Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T15:54:20Z - Total size of the download: 6.64 MB.
+clorofila 2009 7.0 MB 13s
+INFO - 2026-10-09T15:54:25Z - Selected dataset version: "202003"
+INFO - 2026-10-09T15:54:25Z - Selected dataset part: "default"
+INFO - 2026-10-09T15:54:32Z - Total size of the download: 4.19 MB.
+temperatura 2009 4.4 MB 13s
+INFO - 2026-10-09T15:54:38Z - Selected dataset version: "202311"
+INFO - 2026-10-09T15:54:38Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:54:38Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T15:54:38Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T15:54:45Z - Total size of the download: 1.42 MB.
+salinidade 2009 1.5 MB 12s
+INFO - 2026-10-09T15:54:50Z - Selected dataset version: "202603"
+INFO - 2026-10-09T15:54:50Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:54:50Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T15:54:58Z - Total size of the download: 6.64 MB.
+clorofila 2010 7.0 MB 13s
+INFO - 2026-10-09T15:55:03Z - Selected dataset version: "202003"
+INFO - 2026-10-09T15:55:03Z - Selected dataset part: "default"
+INFO - 2026-10-09T15:55:11Z - Total size of the download: 4.19 MB.
+temperatura 2010 4.4 MB 13s
+INFO - 2026-10-09T15:55:16Z - Selected dataset version: "202311"
+INFO - 2026-10-09T15:55:16Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:55:16Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T15:55:16Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T15:55:23Z - Total size of the download: 1.42 MB.
+salinidade 2010 1.5 MB 12s
+INFO - 2026-10-09T15:55:28Z - Selected dataset version: "202603"
+INFO - 2026-10-09T15:55:28Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:55:28Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T15:55:36Z - Total size of the download: 6.64 MB.
+clorofila 2011 7.0 MB 14s
+INFO - 2026-10-09T15:55:41Z - Selected dataset version: "202003"
+INFO - 2026-10-09T15:55:41Z - Selected dataset part: "default"
+INFO - 2026-10-09T15:55:50Z - Total size of the download: 4.19 MB.
+temperatura 2011 4.4 MB 13s
+INFO - 2026-10-09T15:55:55Z - Selected dataset version: "202311"
+INFO - 2026-10-09T15:55:55Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:55:55Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T15:55:55Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T15:56:01Z - Total size of the download: 1.42 MB.
+salinidade 2011 1.5 MB 12s
+INFO - 2026-10-09T15:56:06Z - Selected dataset version: "202603"
+INFO - 2026-10-09T15:56:06Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:56:06Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T15:56:14Z - Total size of the download: 6.66 MB.
+clorofila 2012 7.0 MB 13s
+INFO - 2026-10-09T15:56:18Z - Selected dataset version: "202003"
+INFO - 2026-10-09T15:56:18Z - Selected dataset part: "default"
+INFO - 2026-10-09T15:56:26Z - Total size of the download: 4.20 MB.
+temperatura 2012 4.4 MB 12s
+INFO - 2026-10-09T15:56:30Z - Selected dataset version: "202311"
+INFO - 2026-10-09T15:56:30Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:56:30Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T15:56:30Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T15:56:37Z - Total size of the download: 1.42 MB.
+salinidade 2012 1.5 MB 12s
+INFO - 2026-10-09T15:56:42Z - Selected dataset version: "202603"
+INFO - 2026-10-09T15:56:42Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:56:42Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T15:56:53Z - Total size of the download: 6.64 MB.
+clorofila 2013 7.0 MB 16s
+INFO - 2026-10-09T15:56:58Z - Selected dataset version: "202003"
+INFO - 2026-10-09T15:56:58Z - Selected dataset part: "default"
+INFO - 2026-10-09T15:57:05Z - Total size of the download: 4.19 MB.
+temperatura 2013 4.4 MB 12s
+INFO - 2026-10-09T15:57:10Z - Selected dataset version: "202311"
+INFO - 2026-10-09T15:57:10Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:57:10Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T15:57:10Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T15:57:18Z - Total size of the download: 1.42 MB.
+salinidade 2013 1.5 MB 13s
+INFO - 2026-10-09T15:57:23Z - Selected dataset version: "202603"
+INFO - 2026-10-09T15:57:23Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:57:23Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T15:57:31Z - Total size of the download: 6.64 MB.
+clorofila 2014 7.0 MB 13s
+INFO - 2026-10-09T15:57:35Z - Selected dataset version: "202003"
+INFO - 2026-10-09T15:57:35Z - Selected dataset part: "default"
+INFO - 2026-10-09T15:57:47Z - Total size of the download: 4.19 MB.
+temperatura 2014 4.4 MB 16s
+INFO - 2026-10-09T15:57:51Z - Selected dataset version: "202311"
+INFO - 2026-10-09T15:57:51Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:57:51Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T15:57:51Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T15:57:58Z - Total size of the download: 1.42 MB.
+salinidade 2014 1.5 MB 12s
+INFO - 2026-10-09T15:58:03Z - Selected dataset version: "202603"
+INFO - 2026-10-09T15:58:03Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:58:03Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T15:58:11Z - Total size of the download: 6.64 MB.
+clorofila 2015 7.0 MB 13s
+INFO - 2026-10-09T15:58:15Z - Selected dataset version: "202003"
+INFO - 2026-10-09T15:58:15Z - Selected dataset part: "default"
+INFO - 2026-10-09T15:58:23Z - Total size of the download: 4.19 MB.
+temperatura 2015 4.4 MB 12s
+INFO - 2026-10-09T15:58:28Z - Selected dataset version: "202311"
+INFO - 2026-10-09T15:58:28Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:58:28Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T15:58:28Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T15:58:35Z - Total size of the download: 1.42 MB.
+salinidade 2015 1.5 MB 12s
+INFO - 2026-10-09T15:58:40Z - Selected dataset version: "202603"
+INFO - 2026-10-09T15:58:40Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:58:40Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T15:58:49Z - Total size of the download: 6.66 MB.
+clorofila 2016 7.0 MB 13s
+INFO - 2026-10-09T15:58:53Z - Selected dataset version: "202003"
+INFO - 2026-10-09T15:58:53Z - Selected dataset part: "default"
+INFO - 2026-10-09T15:59:02Z - Total size of the download: 4.20 MB.
+temperatura 2016 4.4 MB 13s
+INFO - 2026-10-09T15:59:06Z - Selected dataset version: "202311"
+INFO - 2026-10-09T15:59:06Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:59:06Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T15:59:06Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T15:59:14Z - Total size of the download: 1.42 MB.
+salinidade 2016 1.5 MB 12s
+INFO - 2026-10-09T15:59:19Z - Selected dataset version: "202603"
+INFO - 2026-10-09T15:59:19Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:59:19Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T15:59:27Z - Total size of the download: 6.64 MB.
+clorofila 2017 7.0 MB 13s
+INFO - 2026-10-09T15:59:31Z - Selected dataset version: "202003"
+INFO - 2026-10-09T15:59:31Z - Selected dataset part: "default"
+INFO - 2026-10-09T15:59:39Z - Total size of the download: 4.19 MB.
+temperatura 2017 4.4 MB 12s
+INFO - 2026-10-09T15:59:44Z - Selected dataset version: "202311"
+INFO - 2026-10-09T15:59:44Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:59:44Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T15:59:44Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T15:59:51Z - Total size of the download: 1.42 MB.
+salinidade 2017 1.5 MB 12s
+INFO - 2026-10-09T15:59:55Z - Selected dataset version: "202603"
+INFO - 2026-10-09T15:59:55Z - Selected dataset part: "default"
+WARNING - 2026-10-09T15:59:55Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T16:00:07Z - Total size of the download: 6.64 MB.
+clorofila 2018 7.0 MB 16s
+INFO - 2026-10-09T16:00:12Z - Selected dataset version: "202003"
+INFO - 2026-10-09T16:00:12Z - Selected dataset part: "default"
+INFO - 2026-10-09T16:00:19Z - Total size of the download: 4.19 MB.
+temperatura 2018 4.4 MB 12s
+INFO - 2026-10-09T16:00:24Z - Selected dataset version: "202311"
+INFO - 2026-10-09T16:00:24Z - Selected dataset part: "default"
+WARNING - 2026-10-09T16:00:24Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T16:00:24Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T16:00:31Z - Total size of the download: 1.42 MB.
+salinidade 2018 1.5 MB 12s
+INFO - 2026-10-09T16:00:36Z - Selected dataset version: "202603"
+INFO - 2026-10-09T16:00:36Z - Selected dataset part: "default"
+WARNING - 2026-10-09T16:00:36Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T16:00:45Z - Total size of the download: 6.64 MB.
+clorofila 2019 7.0 MB 14s
+INFO - 2026-10-09T16:00:49Z - Selected dataset version: "202003"
+INFO - 2026-10-09T16:00:49Z - Selected dataset part: "default"
+INFO - 2026-10-09T16:00:57Z - Total size of the download: 4.19 MB.
+temperatura 2019 4.4 MB 12s
+INFO - 2026-10-09T16:01:02Z - Selected dataset version: "202311"
+INFO - 2026-10-09T16:01:02Z - Selected dataset part: "default"
+WARNING - 2026-10-09T16:01:02Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T16:01:02Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T16:01:09Z - Total size of the download: 1.42 MB.
+salinidade 2019 1.5 MB 12s
+INFO - 2026-10-09T16:01:14Z - Selected dataset version: "202603"
+INFO - 2026-10-09T16:01:14Z - Selected dataset part: "default"
+WARNING - 2026-10-09T16:01:14Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T16:01:22Z - Total size of the download: 6.66 MB.
+clorofila 2020 7.0 MB 13s
+INFO - 2026-10-09T16:01:26Z - Selected dataset version: "202003"
+INFO - 2026-10-09T16:01:26Z - Selected dataset part: "default"
+INFO - 2026-10-09T16:01:34Z - Total size of the download: 4.20 MB.
+temperatura 2020 4.4 MB 12s
+INFO - 2026-10-09T16:01:39Z - Selected dataset version: "202311"
+INFO - 2026-10-09T16:01:39Z - Selected dataset part: "default"
+WARNING - 2026-10-09T16:01:39Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T16:01:39Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T16:01:46Z - Total size of the download: 1.42 MB.
+salinidade 2020 1.5 MB 12s
+INFO - 2026-10-09T16:01:51Z - Selected dataset version: "202603"
+INFO - 2026-10-09T16:01:51Z - Selected dataset part: "default"
+WARNING - 2026-10-09T16:01:51Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T16:01:58Z - Total size of the download: 6.64 MB.
+clorofila 2021 7.0 MB 13s
+INFO - 2026-10-09T16:02:03Z - Selected dataset version: "202003"
+INFO - 2026-10-09T16:02:03Z - Selected dataset part: "default"
+INFO - 2026-10-09T16:02:11Z - Total size of the download: 4.19 MB.
+temperatura 2021 4.4 MB 13s
+INFO - 2026-10-09T16:02:16Z - Selected dataset version: "202311"
+INFO - 2026-10-09T16:02:16Z - Selected dataset part: "default"
+WARNING - 2026-10-09T16:02:16Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T16:02:16Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T16:02:23Z - Total size of the download: 1.42 MB.
+salinidade 2021 1.5 MB 12s
+INFO - 2026-10-09T16:02:28Z - Selected dataset version: "202603"
+INFO - 2026-10-09T16:02:28Z - Selected dataset part: "default"
+WARNING - 2026-10-09T16:02:28Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T16:02:37Z - Total size of the download: 6.64 MB.
+clorofila 2022 7.0 MB 13s
+INFO - 2026-10-09T16:02:41Z - Selected dataset version: "202003"
+INFO - 2026-10-09T16:02:41Z - Selected dataset part: "default"
+INFO - 2026-10-09T16:02:57Z - Total size of the download: 4.19 MB.
+temperatura 2022 4.4 MB 20s
+INFO - 2026-10-09T16:03:01Z - Selected dataset version: "202311"
+INFO - 2026-10-09T16:03:01Z - Selected dataset part: "default"
+WARNING - 2026-10-09T16:03:01Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T16:03:01Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T16:03:08Z - Total size of the download: 1.42 MB.
+salinidade 2022 1.5 MB 12s
+INFO - 2026-10-09T16:03:13Z - Selected dataset version: "202603"
+INFO - 2026-10-09T16:03:13Z - Selected dataset part: "default"
+WARNING - 2026-10-09T16:03:13Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T16:03:23Z - Total size of the download: 6.64 MB.
+clorofila 2023 7.0 MB 14s
+INFO - 2026-10-09T16:03:27Z - Selected dataset version: "202003"
+INFO - 2026-10-09T16:03:27Z - Selected dataset part: "default"
+INFO - 2026-10-09T16:03:34Z - Total size of the download: 4.19 MB.
+temperatura 2023 4.4 MB 11s
+INFO - 2026-10-09T16:03:39Z - Selected dataset version: "202311"
+INFO - 2026-10-09T16:03:39Z - Selected dataset part: "default"
+WARNING - 2026-10-09T16:03:39Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T16:03:39Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T16:03:46Z - Total size of the download: 1.42 MB.
+salinidade 2023 1.5 MB 11s
+INFO - 2026-10-09T16:03:50Z - Selected dataset version: "202603"
+INFO - 2026-10-09T16:03:50Z - Selected dataset part: "default"
+WARNING - 2026-10-09T16:03:50Z - You are using the dataset cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D, version '202603', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+INFO - 2026-10-09T16:03:58Z - Total size of the download: 6.66 MB.
+clorofila 2024 7.0 MB 13s
+INFO - 2026-10-09T16:04:03Z - Selected dataset version: "202003"
+INFO - 2026-10-09T16:04:03Z - Selected dataset part: "default"
+INFO - 2026-10-09T16:04:10Z - Total size of the download: 4.20 MB.
+temperatura 2024 4.4 MB 12s
+INFO - 2026-10-09T16:04:14Z - Selected dataset version: "202311"
+INFO - 2026-10-09T16:04:14Z - Selected dataset part: "default"
+WARNING - 2026-10-09T16:04:14Z - You are using the dataset cmems_obs-mob_glo_phy-sss_my_multi_P1D, version '202311', part 'default'. This exact version and part of the dataset will be retired on the 2026-11-24T13:00:00.000Z. For more information you can check: https://marine.copernicus.eu/user-corner/product-roadmap/transition-information
+WARNING - 2026-10-09T16:04:14Z - Some of your subset selection [2024-01-01 00:00:00+00:00, 2024-12-31 00:00:00+00:00] for the time dimension exceed the dataset coordinates [1993-01-01 00:00:00+00:00, 2024-12-15 00:00:00+00:00]
+WARNING - 2026-10-09T16:04:14Z - Some of your subset selection [0.0, 1.0] for the depth dimension exceed the dataset coordinates [0, 0]
+INFO - 2026-10-09T16:04:21Z - Total size of the download: 1.36 MB.
+salinidade 2024 1.4 MB 11s
+ok

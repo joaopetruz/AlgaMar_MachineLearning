@@ -1,0 +1,210 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "Proveniência de dataset CROCO D2 → ML",
+ "versao_contrato": "13.0.0",
+ "type": "object",
+ "required": [
+  "build_croco",
+  "commit_croco",
+  "sha256_executavel",
+  "grade",
+  "sha256_grade",
+  "forcantes",
+  "periodo",
+  "glorys_versao",
+  "era5",
+  "fes",
+  "rios",
+  "convencao_temporal",
+  "exact_restart",
+  "scripts_derivacao",
+  "data_criacao"
+ ],
+ "properties": {
+  "build_croco": {
+   "type": [
+    "string",
+    "array",
+    "object"
+   ],
+   "description": "nome do build (ex.: build_d2_algamar_final_v1)",
+   "minLength": 1
+  },
+  "commit_croco": {
+   "type": [
+    "string",
+    "array",
+    "object"
+   ],
+   "description": "commit do CROCO (ab63b583…) e se o fonte foi modificado",
+   "minLength": 1
+  },
+  "sha256_executavel": {
+   "type": [
+    "string",
+    "array",
+    "object"
+   ],
+   "description": "SHA256 do executável croco",
+   "minLength": 1
+  },
+  "grade": {
+   "type": [
+    "string",
+    "array",
+    "object"
+   ],
+   "description": "caminho e descrição da grade",
+   "minLength": 1
+  },
+  "sha256_grade": {
+   "type": [
+    "string",
+    "array",
+    "object"
+   ],
+   "description": "SHA256 do arquivo de grade",
+   "minLength": 1
+  },
+  "forcantes": {
+   "type": [
+    "string",
+    "array",
+    "object"
+   ],
+   "description": "arquivos ini/bry/frc/blk/rios usados",
+   "minLength": 1
+  },
+  "periodo": {
+   "type": [
+    "string",
+    "array",
+    "object"
+   ],
+   "description": "intervalo coberto (UTC)",
+   "minLength": 1
+  },
+  "glorys_versao": {
+   "type": [
+    "string",
+    "array",
+    "object"
+   ],
+   "description": "produto/dataset/versão",
+   "minLength": 1
+  },
+  "era5": {
+   "type": [
+    "string",
+    "array",
+    "object"
+   ],
+   "description": "produto e modo (bulk ONLINE)",
+   "minLength": 1
+  },
+  "fes": {
+   "type": [
+    "string",
+    "array",
+    "object"
+   ],
+   "description": "versão e ondas",
+   "minLength": 1
+  },
+  "rios": {
+   "type": [
+    "string",
+    "array",
+    "object"
+   ],
+   "description": "fontes e lista",
+   "minLength": 1
+  },
+  "convencao_temporal": {
+   "type": [
+    "string",
+    "array",
+    "object"
+   ],
+   "description": "origem, UTC, instantâneo/média",
+   "minLength": 1
+  },
+  "exact_restart": {
+   "type": [
+    "string",
+    "array",
+    "object"
+   ],
+   "description": "uso de EXACT_RESTART e segmentos",
+   "minLength": 1
+  },
+  "scripts_derivacao": {
+   "type": [
+    "string",
+    "array",
+    "object"
+   ],
+   "description": "scripts e módulos usados",
+   "minLength": 1
+  },
+  "data_criacao": {
+   "type": [
+    "string",
+    "array",
+    "object"
+   ],
+   "description": "ISO 8601 UTC",
+   "minLength": 1
+  }
+ },
+ "additionalProperties": true,
+ "onde_fica": "metadado 'algamar' do Parquet (chave proveniencia) e atributo 'algamar' do NetCDF",
+ "validador": "algamar_physics.ml_interface.metadata.valida_proveniencia",
+ "exemplo": {
+  "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29)",
+  "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+  "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+  "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH, 412×202 ρ)",
+  "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6",
+  "forcantes": "ini/bry GLORYS +12 h balanceado (prepro_candidato/*_T12.nc); ERA5 bulk ONLINE; FES2014 8 ondas; 19 rios SP",
+  "periodo": "2017-11-17T12:00Z a 2017-11-26T12:00Z (amostra)",
+  "glorys_versao": "GLOBAL_MULTIYEAR_PHY_001_030, cmems_mod_glo_phy_my_0.083deg_P1D-m, versão 202311",
+  "era5": "ERA5 (C3S) horário, BULK_FLUX COARE 3.0, ONLINE",
+  "fes": "FES2014 (M2 S2 N2 K2 K1 O1 P1 Q1)",
+  "rios": "19 fontes SP PSOURCE_NCFILE (ANA + GloFAS v5); externos PR/RJ não incluídos",
+  "convencao_temporal": "UTC; time = origem + scrum_time, origem 2017-11-01 00:00 UTC; his = instantâneo; avg = centro da janela de 24 h (+60 s do CROCO, não corrigido); GLORYS diário representado às 12:00 UTC",
+  "exact_restart": "build com EXACT_RESTART; 12.28 rodou em 3 segmentos bit-idênticos (NRPFRST −2, NRREC 2)",
+  "scripts_derivacao": [
+   "src/algamar_physics/ml_interface/*",
+   "scripts/etapa13_00_amostra_ml.py",
+   "regional/croco/validacao/colocacao.py",
+   "regional/croco/validacao/metricas.py"
+  ],
+  "data_criacao": "2026-10-08T07:52:31+00:00",
+  "rodadas": {
+   "1228_seg2_his": {
+    "arquivo": "\\\\wsl.localhost\\Ubuntu-24.04\\home\\tulio\\CONFIGS\\ALGAMAR_D2_FINAL\\runs\\REVALIDACAO_TS_FINAL_NOV2017_14d_seg2\\croco_his.nc",
+    "executavel_sha256": "91a80844399a84f56e0e6e5ae8b227f0aab26bc862eaa540447a2f645e22fc45",
+    "nota": "build_d2_final_candidato_stations = oficial + '# define STATIONS' (só saída)",
+    "registros": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "arquivo_sha256": "c73403e643a969f748632d6bb0c8f3a0bed555577d17736169e49911e7427027"
+   },
+   "1226_SMOKE_CONT_24h_avg": {
+    "arquivo": "\\\\wsl.localhost\\Ubuntu-24.04\\home\\tulio\\CONFIGS\\ALGAMAR_D2_FINAL\\runs\\SMOKE_CONT_24h\\croco_avg.nc",
+    "executavel_sha256": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+    "nota": "build oficial (SHA idêntico); média de 720 passos",
+    "arquivo_sha256": "8633039509e43b3ad4af4b2477ea4c198eb45ae1ce7d88765dced3ca02212ae1"
+   }
+  },
+  "pontos_ml": "outputs/etapa12/cobertura_pontos_ml.csv (grade CHL L4 cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D)",
+  "crs": "WGS84 / EPSG:4326, longitude −180..180 (oeste negativo)"
+ }
+}

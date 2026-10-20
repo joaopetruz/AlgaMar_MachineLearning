@@ -1,0 +1,14 @@
+{
+ "modelo_vs_climatologia_suavizada": {
+  "delta": 0.0045696035206411745,
+  "ic95": [
+   -0.005292990368673597,
+   0.019189978852640704
+  ],
+  "reamostragens": 200,
+  "blocos": 15
+ },
+ "brier_modelo": 0.08286164855132243,
+ "brier_clim": 0.08273706371962113,
+ "pr_auc_clim_suavizada": 0.778734501368628
+}

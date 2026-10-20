@@ -1,0 +1,11 @@
+{
+ "versoes": {
+  "oficial": "baseline-hist-api-v1",
+  "enxuta": "risco-sat-clim-v1",
+  "sp_total": "risco-sat-clim-sp-v1"
+ },
+ "pontos_teste": 2406,
+ "pontos_antigos": 1855,
+ "pontos_sem_sst_nunca": 38,
+ "segundos": 746
+}

@@ -1,0 +1,252 @@
+{
+ "versao": "13.2A.0",
+ "convencao_nomes": "colunas mensais = <coluna do contrato 13.0>_mean (agregation.agrega_mensal, média dos valores válidos do mês civil UTC); speed_of_mean_current = módulo da corrente média do mês (mesma construção da antiga corrente_velocidade do ML)",
+ "modos_temporais": {
+  "NOWCAST": "coluna do próprio mês t (sufixo nenhum)",
+  "FORECAST_SAZONAL": "coluna do mesmo mês do ano anterior: <col>__lag12 (shift por DATA, não por posição de linha), espelhando temperatura_ano_anterior do baseline",
+  "FORECAST_1M": "coluna do mês anterior: <col>__lag1"
+ },
+ "BASELINE": [
+  "mes",
+  "latitude",
+  "longitude",
+  "dist_hotspot",
+  "clorofila_media_ano_anterior",
+  "clorofila_maxima_ano_anterior",
+  "temperatura_ano_anterior",
+  "salinidade_ano_anterior",
+  "clorofila_media_historica_mes",
+  "salinidade_media_historica_mes",
+  "clorofila_media_3anos",
+  "salinidade_media_3anos"
+ ],
+ "BASELINE_CORRIGIDO": {
+  "colunas": [
+   "mes",
+   "latitude",
+   "longitude",
+   "dist_hotspot",
+   "clorofila_media_ano_anterior",
+   "clorofila_maxima_ano_anterior",
+   "temperatura_ano_anterior",
+   "salinidade_ano_anterior",
+   "clorofila_media_historica_mes",
+   "salinidade_media_historica_mes",
+   "clorofila_media_3anos",
+   "salinidade_media_3anos"
+  ],
+  "diferencas_de_construcao": {
+   "clorofila_media_historica_mes": "média por (lat, lon, mes) só sobre anos de TREINO e anteriores a t",
+   "salinidade_media_historica_mes": "idem",
+   "clorofila_media_3anos": "média dos 36 meses ANTERIORES a t (exclui t)",
+   "salinidade_media_3anos": "idem (exclui t)",
+   "*_ano_anterior": "shift de 12 meses por data (t − 12 meses), NaN se o mês não existir; nunca fallback para t",
+   "dist_hotspot": "mantida; hotspots fixos do código (risco registrado em leakage_audit.csv)"
+  }
+ },
+ "CROCO_TS": [
+  "temperature_surface_mean",
+  "salinity_surface_mean"
+ ],
+ "CROCO_CORE": [
+  "temperature_surface_mean",
+  "salinity_surface_mean",
+  "mld_mean",
+  "n2_max_mean"
+ ],
+ "CROCO_CORE_COMPLETO": [
+  "temperature_surface_mean",
+  "salinity_surface_mean",
+  "mld_mean",
+  "n2_max_mean",
+  "temperature_20m_mean",
+  "salinity_20m_mean",
+  "temperature_50m_mean",
+  "salinity_50m_mean",
+  "temperature_bottom_mean",
+  "salinity_bottom_mean"
+ ],
+ "CROCO_CORE_CURRENT": [
+  "temperature_surface_mean",
+  "salinity_surface_mean",
+  "mld_mean",
+  "n2_max_mean",
+  "temperature_20m_mean",
+  "salinity_20m_mean",
+  "temperature_50m_mean",
+  "salinity_50m_mean",
+  "temperature_bottom_mean",
+  "salinity_bottom_mean",
+  "u_east_surface_mean",
+  "v_north_surface_mean",
+  "speed_of_mean_current"
+ ],
+ "CROCO_FULL_DYNAMICS": [
+  "temperature_surface_mean",
+  "salinity_surface_mean",
+  "mld_mean",
+  "n2_max_mean",
+  "temperature_20m_mean",
+  "salinity_20m_mean",
+  "temperature_50m_mean",
+  "salinity_50m_mean",
+  "temperature_bottom_mean",
+  "salinity_bottom_mean",
+  "u_east_surface_mean",
+  "v_north_surface_mean",
+  "speed_of_mean_current",
+  "ssh_mean",
+  "w_10m_mean",
+  "w_50m_mean",
+  "relative_vorticity_surface_mean",
+  "normalized_vorticity_surface_mean",
+  "horizontal_divergence_surface_mean",
+  "hbl_mean",
+  "transport_east_mean",
+  "transport_north_mean"
+ ],
+ "grupos_de_ablacao": {
+  "TS": [
+   "temperature_surface_mean",
+   "salinity_surface_mean"
+  ],
+  "MLD_N2": [
+   "mld_mean",
+   "n2_max_mean"
+  ],
+  "TS_VERTICAL": [
+   "temperature_20m_mean",
+   "salinity_20m_mean",
+   "temperature_50m_mean",
+   "salinity_50m_mean",
+   "temperature_bottom_mean",
+   "salinity_bottom_mean"
+  ],
+  "CORRENTE_UV_SPEED": [
+   "u_east_surface_mean",
+   "v_north_surface_mean",
+   "speed_of_mean_current"
+  ],
+  "SSH": [
+   "ssh_mean"
+  ],
+  "W": [
+   "w_10m_mean",
+   "w_50m_mean"
+  ],
+  "VORT_DIV": [
+   "relative_vorticity_surface_mean",
+   "normalized_vorticity_surface_mean",
+   "horizontal_divergence_surface_mean"
+  ],
+  "HBL": [
+   "hbl_mean"
+  ],
+  "TRANSPORTES": [
+   "transport_east_mean",
+   "transport_north_mean"
+  ]
+ },
+ "excluidas_do_padrao": {
+  "current_direction_to_surface / direction_to_of_mean_current": "variável circular 0–360°; se necessário usar sin/cos ou preferir u/v",
+  "temperature_5m, temperature_10m, salinity_5m, salinity_10m": "redundantes com a superfície (Spearman 0,89–0,99 na amostra 13.0 de 1 semana, INDICATIVO)",
+  "estatísticas além da média (median, min, max, std, p10, p90)": "fora do primeiro experimento para não multiplicar colunas; ablação futura",
+  "current_speed_mean, current_steadiness": "fora do padrão; speed_of_mean_current é o análogo da feature legada"
+ },
+ "status_validacao": {
+  "VALIDADA": [
+   "temperature_*",
+   "salinity_*",
+   "mld"
+  ],
+  "DERIVADA_VALIDADA": [
+   "n2_max"
+  ],
+  "NAO_VALIDADA_OBS": [
+   "u_east_surface",
+   "v_north_surface",
+   "speed_of_mean_current",
+   "ssh",
+   "w_10m",
+   "w_50m",
+   "relative_vorticity_surface",
+   "normalized_vorticity_surface",
+   "horizontal_divergence_surface",
+   "hbl",
+   "transport_east",
+   "transport_north"
+  ],
+  "nota": "NAO_VALIDADA_OBS não impede o experimento de ML, mas todo resultado com essas colunas é rotulado como tal; W também NAO_INTERPRETAR_COMO_UPWELLING_AUTOMATICAMENTE; em registros NAO_VALIDADO_COSTEIRO as VALIDADAS valem como NAO_VALIDADA_OBS"
+ },
+ "controle_GLORYS_opcional": {
+  "colunas": [
+   "glorys_thetao_sup_mean",
+   "glorys_so_sup_mean",
+   "glorys_mlotst_mean",
+   "glorys_speed_of_mean_current"
+  ],
+  "motivo": "o CROCO é forçado pelo GLORYS: só um ganho de E2 acima deste controle é atribuível ao CROCO (e não a 'mais física')",
+  "status": "proposta; exige download GLORYS mensal (não feito nesta etapa)"
+ },
+ "CROCO_VERTICAL": [
+  "temperature_20m_mean",
+  "salinity_20m_mean",
+  "temperature_50m_mean",
+  "salinity_50m_mean",
+  "temperature_bottom_mean",
+  "salinity_bottom_mean"
+ ],
+ "CROCO_CURRENT": [
+  "u_east_surface_mean",
+  "v_north_surface_mean",
+  "speed_of_mean_current"
+ ],
+ "CROCO_DYNAMICS": [
+  "ssh_mean",
+  "w_10m_mean",
+  "w_50m_mean",
+  "relative_vorticity_surface_mean",
+  "normalized_vorticity_surface_mean",
+  "horizontal_divergence_surface_mean",
+  "hbl_mean",
+  "transport_east_mean",
+  "transport_north_mean"
+ ],
+ "grupos_13_5": {
+  "nota": "Etapa 13.5: grupos usados pelas flags use_croco_* (algamar_ml/croco_ml.py); CROCO_CORE inclui o TS; VERTICAL sem 5/10 m (redundantes); CURRENT sem direção (circular)",
+  "CROCO_TS": [
+   "temperature_surface_mean",
+   "salinity_surface_mean"
+  ],
+  "CROCO_CORE": [
+   "temperature_surface_mean",
+   "salinity_surface_mean",
+   "mld_mean",
+   "n2_max_mean"
+  ],
+  "CROCO_VERTICAL": [
+   "temperature_20m_mean",
+   "salinity_20m_mean",
+   "temperature_50m_mean",
+   "salinity_50m_mean",
+   "temperature_bottom_mean",
+   "salinity_bottom_mean"
+  ],
+  "CROCO_CURRENT": [
+   "u_east_surface_mean",
+   "v_north_surface_mean",
+   "speed_of_mean_current"
+  ],
+  "CROCO_DYNAMICS": [
+   "ssh_mean",
+   "w_10m_mean",
+   "w_50m_mean",
+   "relative_vorticity_surface_mean",
+   "normalized_vorticity_surface_mean",
+   "horizontal_divergence_surface_mean",
+   "hbl_mean",
+   "transport_east_mean",
+   "transport_north_mean"
+  ]
+ }
+}

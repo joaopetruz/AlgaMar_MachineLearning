@@ -1,0 +1,354 @@
+{
+ "croco_temperature_surface_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "temperature_surface_mean",
+  "feature_version": "13.0.0",
+  "unit": "degC",
+  "status_validation": "VALIDADA",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_salinity_surface_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "salinity_surface_mean",
+  "feature_version": "13.0.0",
+  "unit": "1",
+  "status_validation": "VALIDADA",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_mld_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "mld_mean",
+  "feature_version": "13.0.0",
+  "unit": "m",
+  "status_validation": "VALIDADA",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_n2_max_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "n2_max_mean",
+  "feature_version": "13.0.0",
+  "unit": "s-2",
+  "status_validation": "DERIVADA_VALIDADA",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_temperature_20m_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "temperature_20m_mean",
+  "feature_version": "13.0.0",
+  "unit": "degC",
+  "status_validation": "VALIDADA",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_salinity_20m_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "salinity_20m_mean",
+  "feature_version": "13.0.0",
+  "unit": "1",
+  "status_validation": "VALIDADA",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_temperature_50m_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "temperature_50m_mean",
+  "feature_version": "13.0.0",
+  "unit": "degC",
+  "status_validation": "VALIDADA",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_salinity_50m_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "salinity_50m_mean",
+  "feature_version": "13.0.0",
+  "unit": "1",
+  "status_validation": "VALIDADA",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_temperature_bottom_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "temperature_bottom_mean",
+  "feature_version": "13.0.0",
+  "unit": "degC",
+  "status_validation": "VALIDADA",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_salinity_bottom_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "salinity_bottom_mean",
+  "feature_version": "13.0.0",
+  "unit": "1",
+  "status_validation": "VALIDADA",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_u_east_surface_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "u_east_surface_mean",
+  "feature_version": "13.0.0",
+  "unit": "m s-1",
+  "status_validation": "NAO_VALIDADA_OBS",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_v_north_surface_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "v_north_surface_mean",
+  "feature_version": "13.0.0",
+  "unit": "m s-1",
+  "status_validation": "NAO_VALIDADA_OBS",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_speed_of_mean_current_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "speed_of_mean_current",
+  "feature_version": "13.0.0",
+  "unit": "m s-1",
+  "status_validation": "NAO_VALIDADA_OBS",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_ssh_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "ssh_mean",
+  "feature_version": "13.0.0",
+  "unit": "m",
+  "status_validation": "NAO_VALIDADA_OBS",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_w_10m_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "w_10m_mean",
+  "feature_version": "13.0.0",
+  "unit": "m s-1",
+  "status_validation": "NAO_VALIDADA_OBS",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_w_50m_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "w_50m_mean",
+  "feature_version": "13.0.0",
+  "unit": "m s-1",
+  "status_validation": "NAO_VALIDADA_OBS",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_relative_vorticity_surface_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "relative_vorticity_surface_mean",
+  "feature_version": "13.0.0",
+  "unit": "s-1",
+  "status_validation": "NAO_VALIDADA_OBS",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_normalized_vorticity_surface_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "normalized_vorticity_surface_mean",
+  "feature_version": "13.0.0",
+  "unit": "1",
+  "status_validation": "NAO_VALIDADA_OBS",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_horizontal_divergence_surface_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "horizontal_divergence_surface_mean",
+  "feature_version": "13.0.0",
+  "unit": "s-1",
+  "status_validation": "NAO_VALIDADA_OBS",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_hbl_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "hbl_mean",
+  "feature_version": "13.0.0",
+  "unit": "m",
+  "status_validation": "NAO_VALIDADA_OBS",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_transport_east_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "transport_east_mean",
+  "feature_version": "13.0.0",
+  "unit": "m2 s-1",
+  "status_validation": "NAO_VALIDADA_OBS",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ },
+ "croco_transport_north_t0": {
+  "source": "CROCO",
+  "coluna_contrato": "transport_north_mean",
+  "feature_version": "13.0.0",
+  "unit": "m2 s-1",
+  "status_validation": "NAO_VALIDADA_OBS",
+  "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+  "grid_version": {
+   "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+   "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+   "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+   "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+   "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+  },
+  "periodo": "2017-11 → 2017-12"
+ }
+}

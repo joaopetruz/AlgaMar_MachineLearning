@@ -1,0 +1,19 @@
+{
+ "versao": "baseline-hist-api-v1",
+ "limiar_alto": 0.39,
+ "limiar_moderado": 0.195,
+ "linhas_teste": 1084740,
+ "periodo_emissoes": [
+  "2022-01",
+  "2026-08"
+ ],
+ "periodo_alvos": [
+  "2022-02",
+  "2026-09"
+ ],
+ "linhas_por_fonte": {
+  "REPROCESSADO_2022_2024": 773280,
+  "MY_CHL_NRT_SST_2025_2026": 311460
+ },
+ "segundos": 222
+}

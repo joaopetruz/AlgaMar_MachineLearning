@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlgarMar — dados da API</title>
+<style>
+  :root {
+    --bg: #f2f5f5; --painel: #ffffff; --tinta: #14303a; --suave: #5d727a;
+    --linha: #d5dfe1; --alto: #b3261e; --baixo: #2c7a58; --acao: #14303a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1e24; --painel: #162a32; --tinta: #e4eef0; --suave: #93a9b0;
+      --linha: #274049; --alto: #ff8a80; --baixo: #7fd1aa; --acao: #e4eef0;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--tinta);
+         font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font: 600 28px/1.2 Georgia, "Times New Roman", serif; margin: 0 0 4px; }
+  h2 { font: 600 19px/1.3 Georgia, "Times New Roman", serif; margin: 0 0 12px; }
+  p.sub { margin: 0 0 20px; color: var(--suave); }
+  section { background: var(--painel); border: 1px solid var(--linha);
+            border-radius: 6px; padding: 18px; margin-bottom: 18px; }
+  .linha { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; }
+  label { display: flex; flex-direction: column; font-size: 13px; color: var(--suave); gap: 3px; }
+  input { font: inherit; padding: 7px 9px; border: 1px solid var(--linha); border-radius: 4px;
+          background: var(--bg); color: var(--tinta); }
+  input:focus-visible, button:focus-visible { outline: 2px solid var(--acao); outline-offset: 2px; }
+  button { font: inherit; padding: 8px 14px; border-radius: 4px; cursor: pointer;
+           border: 1px solid var(--acao); background: var(--acao); color: var(--bg); }
+  button:disabled { opacity: .5; cursor: wait; }
+  #url { min-width: 260px; }
+  .status { margin-left: auto; font-size: 13px; color: var(--suave); }
+  .status b { color: var(--baixo); } .status b.erro { color: var(--alto); }
+  .msg { margin: 10px 0 0; font-size: 14px; color: var(--suave); }
+  .msg.erro { color: var(--alto); }
+  .rolagem { overflow-x: auto; margin-top: 12px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: right; padding: 6px 10px; border-bottom: 1px solid var(--linha); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  th { font-weight: 600; color: var(--suave); }
+  .alto { color: var(--alto); font-weight: 600; } .baixo { color: var(--baixo); font-weight: 600; }
+</style>
+</head>
+<body>
+<main>
+  <h1>AlgarMar</h1>
+  <p class="sub">Dados recebidos da API de previsão de floração de algas no litoral de SP. Esta página só lê dados.</p>
+
+  <section>
+    <div class="linha">
+      <label>Endereço da API
+        <input id="url" value="http://127.0.0.1:8000" spellcheck="false">
+      </label>
+      <button id="conectar">Conectar</button>
+      <span class="status" id="status">Não conectado</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Previsões de risco</h2>
+    <div class="linha">
+      <label>Quantidade
+        <input id="n-prev" type="number" min="1" max="5000" value="20" style="width:90px">
+      </label>
+      <button data-carregar="prev">Carregar previsões</button>
+    </div>
+    <p class="msg" id="msg-prev">Clique em carregar para ver as previsões mais recentes.</p>
+    <div class="rolagem"><table id="tab-prev"></table></div>
+  </section>
+
+  <section>
+    <h2>Medições recentes</h2>
+    <div class="linha">
+      <label>Quantidade
+        <input id="n-dados" type="number" min="1" max="5000" value="20" style="width:90px">
+      </label>
+      <button data-carregar="dados">Carregar medições</button>
+    </div>
+    <p class="msg" id="msg-dados">Clique em carregar para ver as medições mais recentes.</p>
+    <div class="rolagem"><table id="tab-dados"></table></div>
+  </section>
+
+  <section>
+    <h2>Climatologia de um ponto</h2>
+    <div class="linha">
+      <label>Latitude <input id="lat" type="number" step="any" value="-23.98" style="width:110px"></label>
+      <label>Longitude <input id="lon" type="number" step="any" value="-46.35" style="width:110px"></label>
+      <button data-carregar="clim">Buscar climatologia</button>
+    </div>
+    <p class="msg" id="msg-clim">Informe uma coordenada do litoral de SP.</p>
+    <div class="rolagem"><table id="tab-clim"></table></div>
+  </section>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const base = () => $("url").value.trim().replace(/\/+$/, "");
+const MESES = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+const fmt = (v, c) => (v === null || v === undefined ? "—" : Number(v).toFixed(c));
+
+async function pegar(caminho) {
+  const r = await fetch(base() + caminho);
+  if (!r.ok) {
+    let detalhe = "";
+    try { detalhe = (await r.json()).detail || ""; } catch (_) {}
+    throw new Error(detalhe || ("Erro " + r.status));
+  }
+  return r.json();
+}
+
+function mensagem(id, texto, erro) {
+  const el = $("msg-" + id);
+  el.textContent = texto;
+  el.className = "msg" + (erro ? " erro" : "");
+}
+
+function tabela(id, colunas, linhas) {
+  const t = $("tab-" + id);
+  t.innerHTML = "";
+  if (!linhas.length) return;
+  const cab = "<tr>" + colunas.map(c => `<th>${c.titulo}</th>`).join("") + "</tr>";
+  const corpo = linhas.map(l =>
+    "<tr>" + colunas.map(c => `<td${c.classe ? ` class="${c.classe(l)}"` : ""}>${c.valor(l)}</td>`).join("") + "</tr>"
+  ).join("");
+  t.innerHTML = cab + corpo;
+}
+
+async function conectar() {
+  const s = $("status");
+  s.textContent = "Conectando…";
+  try {
+    const h = await pegar("/health");
+    s.innerHTML = h.status === "ok" ? "<b>Conectado</b>" : "Resposta inesperada";
+  } catch (e) {
+    s.innerHTML = '<b class="erro">Sem conexão com a API</b>';
+  }
+}
+
+const carregadores = {
+  async prev() {
+    const n = $("n-prev").value || 20;
+    const d = await pegar("/predictions?limit=" + encodeURIComponent(n));
+    const l = d.predictions;
+    tabela("prev", [
+      { titulo: "Período", valor: x => `${String(x.month).padStart(2, "0")}/${x.year}` },
+      { titulo: "Latitude", valor: x => fmt(x.latitude, 4) },
+      { titulo: "Longitude", valor: x => fmt(x.longitude, 4) },
+      { titulo: "Probabilidade", valor: x => fmt(x.probability, 4) },
+      { titulo: "Risco", valor: x => x.risk_level, classe: x => x.risk_level === "ALTO" ? "alto" : "baixo" },
+    ], l);
+    const altos = l.filter(x => x.risk_level === "ALTO").length;
+    mensagem("prev", `${l.length} pontos, ${altos} com risco alto. Modelo ${l[0] ? l[0].model_version : "—"}.`);
+  },
+  async dados() {
+    const n = $("n-dados").value || 20;
+    const d = await pegar("/marine-data?limit=" + encodeURIComponent(n));
+    const l = d.data;
+    tabela("dados", [
+      { titulo: "Período", valor: x => `${String(x.month).padStart(2, "0")}/${x.year}` },
+      { titulo: "Latitude", valor: x => fmt(x.latitude, 4) },
+      { titulo: "Longitude", valor: x => fmt(x.longitude, 4) },
+      { titulo: "Temperatura (°C)", valor: x => fmt(x.temperature_celsius, 2) },
+      { titulo: "Clorofila média (mg/m³)", valor: x => fmt(x.chlorophyll_mg_m3, 4) },
+      { titulo: "Clorofila máx. (mg/m³)", valor: x => fmt(x.chlorophyll_max_mg_m3, 4) },
+      { titulo: "Salinidade (PSU)", valor: x => fmt(x.salinity_psu, 3) },
+    ], l);
+    mensagem("dados", `${l.length} medições. Fonte: ${l[0] ? l[0].source : "—"}.`);
+  },
+  async clim() {
+    const lat = $("lat").value, lon = $("lon").value;
+    if (lat === "" || lon === "") throw new Error("Preencha latitude e longitude.");
+    const d = await pegar(`/climatologia?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}`);
+    const linhas = Object.entries(d.climatologia_por_mes).map(([m, v]) => ({ mes: Number(m), ...v }));
+    tabela("clim", [
+      { titulo: "Mês", valor: x => MESES[x.mes - 1] },
+      { titulo: "Clorofila histórica (mg/m³)", valor: x => fmt(x.clorofila_media_historica_mes, 4) },
+      { titulo: "Salinidade histórica (PSU)", valor: x => fmt(x.salinidade_media_historica_mes, 3) },
+    ], linhas);
+    mensagem("clim", `Ponto da grade mais próximo: ${fmt(d.latitude_encontrada, 4)}, ${fmt(d.longitude_encontrada, 4)}.`);
+  },
+};
+
+document.querySelectorAll("button[data-carregar]").forEach(btn => {
+  btn.addEventListener("click", async () => {
+    const chave = btn.dataset.carregar;
+    btn.disabled = true;
+    mensagem(chave, "Carregando…");
+    try {
+      await carregadores[chave]();
+    } catch (e) {
+      tabela(chave, [], []);
+      const semRede = e instanceof TypeError;
+      mensagem(chave, semRede
+        ? "Não foi possível falar com a API. Confira se o servidor está rodando e se o endereço está certo."
+        : e.message, true);
+    } finally {
+      btn.disabled = false;
+    }
+  });
+});
+
+$("conectar").addEventListener("click", conectar);
+conectar();
+</script>
+</body>
+</html>
