@@ -34,7 +34,7 @@ Navier–Stokes / CROCO ─► fisica/fontes → derivadas → contrato → alin
 | montar o painel mensal | `python construir_painel.py` |
 | treinar e registrar uma versão nova | `python algamar.py treinar --versao NOVA` (`--ensemble` para o ensemble de ordens) |
 | gerar a previsão de 12 meses (modelo oficial do `config/ml.toml`) | `python algamar.py previsao` (`--baixar` atualiza os dados antes) → `saidas/<run_id>/` |
-| subir a API | `uvicorn api:app` → `/forecast`, `/forecast/regioes`, `/forecast/mapa`, `/forecast/meta`. Serve a execução de `saidas/ULTIMA.json`; só sem ela cai em `previsoes/` (legado de `prever_12_meses.py`, hoje em `_arquivo/`) |
+| subir a API | `uvicorn api:app` → `/forecast`, `/forecast/regioes`, `/forecast/mapa`, `/forecast/meta` e `/coastal-risks` (formato do dashboard; o backend repassa em `/api/ml/coastal-risks`). Serve a execução de `saidas/ULTIMA.json`; só sem ela cai em `previsoes/` (legado de `prever_12_meses.py`, hoje em `_arquivo/`) |
 | ver no navegador | `python -m http.server 5599` e abrir `http://127.0.0.1:5599/previsao_12_meses.html` (API em `127.0.0.1:8000`) |
 | testes | `python -m pytest` |
 

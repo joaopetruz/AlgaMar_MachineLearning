@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import create_model
 
 from algamar_ml import config
+from algamar_ml.api_dashboard import router as router_dashboard
 from algamar_ml.api_previsao import dados as dados_previsao
 from algamar_ml.api_previsao import router as router_previsao
 from algamar_ml.features import climatologia_para_previsao
@@ -32,6 +33,8 @@ app.add_middleware(
 
 # Previsão dos próximos 12 meses (nova): /forecast, /forecast/regioes, /forecast/mapa, /forecast/meta
 app.include_router(router_previsao)
+# Mesmo formato do GET /api/ml/coastal-risks do backend (o backend só repassa): /coastal-risks
+app.include_router(router_dashboard)
 
 
 def carregar(nome: str):
