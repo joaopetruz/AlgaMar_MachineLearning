@@ -1,5 +1,6 @@
 import math
 import os
+from functools import lru_cache
 from pathlib import Path
 
 import joblib
@@ -9,6 +10,8 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import create_model
 
+from algamar_ml import config
+from algamar_ml.api_previsao import dados as dados_previsao
 from algamar_ml.api_previsao import router as router_previsao
 from algamar_ml.features import climatologia_para_previsao
 
@@ -41,6 +44,33 @@ def carregar(nome: str):
     return joblib.load(caminho)
 
 
+def espalha(df: pd.DataFrame, limit: int) -> pd.DataFrame:
+    """
+    Até `limit` linhas espaçadas ao longo da grade (ordenada por latitude/longitude),
+    para cobrir a costa inteira e não só o extremo norte.
+    """
+    df = df.sort_values(["latitude", "longitude"]).reset_index(drop=True)
+    if limit >= len(df):
+        return df
+    posicoes = np.linspace(0, len(df) - 1, limit).round().astype(int)
+    return df.iloc[posicoes]
+
+
+@lru_cache(maxsize=2)
+def _ultimo_mes_painel(caminho: str, mtime: float) -> pd.DataFrame:
+    """Último mês do painel mensal atualizado (o mesmo que alimenta a previsão oficial)."""
+    painel = pd.read_parquet(caminho)
+    ano, mes = painel[["ano", "mes"]].sort_values(["ano", "mes"]).iloc[-1]
+    return painel[(painel["ano"] == ano) & (painel["mes"] == mes)]
+
+
+def ultimo_mes_painel() -> pd.DataFrame:
+    caminho = config.carrega()["caminhos"]["painel"]
+    if not caminho.exists():
+        raise HTTPException(503, f"Painel mensal não encontrado em {caminho}. Rode: python construir_painel.py")
+    return _ultimo_mes_painel(str(caminho), caminho.stat().st_mtime)
+
+
 # Modelo sazonal antigo (classifica um mês já observado; NÃO é previsão futura).
 # É opcional: sem os .pkl a API sobe só com os endpoints /forecast.
 LEGADO_ERRO = None
@@ -60,26 +90,6 @@ try:
         .sort_values(["ano", "mes", "latitude", "longitude"])
         .reset_index(drop=True)
     )
-
-    # Último mês disponível na base
-    _ano_max = int(dados_ambientais["ano"].max())
-    _mes_max = int(dados_ambientais.loc[dados_ambientais["ano"] == _ano_max, "mes"].max())
-    _ultimo_mes = dados_ambientais[
-        (dados_ambientais["ano"] == _ano_max) & (dados_ambientais["mes"] == _mes_max)
-    ].reset_index(drop=True)
-
-
-    def amostra_recente(limit: int) -> pd.DataFrame:
-        """
-        Pontos do mês mais recente. Se limit for menor que o total, escolhe pontos
-        espaçados ao longo de toda a grade (ordenada por latitude/longitude), para
-        cobrir a costa inteira e não só o extremo norte.
-        """
-        if limit >= len(_ultimo_mes):
-            return _ultimo_mes
-        posicoes = np.linspace(0, len(_ultimo_mes) - 1, limit).round().astype(int)
-        return _ultimo_mes.iloc[posicoes]
-
 
     # Grade de pontos únicos e climatologia por ponto/mês, calculadas uma vez
     _pontos = dados_ambientais[["latitude", "longitude"]].drop_duplicates().reset_index(drop=True)
@@ -127,9 +137,8 @@ def health():
 
 @app.get("/marine-data")
 def marine_data(limit: int = Query(100, ge=1, le=5000)):
-    """Dados ambientais do mês mais recente, distribuídos por toda a costa."""
-    exige_legado()
-    amostra = amostra_recente(limit)
+    """Dados ambientais do mês mais recente do painel atualizado, distribuídos por toda a costa."""
+    amostra = espalha(ultimo_mes_painel(), limit)
 
     resultado = []
     for _, linha in amostra.iterrows():
@@ -193,25 +202,31 @@ def climatologia(
 
 
 @app.get("/predictions")
-def predictions(limit: int = Query(100, ge=1, le=5000)):
-    """Classificação do ÚLTIMO MÊS JÁ OBSERVADO da base (não é previsão futura; para o futuro use /forecast)."""
-    exige_legado()
-    amostra = amostra_recente(limit)
-
-    probabilidades = modelo.predict_proba(amostra[features])[:, 1]
+def predictions(limit: int = Query(100, ge=1, le=5000), horizon: int = Query(1, ge=1, le=12)):
+    """
+    Previsão oficial (saidas/ULTIMA.json, a mesma do /forecast) para o mês t0+horizon.
+    Padrão: o próximo mês depois do último observado. Pontos sem dado suficiente ficam de fora.
+    """
+    prev, meta, _ = dados_previsao()
+    sel = prev[(prev["forecast_horizon"] == horizon) & prev["bloom_probability"].notna()]
+    amostra = espalha(sel, limit)
 
     resultado = []
-    for prob, (_, linha) in zip(probabilidades, amostra.iterrows()):
-        prob = float(prob)
+    for _, linha in amostra.iterrows():
+        ano, mes = str(linha["target_date"]).split("-")[:2]
         resultado.append({
             "latitude": num(linha["latitude"], 4),
             "longitude": num(linha["longitude"], 4),
-            "year": int(linha["ano"]),
-            "month": int(linha["mes"]),
-            "probability": round(prob, 4),
-            "risk_level": "ALTO" if prob >= limiar else "BAIXO",
-            "model_version": versao,
-            "tipo": "classificacao_do_mes_observado",
+            "year": int(ano),
+            "month": int(mes),
+            "probability": num(linha["bloom_probability"], 4),
+            "risk_level": linha["risk_level"],
+            "model_version": linha["model_version"],
+            "tipo": "previsao",
+            "issue_month": meta["issue_month"],
+            "forecast_horizon": int(linha["forecast_horizon"]),
+            "region": linha["region"],
+            "climatological_probability": num(linha["climatological_probability"], 4),
         })
 
     return {"predictions": resultado}
