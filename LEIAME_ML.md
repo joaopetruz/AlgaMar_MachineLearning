@@ -34,7 +34,8 @@ Navier–Stokes / CROCO ─► fisica/fontes → derivadas → contrato → alin
 | montar o painel mensal | `python construir_painel.py` |
 | treinar e registrar uma versão nova | `python algamar.py treinar --versao NOVA` (`--ensemble` para o ensemble de ordens) |
 | gerar a previsão de 12 meses (modelo oficial do `config/ml.toml`) | `python algamar.py previsao` (`--baixar` atualiza os dados antes) → `saidas/<run_id>/` |
-| subir a API | `uvicorn api:app` → `/forecast`, `/forecast/regioes`, `/forecast/mapa`, `/forecast/meta` e `/coastal-risks` (formato do dashboard; o backend repassa em `/api/ml/coastal-risks`). Serve a execução de `saidas/ULTIMA.json`; só sem ela cai em `previsoes/` (legado de `prever_12_meses.py`, hoje em `_arquivo/`) |
+| subir a API | `uvicorn api:app` → `/forecast`, `/forecast/regioes`, `/forecast/mapa`, `/forecast/meta` e `/coastal-risks` (formato do dashboard; o backend repassa em `/api/ml/coastal-risks`). **Testar o ML:** abrir `http://127.0.0.1:8000/testar` (previsão feita num mês do passado × o que aconteceu; `/teste/hindcast?emissao=AAAA-MM`). Serve a execução de `saidas/ULTIMA.json`; só sem ela cai em `previsoes/` (legado de `prever_12_meses.py`, hoje em `_arquivo/`) |
+| dashboard completo no seu PC (sem o backend da outra máquina) | `python dashboard_local.py` → API local em `http://localhost:3000/api` (mesma porta do backend; qualquer e-mail e senha entram; `/api/ml/coastal-risks` vem direto do ML). Abrir: `http://localhost:3000/software/pages/login.html`, ou pelo Live Server (5501) com a linha `http://localhost:3000/api` ativa no `software/js/api-config.js` do frontend. Frontend padrão: `OneDrive/Desktop/Algamar_Page_Software` (`--frontend PASTA` para outro) |
 | ver no navegador | `python -m http.server 5599` e abrir `http://127.0.0.1:5599/previsao_12_meses.html` (API em `127.0.0.1:8000`) |
 | testes | `python -m pytest` |
 

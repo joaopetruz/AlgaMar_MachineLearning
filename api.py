@@ -14,6 +14,7 @@ from algamar_ml import config
 from algamar_ml.api_dashboard import router as router_dashboard
 from algamar_ml.api_previsao import dados as dados_previsao
 from algamar_ml.api_previsao import router as router_previsao
+from algamar_ml.api_teste import router as router_teste
 from algamar_ml.features import climatologia_para_previsao
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -35,6 +36,8 @@ app.add_middleware(
 app.include_router(router_previsao)
 # Mesmo formato do GET /api/ml/coastal-risks do backend (o backend só repassa): /coastal-risks
 app.include_router(router_dashboard)
+# Teste da previsão no passado: página /testar, /teste/meses e /teste/hindcast?emissao=AAAA-MM
+app.include_router(router_teste)
 
 
 def carregar(nome: str):

@@ -19,3 +19,10 @@ dados/
 /previsoes/
 /saidas/
 /logs/
+
+# caches e ferramentas locais
+.pytest_cache/
+.claude/
+*.log
+# experimento de treino de produção (2026-10-22): modelo v3 não adotado, fica só local
+config/ml_producao.toml

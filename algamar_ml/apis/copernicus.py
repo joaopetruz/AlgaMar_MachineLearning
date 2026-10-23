@@ -97,7 +97,7 @@ def baixa_mes(cfg, variavel, produto, ano, mes):
     if (destino / nome).exists():
         return destino / nome
     inicio, fim = limites_do_mes(ano, mes)
-    extra = {"minimum_depth": 0.0, "maximum_depth": 1.0} if variavel == "salinidade" else {}
+    extra = {"minimum_depth": 0.0, "maximum_depth": 1.0} if variavel in ("salinidade", "ph") else {}
     cm.subset(
         dataset_id=produto.dataset_id,
         variables=[produto.variavel_origem],
