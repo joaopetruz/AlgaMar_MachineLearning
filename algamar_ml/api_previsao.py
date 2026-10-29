@@ -5,7 +5,10 @@ A API não recalcula nada. Ela serve, nesta ordem:
    (ou a mais recente em saidas/ com previsao.parquet, se a última não gerou probabilidades);
 2. senão, a última previsão legada de prever_12_meses.py em previsoes/<mês de emissão>/.
 As colunas do pipeline (contrato/saida_previsao_v1.json) são renomeadas para os nomes que a API já expunha.
+/forecast/janela é o foco atual: onde vai ter mais alga entre o dia do acesso e N meses depois (padrão 3).
 """
+import calendar
+import datetime as dt
 import json
 import math
 import os
@@ -96,6 +99,68 @@ def _limpa(registros):
 
 
 COLUNAS_PONTO = ["target_date", "forecast_horizon", "bloom_probability", "climatological_probability", "risk_level"]
+
+
+def soma_meses(dia: dt.date, meses: int) -> dt.date:
+    """O mesmo dia `meses` meses depois (31/01 + 1 → 28 ou 29/02)."""
+    ano, mes = divmod(dia.year * 12 + dia.month - 1 + meses, 12)
+    return dt.date(ano, mes + 1, min(dia.day, calendar.monthrange(ano, mes + 1)[1]))
+
+
+def meses_da_janela(inicio: dt.date, meses: int) -> list[str]:
+    """Meses civis (AAAA-MM) que tocam [inicio, inicio + meses). O modelo é mensal: o 1º e o último entram inteiros."""
+    k0 = inicio.year * 12 + inicio.month - 1
+    k1 = k0 + meses + (1 if inicio.day > 1 else 0)   # começando no dia 1, são só os `meses` meses cheios
+    return [f"{k // 12}-{k % 12 + 1:02d}" for k in range(k0, k1)]
+
+
+@router.get("/janela")
+def janela(data: str | None = Query(None, pattern=r"^\d{4}-\d{2}-\d{2}$", description="dia do acesso (padrão: hoje)"),
+           meses: int = Query(3, ge=1, le=12)):
+    """Onde vai ter mais alga de `data` (padrão: hoje) até `meses` meses depois: municípios, regiões e pontos,
+    ordenados pela probabilidade média de floração nos meses da janela."""
+    from algamar_ml.api_dashboard import municipio   # import aqui: api_dashboard importa este módulo
+
+    prev, meta_, _ = dados()
+    inicio = dt.date.fromisoformat(data) if data else dt.date.today()
+    pedidos = meses_da_janela(inicio, meses)
+    previstos = sorted(set(prev["target_date"]))
+    sel = prev[prev["target_date"].isin(pedidos)]
+    if sel.empty:
+        raise HTTPException(404, f"A previsão servida (dados até {meta_['issue_month']}) cobre {previstos[0]} a {previstos[-1]}, "
+                                 f"não {pedidos[0]} a {pedidos[-1]}. Rode: python algamar.py previsao --baixar")
+    ok = sel[sel["bloom_probability"].notna()]
+    pico = ok.loc[ok.groupby("point_id")["bloom_probability"].idxmax()].set_index("point_id")
+    pontos = ok.groupby("point_id").agg(latitude=("latitude", "first"), longitude=("longitude", "first"),
+                                        region=("region", "first"), probabilidade_media=("bloom_probability", "mean"),
+                                        probabilidade_climatologica=("climatological_probability", "mean"))
+    pontos["probabilidade_maxima"] = pico["bloom_probability"]
+    pontos["mes_de_maior_risco"] = pico["target_date"]
+    pontos["risk_level"] = pico["risk_level"]
+    pontos["alto"] = pontos["risk_level"] == "ALTO"
+    pontos = pontos.reset_index().sort_values("probabilidade_media", ascending=False)
+    pontos["municipio"] = municipio(pontos["latitude"], pontos["longitude"])
+
+    def ranking(chave):
+        g = (pontos[pontos[chave].notna()].groupby(chave)
+             .agg(probabilidade_media=("probabilidade_media", "mean"), probabilidade_maxima=("probabilidade_maxima", "max"),
+                  probabilidade_climatologica=("probabilidade_climatologica", "mean"),
+                  frac_pontos_alto=("alto", "mean"), pontos=("alto", "size"))
+             .sort_values("probabilidade_media", ascending=False).round(4).reset_index())
+        return _limpa(g.to_dict("records"))
+
+    faltam = [m for m in pedidos if m not in previstos]
+    cols = ["point_id", "latitude", "longitude", "region", "municipio", "probabilidade_media", "probabilidade_maxima",
+            "probabilidade_climatologica", "mes_de_maior_risco", "risk_level"]
+    return {"inicio": inicio.isoformat(), "fim": soma_meses(inicio, meses).isoformat(), "meses": meses,
+            "meses_na_janela": pedidos, "meses_sem_previsao": faltam,
+            "aviso": (f"A previsão servida não cobre {', '.join(faltam)} (dados até {meta_['issue_month']}); "
+                      "rode python algamar.py previsao --baixar.") if faltam else None,
+            "issue_month": meta_["issue_month"], "model_version": meta_["model_version"],
+            "status_modelo": meta_.get("status_modelo"),
+            "pontos_sem_dado": int(sel["point_id"].nunique() - len(pontos)),
+            "municipios": ranking("municipio"), "regioes": ranking("region"),
+            "pontos": _limpa(pontos[cols].round(4).to_dict("records"))}
 
 
 @router.get("/meta")

@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AlgarMar — Previsão dos próximos 12 meses</title>
+<title>AlgarMar — Onde vai ter mais alga</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
   :root { --bg:#f4f8fb; --card:#fff; --texto:#17324d; --sub:#5b7186; --borda:#d9e4ee; --azul:#0f6fa8;
           --baixo:#2e7d32; --moderado:#f9a825; --alto:#c62828; }
@@ -14,12 +16,23 @@
   header p { margin:0; opacity:.9; }
   main { max-width:1100px; margin:0 auto; padding:16px; }
   .card { background:var(--card); border:1px solid var(--borda); border-radius:10px; padding:16px; margin-bottom:16px; }
+  h2 { margin-top:0; font-size:1.1rem; }
   .meta { color:var(--sub); font-size:.9rem; }
   .aviso { background:#fff8e1; border:1px solid #ffe08a; border-radius:8px; padding:10px 12px; font-size:.9rem; }
   label { font-size:.85rem; color:var(--sub); display:block; margin-bottom:4px; }
   select, input, button { font:inherit; padding:8px 10px; border:1px solid var(--borda); border-radius:6px; }
   button { background:var(--azul); color:#fff; border:none; cursor:pointer; }
   .linha { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }
+  .grade { display:grid; grid-template-columns:3fr 2fr; gap:16px; }
+  @media (max-width:800px) { .grade { grid-template-columns:1fr; } }
+  #mapa { height:460px; border-radius:8px; border:1px solid var(--borda); }
+  .legenda { display:flex; gap:12px; font-size:.8rem; color:var(--sub); margin-top:8px; flex-wrap:wrap; }
+  .legenda span::before { content:""; display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:4px; background:var(--c); }
+  .rank { list-style:none; margin:0; padding:0; }
+  .rank li { display:grid; grid-template-columns:1.6rem 1fr 3.2rem; gap:6px; align-items:center; padding:6px 0; border-bottom:1px solid var(--borda); cursor:pointer; }
+  .rank .barra { height:6px; border-radius:3px; background:var(--alto); margin-top:4px; }
+  .rank .sub { font-size:.75rem; color:var(--sub); }
+  .rank .p { text-align:right; font-weight:700; }
   .meses { display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:8px; margin-top:12px; }
   .mes { border:1px solid var(--borda); border-radius:8px; padding:10px; text-align:center; }
   .mes .nome { font-weight:600; }
@@ -27,58 +40,69 @@
   .mes .clim { font-size:.8rem; color:var(--sub); }
   .BAIXO { color:var(--baixo); } .MODERADO { color:#b77900; } .ALTO { color:var(--alto); }
   .pico { outline:2px solid var(--alto); }
-  .tabela { overflow-x:auto; }
-  table { border-collapse:collapse; width:100%; font-size:.85rem; }
-  th, td { border:1px solid var(--borda); padding:6px; text-align:center; white-space:nowrap; }
-  th:first-child, td:first-child { text-align:left; }
   .erro { color:var(--alto); }
 </style>
 </head>
 <body>
 <header>
-  <h1>AlgarMar — previsão dos próximos 12 meses</h1>
-  <p>Risco de floração (clorofila máxima mensal acima do limiar) por mês e por local, litoral de São Paulo</p>
+  <h1>AlgarMar — onde vai ter mais alga</h1>
+  <p id="titulo">Previsão de hoje até daqui 3 meses, litoral de São Paulo</p>
 </header>
 <main>
   <div class="card">
-    <div id="meta" class="meta">Carregando…</div>
-    <p class="aviso">Risco climatológico ajustado pelo estado atual do satélite (validado em hindcast; ainda sem verificação em tempo real). "Floração" aqui é clorofila alta de satélite, não toxicidade.</p>
-  </div>
-
-  <div class="card">
     <div class="linha">
-      <div>
-        <label for="local">Local</label>
-        <select id="local"></select>
-      </div>
-      <div><label for="lat">Latitude</label><input id="lat" type="number" step="0.01" value="-23.98"></div>
-      <div><label for="lon">Longitude</label><input id="lon" type="number" step="0.01" value="-46.35"></div>
-      <button id="btn">Ver previsão</button>
+      <div><label for="modo">Mostrar</label>
+        <select id="modo"><option value="previsao">Previsão: risco nos próximos meses</option><option value="observado">Medido: floração no último mês</option></select></div>
+      <div><label for="inicio">A partir de</label><input id="inicio" type="date"></div>
+      <div><label for="meses">Período</label>
+        <select id="meses"><option value="1">1 mês</option><option value="2">2 meses</option><option value="3" selected>3 meses</option><option value="6">6 meses</option></select></div>
+      <button id="atualizar">Atualizar</button>
     </div>
-    <div id="resumoLocal" class="meta" style="margin-top:10px"></div>
-    <div id="meses" class="meses"></div>
+    <div id="meta" class="meta" style="margin-top:10px">Carregando…</div>
+    <p class="aviso">A previsão é mensal: o período inclui inteiros o mês de hoje e o mês final. É risco climatológico ajustado pelo satélite (validado em hindcast, ainda sem verificação em tempo real). "Alga" aqui é clorofila alta de satélite, não toxicidade; perto de estuários e baías o satélite superestima.</p>
+  </div>
+
+  <div class="grade">
+    <div class="card">
+      <h2 id="tituloMapa">Mapa: chance média de floração no período</h2>
+      <div id="mapa"></div>
+      <div id="legenda" class="legenda"></div>
+    </div>
+    <div class="card">
+      <h2 id="tituloRanking">Municípios com mais alga prevista</h2>
+      <ol id="ranking" class="rank"></ol>
+    </div>
   </div>
 
   <div class="card">
-    <h2 style="margin-top:0;font-size:1.1rem">Risco médio por região e mês</h2>
-    <div id="regioes" class="tabela"></div>
+    <h2 id="tituloLocal">Mês a mês no local</h2>
+    <div id="resumoLocal" class="meta">Clique num ponto do mapa ou num município.</div>
+    <div id="mesesLocal" class="meses"></div>
   </div>
 </main>
 <script>
-const API = localStorage.getItem("algamar_api") || "http://127.0.0.1:8000";
-const LOCAIS = [
-  { nome: "Santos / Baixada Santista", lat: -23.98, lon: -46.35 },
-  { nome: "Guarujá", lat: -23.99, lon: -46.25 },
-  { nome: "Bertioga", lat: -23.85, lon: -46.14 },
-  { nome: "Praia Grande", lat: -24.00, lon: -46.40 },
-  { nome: "Itanhaém / Peruíbe (mar aberto)", lat: -24.25, lon: -46.80 },
-  { nome: "Cananéia / Ilha Comprida (mar aberto)", lat: -24.98, lon: -47.85 },
-  { nome: "São Sebastião / Ilhabela (mar aberto)", lat: -23.90, lon: -45.30 },
-  { nome: "Ubatuba (mar aberto)", lat: -23.55, lon: -44.95 },
-];
+// Servida pela API (/previsao): mesma origem. Aberta de outro lugar (arquivo, Live Server): a API em 127.0.0.1:8000.
+const API = localStorage.getItem("algamar_api") ||
+  (location.protocol.startsWith("http") && location.port === "8000" ? "" : "http://127.0.0.1:8000");
 const NOMES_MES = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
 const fmtMes = s => { if (!s) return "—"; const [a, m] = s.split("-"); return `${NOMES_MES[+m - 1]}/${a}`; };
+const fmtDia = s => s.split("-").reverse().join("/");
 const pct = x => x == null ? "—" : `${(100 * x).toFixed(0)}%`;
+const CORES = ["#2e7d32", "#9ccc65", "#f9a825", "#ef6c00", "#c62828"];
+const faixa = (v, cortes) => v == null ? "#9e9e9e" : CORES[cortes.filter(c => v >= c).length];
+const cor = p => faixa(p, [.2, .4, .6, .8]);
+const CORTES_CHL = [0.75, 1.5, 3, 6];   // mg/m³; 1,5 = limiar de floração do alvo
+const corChl = c => faixa(c, CORTES_CHL);
+const LEGENDAS = {
+  previsao: ["< 20%", "20–40%", "40–60%", "60–80%", "≥ 80%"],
+  observado: ["< 0,75 mg/m³", "0,75–1,5", "1,5–3 (floração)", "3–6", "≥ 6"],
+};
+let janelaAtual = null;
+
+function legenda(modo) {
+  document.getElementById("legenda").innerHTML = LEGENDAS[modo].map((t, i) => `<span style="--c:${CORES[i]}">${t}</span>`).join("")
+    + `<span style="--c:#9e9e9e">sem dado</span>`;
+}
 
 async function get(caminho) {
   const r = await fetch(API + caminho);
@@ -87,28 +111,113 @@ async function get(caminho) {
   return corpo;
 }
 
-async function carregarMeta() {
-  try {
-    const m = await get("/forecast/meta");
-    document.getElementById("meta").textContent =
-      `Emitida com dados até ${fmtMes(m.issue_month)} · prevê ${fmtMes(m.meses_previstos[0])} a ${fmtMes(m.meses_previstos.at(-1))} · ` +
-      `modelo ${m.model_version} · ${m.pontos} pontos de 4 km · fontes: ${m.fontes_mes_emissao}`;
-  } catch (e) { document.getElementById("meta").innerHTML = `<span class="erro">${e.message}</span>`; }
+const mapa = L.map("mapa").setView([-24.3, -46.4], 8);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 13, attribution: "© OpenStreetMap" }).addTo(mapa);
+const camada = L.layerGroup().addTo(mapa);
+
+async function carregar() {
+  const modo = document.getElementById("modo").value;
+  document.getElementById("inicio").disabled = document.getElementById("meses").disabled = modo === "observado";
+  legenda(modo);
+  return modo === "observado" ? carregarObservado() : carregarPrevisao();
 }
 
-async function verLocal() {
-  const lat = parseFloat(document.getElementById("lat").value), lon = parseFloat(document.getElementById("lon").value);
-  const alvo = document.getElementById("meses"), resumo = document.getElementById("resumoLocal");
+async function carregarObservado() {
+  const meta = document.getElementById("meta");
+  meta.textContent = "Carregando…";
+  try {
+    const d = await get("/observado");
+    document.getElementById("titulo").textContent = `Floração medida pelo satélite em ${fmtMes(d.mes)}, litoral de São Paulo`;
+    document.getElementById("tituloMapa").textContent = `Mapa: clorofila máxima medida em ${fmtMes(d.mes)}`;
+    document.getElementById("tituloRanking").textContent = `Municípios com mais alga medida em ${fmtMes(d.mes)}`;
+    meta.textContent = `Último mês medido: ${fmtMes(d.mes)} · ${d.pontos.length} pontos de 4 km · ` +
+      `${pct(d.frac_pontos_floracao)} dos pontos acima de ${String(d.limiar_mg_m3).replace(".", ",")} mg/m³ (floração)`;
+    camada.clearLayers();
+    for (const p of d.pontos) {
+      L.circleMarker([p.latitude, p.longitude], { radius: 4, stroke: false, fillOpacity: .8, fillColor: corChl(p.clorofila_maxima) })
+        .bindTooltip(`clorofila máxima ${p.clorofila_maxima.toFixed(2)} mg/m³ · média ${p.clorofila_media?.toFixed(2) ?? "—"}` +
+                     `<br>${p.floracao ? "floração" : "sem floração"}${p.municipio ? " · " + p.municipio : ""}`)
+        .addTo(camada);
+    }
+    const lista = document.getElementById("ranking"), maior = d.municipios.length ? d.municipios[0].clorofila_maxima : 1;
+    lista.innerHTML = "";
+    d.municipios.forEach((m, i) => {
+      const li = document.createElement("li");
+      li.innerHTML = `<span class="sub">${i + 1}º</span><div><div>${m.municipio}</div>
+        <div class="barra" style="width:${(100 * m.clorofila_maxima / maior).toFixed(0)}%;background:${corChl(m.clorofila_maxima)}"></div>
+        <div class="sub">${pct(m.frac_pontos_floracao)} dos pontos com floração</div></div>
+        <span class="p">${m.clorofila_maxima.toFixed(1)}</span>`;
+      li.onclick = () => {
+        const pts = d.pontos.filter(p => p.municipio === m.municipio);
+        if (pts.length) mapa.fitBounds(pts.map(p => [p.latitude, p.longitude]), { maxZoom: 11 });
+      };
+      lista.appendChild(li);
+    });
+  } catch (e) { meta.innerHTML = `<span class="erro">${e.message}</span>`; }
+}
+
+async function carregarPrevisao() {
+  document.getElementById("tituloMapa").textContent = "Mapa: chance média de floração no período";
+  document.getElementById("tituloRanking").textContent = "Municípios com mais alga prevista";
+  const inicio = document.getElementById("inicio").value, meses = document.getElementById("meses").value;
+  const meta = document.getElementById("meta");
+  meta.textContent = "Carregando…";
+  try {
+    const d = janelaAtual = await get(`/forecast/janela?meses=${meses}` + (inicio ? `&data=${inicio}` : ""));
+    document.getElementById("titulo").textContent =
+      `Previsão de ${fmtDia(d.inicio)} até ${fmtDia(d.fim)} (${d.meses_na_janela.map(fmtMes).join(", ")}), litoral de São Paulo`;
+    meta.innerHTML = `Dados de satélite até ${fmtMes(d.issue_month)} · modelo ${d.model_version} · ${d.pontos.length} pontos de 4 km` +
+      (d.pontos_sem_dado ? ` (${d.pontos_sem_dado} sem dado)` : "") + (d.aviso ? `<br><span class="erro">${d.aviso}</span>` : "");
+    desenharMapa(d); desenharRanking(d);
+  } catch (e) { meta.innerHTML = `<span class="erro">${e.message}</span>`; }
+}
+
+function desenharMapa(d) {
+  camada.clearLayers();
+  for (const p of d.pontos) {
+    L.circleMarker([p.latitude, p.longitude], { radius: 4, stroke: false, fillOpacity: .8, fillColor: cor(p.probabilidade_media) })
+      .bindTooltip(`${pct(p.probabilidade_media)} no período · pico ${fmtMes(p.mes_de_maior_risco)} (${pct(p.probabilidade_maxima)})` +
+                   `<br>histórico ${pct(p.probabilidade_climatologica)}${p.municipio ? " · " + p.municipio : ""}`)
+      .on("click", () => verLocal(p.latitude, p.longitude, p.municipio))
+      .addTo(camada);
+  }
+}
+
+function desenharRanking(d) {
+  const lista = document.getElementById("ranking");
+  lista.innerHTML = "";
+  d.municipios.forEach((m, i) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<span class="sub">${i + 1}º</span><div><div>${m.municipio}</div>
+      <div class="barra" style="width:${(100 * m.probabilidade_media).toFixed(0)}%;background:${cor(m.probabilidade_media)}"></div>
+      <div class="sub">${pct(m.frac_pontos_alto)} dos pontos em ALTO · histórico ${pct(m.probabilidade_climatologica)}</div></div>
+      <span class="p">${pct(m.probabilidade_media)}</span>`;
+    li.onclick = () => {
+      const pts = d.pontos.filter(p => p.municipio === m.municipio);
+      if (!pts.length) return;
+      mapa.fitBounds(pts.map(p => [p.latitude, p.longitude]), { maxZoom: 11 });
+      verLocal(pts[0].latitude, pts[0].longitude, m.municipio);
+    };
+    lista.appendChild(li);
+  });
+}
+
+async function verLocal(lat, lon, nome) {
+  const alvo = document.getElementById("mesesLocal"), resumo = document.getElementById("resumoLocal");
+  document.getElementById("tituloLocal").textContent = `Mês a mês${nome ? " — " + nome : ""}`;
   alvo.innerHTML = ""; resumo.textContent = "Carregando…";
   try {
     const d = await get(`/forecast?latitude=${lat}&longitude=${lon}`);
-    resumo.textContent = `Ponto da grade: ${d.latitude.toFixed(3)}, ${d.longitude.toFixed(3)} (${d.distancia_km} km do local) · ` +
-      `região ${d.region} · ` + (d.mes_de_maior_risco ? `mês de maior risco: ${fmtMes(d.mes_de_maior_risco)} (${pct(d.probabilidade_maxima)})`
-        : "sem previsão neste ponto: falta dado de satélite no mês de emissão (DADOS_INSUFICIENTES)");
-    for (const m of d.meses) {
+    const meses = d.meses.filter(m => janelaAtual.meses_na_janela.includes(m.target_date));
+    const comP = meses.filter(m => m.bloom_probability != null);
+    const pico = comP.length ? comP.reduce((a, b) => b.bloom_probability > a.bloom_probability ? b : a) : null;
+    resumo.textContent = `Ponto ${d.latitude.toFixed(3)}, ${d.longitude.toFixed(3)} · região ${d.region} · ` +
+      (pico ? `mês de maior risco no período: ${fmtMes(pico.target_date)} (${pct(pico.bloom_probability)})`
+            : "sem previsão neste ponto: falta dado de satélite (DADOS_INSUFICIENTES)");
+    for (const m of meses) {
       const div = document.createElement("div");
-      div.className = "mes" + (m.target_date === d.mes_de_maior_risco ? " pico" : "");
-      div.innerHTML = `<div class="nome">${fmtMes(m.target_date)}</div><div class="meta">+${m.forecast_horizon} m</div>
+      div.className = "mes" + (pico && m.target_date === pico.target_date ? " pico" : "");
+      div.innerHTML = `<div class="nome">${fmtMes(m.target_date)}</div>
         <div class="prob ${m.risk_level}">${pct(m.bloom_probability)}</div>
         <div class="${m.risk_level}">${m.risk_level}</div><div class="clim">histórico: ${pct(m.climatological_probability)}</div>`;
       alvo.appendChild(div);
@@ -116,29 +225,11 @@ async function verLocal() {
   } catch (e) { resumo.innerHTML = `<span class="erro">${e.message}</span>`; }
 }
 
-async function carregarRegioes() {
-  try {
-    const d = await get("/forecast/regioes");
-    const meses = [...new Set(d.regioes.map(r => r.target_date))].sort();
-    const regioes = [...new Set(d.regioes.map(r => r.region))];
-    let html = "<table><tr><th>Região</th>" + meses.map(m => `<th>${fmtMes(m)}</th>`).join("") + "</tr>";
-    for (const reg of regioes) {
-      html += `<tr><td>${reg}</td>` + meses.map(m => {
-        const r = d.regioes.find(x => x.region === reg && x.target_date === m);
-        const p = r ? r.prob_media : null;
-        const cor = p == null ? "" : `background: rgba(198,40,40,${Math.min(0.85, p).toFixed(2)})`;
-        return `<td style="${cor}" title="máx ${pct(r && r.prob_max)} · ${pct(r && r.frac_pontos_alto)} dos pontos em ALTO">${pct(p)}</td>`;
-      }).join("") + "</tr>";
-    }
-    document.getElementById("regioes").innerHTML = html + "</table>";
-  } catch (e) { document.getElementById("regioes").innerHTML = `<span class="erro">${e.message}</span>`; }
-}
-
-const sel = document.getElementById("local");
-LOCAIS.forEach((l, i) => sel.add(new Option(l.nome, i)));
-sel.onchange = () => { const l = LOCAIS[sel.value]; document.getElementById("lat").value = l.lat; document.getElementById("lon").value = l.lon; verLocal(); };
-document.getElementById("btn").onclick = verLocal;
-carregarMeta(); carregarRegioes(); verLocal();
+document.getElementById("inicio").value = new Date().toLocaleDateString("sv");   // AAAA-MM-DD no fuso local
+document.getElementById("atualizar").onclick = carregar;
+document.getElementById("meses").onchange = carregar;
+document.getElementById("modo").onchange = carregar;
+carregar();
 </script>
 </body>
 </html>

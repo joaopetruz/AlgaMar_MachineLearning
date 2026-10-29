@@ -8,6 +8,7 @@ Formato igual ao que o frontend já lê: {success, summary, trends, data}, com u
 - meses passados (os últimos `MESES_OBSERVADOS` do painel): tipo "observado"; probability = fração dos
   pontos com floração observada (clorofila máxima > limiar do alvo); traz environmental_factors;
 - meses futuros: tipo "previsao", da previsão oficial (a mesma do /forecast); probability = média dos pontos;
+  por padrão só os da janela de hoje até 3 meses à frente (`meses`; summary.janela diz quais);
   environmental_factors = os do ÚLTIMO MÊS MEDIDO do município, com mes_referencia dizendo qual é;
 - environmental_factors.ph: pH de superfície do modelo Copernicus (algamar_ml/ph.py; python atualizar_ph.py),
   só para exibir; fica ausente se a tabela não existir.
@@ -16,6 +17,7 @@ BAIXO < limiar_moderado ≤ MODERADO < limiar_alto ≤ ALTO < LIMIAR_MUITO_ALTO 
 limiar_moderado e limiar_alto vêm do cartão do modelo (validação); MUITO ALTO = 0,80, onde no teste do modelo
 oficial a floração observada passou de ~88 % (o modelo é calibrado: 0,8–0,9 → 88 %; 0,9–1,0 → 99 %).
 """
+import datetime as dt
 import json
 from functools import lru_cache
 
@@ -25,6 +27,7 @@ from fastapi import APIRouter, HTTPException, Query
 
 from algamar_ml import config, ph
 from algamar_ml.api_previsao import dados as dados_previsao
+from algamar_ml.api_previsao import meses_da_janela, soma_meses
 from algamar_ml.espacial import haversine_km, regiao
 
 MESES_OBSERVADOS = 12
@@ -168,10 +171,17 @@ def _agrega_fut(fut, chave):
             .reset_index())
 
 
-def monta(region=None, risk_level=None, month=None):
+def monta(region=None, risk_level=None, month=None, hoje=None, meses=None):
+    """`meses` (com `hoje`, padrão a data do sistema): só os meses previstos da janela [hoje, hoje + meses]; None = todos."""
     prev, meta, _ = dados_previsao()
     lim_a, lim_m = limiares(meta["model_version"])
     obs, fut = observado(), previsto(prev, lim_a)
+    janela = None
+    if meses:
+        hoje = hoje or dt.date.today()
+        janela = {"inicio": hoje.isoformat(), "fim": soma_meses(hoje, meses).isoformat(),
+                  "meses": meses_da_janela(hoje, meses)}
+        fut = fut[fut["target_date"].isin(janela["meses"])]
     obs_mun, fut_mun = obs[obs["municipio"].notna()], fut[fut["municipio"].notna()]
     if region:   # filtro do dashboard: macrorregião (ou o nome de um município)
         # registros dos municípios: pela macrorregião DO MUNICÍPIO (Peruíbe é Baixada mesmo com pontos no setor sul)
@@ -200,15 +210,16 @@ def monta(region=None, risk_level=None, month=None):
                      # futuro não tem medição: condições do último mês medido, com o mês em mes_referencia
                      "environmental_factors": dict(ultimo_ef[r.municipio]) if r.municipio in ultimo_ef else None})
 
-    # resumo = próximo mês previsto (h=1), com todos os pontos (costa e mar aberto)
-    h1 = fut[fut["forecast_horizon"] == 1]
-    niveis = {d["risk_level"] for d in data if d["tipo"] == "previsao" and d.get("forecast_horizon") == 1}
+    # resumo = primeiro mês previsto (h=1, ou o 1º da janela), com todos os pontos (costa e mar aberto)
+    h1 = fut[fut["target_date"] == fut["target_date"].min()]
+    alvo_resumo = h1["target_date"].min() if len(h1) else None
+    niveis = {d["risk_level"] for d in data if d["tipo"] == "previsao" and f"{d['year']}-{d['month']:02d}" == alvo_resumo}
     summary = {"total_monitored": int(len(h1)), "high_risk_count": int(h1["alto"].sum()),
                "general_status": ("ALERTA" if niveis & {"ALTO", "MUITO ALTO"} else "ATENÇÃO" if "MODERADO" in niveis
                                   else "NORMAL"),
                "niveis": faixas(lim_a, lim_m),
-               "issue_month": meta["issue_month"], "target_month": h1["target_date"].min() if len(h1) else None,
-               "municipios": len({d["region"] for d in data}),
+               "issue_month": meta["issue_month"], "target_month": alvo_resumo,
+               "municipios": len({d["region"] for d in data}), "janela": janela,
                "model_version": meta["model_version"], "gerado_em": meta.get("gerado_em")}
 
     # tendência mensal (todos os pontos): meses observados + o próximo mês previsto
@@ -230,9 +241,35 @@ def monta(region=None, risk_level=None, month=None):
     return {"success": True, "summary": summary, "trends": trends, "data": data}
 
 
+@router.get("/observado")
+def observado_mes(mes: str | None = Query(None, pattern=r"^\d{4}-\d{2}$", description="AAAA-MM (padrão: o último medido)")):
+    """O que o satélite MEDIU num mês (padrão: o último do painel): clorofila por ponto e municípios ordenados pela
+    clorofila máxima média. Não é previsão; floracao = clorofila máxima do mês acima do limiar do alvo."""
+    obs = observado()
+    chave = obs["ano"] * 12 + obs["mes"] - 1
+    meses = sorted({f"{k // 12}-{k % 12 + 1:02d}" for k in chave.unique()})
+    alvo = mes or meses[-1]
+    sel = obs[chave == int(alvo[:4]) * 12 + int(alvo[5:]) - 1]
+    if sel.empty:
+        raise HTTPException(404, f"{alvo} não está entre os meses medidos servidos: {meses}")
+    sel = sel[sel["clorofila_maxima"].notna()]
+    mun = (sel[sel["municipio"].notna()].groupby("municipio")
+           .agg(clorofila_maxima=("clorofila_maxima", "mean"), clorofila_media=("clorofila_media", "mean"),
+                frac_pontos_floracao=("floracao", "mean"), pontos=("floracao", "size"))
+           .sort_values("clorofila_maxima", ascending=False).round(3).reset_index())
+    cols = ["latitude", "longitude", "municipio", "clorofila_maxima", "clorofila_media", "floracao"]
+    pontos = sel[cols].assign(floracao=sel["floracao"].astype(bool)).round(4)
+    return {"mes": alvo, "meses_disponiveis": meses, "limiar_mg_m3": float(config.carrega()["alvo"]["limiar"]),
+            "frac_pontos_floracao": round(float(sel["floracao"].mean()), 4),
+            "municipios": mun.to_dict("records"),
+            "pontos": [{k: (None if isinstance(v, float) and np.isnan(v) else v) for k, v in r.items()}
+                       for r in pontos.to_dict("records")]}
+
+
 @router.get("/coastal-risks")
 def coastal_risks(region: str | None = Query(None, description="Litoral Norte, Baixada Santista, Litoral Sul ou um município"),
                   risk_level: str | None = Query(None, description="BAIXO, MODERADO (ou MÉDIO), ALTO ou MUITO ALTO"),
-                  month: int | None = Query(None, ge=1, le=12)):
+                  month: int | None = Query(None, ge=1, le=12),
+                  meses: int = Query(3, ge=1, le=12, description="previsão de hoje até `meses` meses à frente (12 = toda)")):
     """Mapa, riscos, indicadores e tendências no formato do dashboard (o backend repassa esta resposta)."""
-    return monta(region, risk_level, month)
+    return monta(region, risk_level, month, meses=meses)

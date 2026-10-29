@@ -103,3 +103,27 @@ def test_legada_ignora_pasta_sem_metadados(pasta_previsao):
     (pasta_previsao / "operacional_2026-09").mkdir()
     pd.read_parquet(pasta_previsao / "2026-09" / "previsao_pontos.parquet").to_parquet(pasta_previsao / "operacional_2026-09" / "previsao_pontos.parquet")
     assert api_previsao.meta()["issue_month"] == "2026-09"
+
+
+def test_janela_pega_os_meses_de_hoje_ate_3_meses():
+    import datetime as dt
+    assert api_previsao.meses_da_janela(dt.date(2026, 10, 27), 3) == ["2026-10", "2026-11", "2026-12", "2027-01"]
+    assert api_previsao.meses_da_janela(dt.date(2026, 10, 1), 3) == ["2026-10", "2026-11", "2026-12"]
+    assert api_previsao.soma_meses(dt.date(2026, 11, 30), 3) == dt.date(2027, 2, 28)
+
+
+def test_janela_ordena_onde_vai_ter_mais_alga(pasta_previsao):
+    r = api_previsao.janela(data="2026-10-27", meses=3)
+    assert r["meses_na_janela"] == ["2026-10", "2026-11", "2026-12", "2027-01"] and r["meses_sem_previsao"] == []
+    assert r["fim"] == "2027-01-27" and [p["point_id"] for p in r["pontos"]] == [0, 1]
+    topo = r["pontos"][0]
+    assert topo["probabilidade_media"] == 0.225 and topo["probabilidade_maxima"] == 0.3 and topo["mes_de_maior_risco"] == "2027-01"
+    assert [g["region"] for g in r["regioes"]] == ["centro", "norte"] and r["municipios"][0]["municipio"] == "Santos"
+
+
+def test_janela_fora_da_previsao(pasta_previsao):
+    parcial = api_previsao.janela(data="2027-08-15", meses=3)
+    assert parcial["meses_sem_previsao"] == ["2027-10", "2027-11"] and parcial["aviso"]
+    with pytest.raises(HTTPException) as e:
+        api_previsao.janela(data="2028-01-01", meses=3)
+    assert e.value.status_code == 404

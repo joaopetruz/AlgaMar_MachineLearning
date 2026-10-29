@@ -4,7 +4,10 @@ Este servidor faz o papel do backend só para teste local:
 - entrega as páginas do frontend (pasta Algamar_Page_Software), sem alterar nenhum arquivo dela;
 - troca, só na entrega, o endereço da API do software/js/api-config.js por este servidor;
 - responde /api/health, /api/auth/* (login de teste: qualquer e-mail e senha entram) e
-  /api/ml/coastal-risks, que vem direto do ML (algamar_ml/api_dashboard.py, a previsão oficial).
+  /api/ml/coastal-risks, que vem direto do ML (algamar_ml/api_dashboard.py, a previsão oficial), e
+  /api/ml/condicoes-ambientais (condições do mar mês a mês, algamar_ml/api_ambiente.py),
+  /api/ml/condicoes-propicias (índice de condições para espécies tóxicas, algamar_ml/api_condicoes.py) e
+  /api/ml/condicoes-propicias/historico (a série mensal já observada desse índice).
 
 Uso (venv do ML):
   python dashboard_local.py                      # API em http://localhost:3000/api + páginas em http://localhost:3000
@@ -28,6 +31,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 
+from algamar_ml import api_ambiente, api_condicoes
 from algamar_ml.api_dashboard import monta
 
 FRONTEND_PADRAO = Path.home() / "OneDrive" / "Desktop" / "Algamar_Page_Software"
@@ -99,9 +103,30 @@ def excluir(authorization: str | None = Header(None)):
 
 @api.get("/ml/coastal-risks")
 def coastal_risks(region: str | None = Query(None), risk_level: str | None = Query(None), month: int | None = Query(None),
-                  authorization: str | None = Header(None)):
+                  meses: int = Query(3, ge=1, le=12), authorization: str | None = Header(None)):
     _sessao(authorization)
-    return monta(region, risk_level, month)
+    return monta(region, risk_level, month, meses=meses)
+
+
+@api.get("/ml/condicoes-propicias")
+def condicoes_propicias(especie: str | None = Query(None), region: str | None = Query(None),
+                        authorization: str | None = Header(None)):
+    _sessao(authorization)
+    return api_condicoes.monta(especie, region)
+
+
+@api.get("/ml/condicoes-propicias/historico")
+def condicoes_propicias_historico(especie: str | None = Query(None), region: str | None = Query(None),
+                                  meses: int = Query(24, ge=1, le=400), authorization: str | None = Header(None)):
+    _sessao(authorization)
+    return api_condicoes.monta_historico(especie, region, meses)
+
+
+@api.get("/ml/condicoes-ambientais")
+def condicoes_ambientais(region: str | None = Query(None), meses_passados: int = Query(9, ge=0, le=24),
+                         meses: int = Query(3, ge=1, le=12), authorization: str | None = Header(None)):
+    _sessao(authorization)
+    return api_ambiente.monta(region, meses_passados, meses)
 
 
 def cria_app(frontend: Path):

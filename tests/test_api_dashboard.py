@@ -69,3 +69,18 @@ def test_filtros(fontes):
     assert {d["region"] for d in api_dashboard.monta(region="Cananéia")["data"]} == {"Cananéia"}
     assert {d["month"] for d in api_dashboard.monta(month=9)["data"]} == {9}
     assert {d["risk_level"] for d in api_dashboard.monta(risk_level="BAIXO")["data"]} == {"BAIXO"}
+
+
+def test_janela_de_3_meses_deixa_so_os_meses_a_partir_de_hoje(fontes):
+    import datetime as dt
+    r = api_dashboard.monta(hoje=dt.date(2026, 11, 5), meses=3)
+    assert {d["month"] for d in r["data"] if d["tipo"] == "previsao"} == {11}
+    assert r["summary"]["target_month"] == "2026-11" and r["summary"]["janela"]["fim"] == "2027-02-05"
+    assert {d["month"] for d in api_dashboard.monta()["data"] if d["tipo"] == "previsao"} == {10, 11}
+
+
+def test_observado_do_ultimo_mes_ordena_pela_clorofila_medida(fontes):
+    r = api_dashboard.observado_mes(mes=None)
+    assert r["mes"] == "2026-09" and r["frac_pontos_floracao"] == 0.75
+    assert r["municipios"][0]["municipio"] == "Cananéia" and r["municipios"][0]["clorofila_maxima"] == 3.0
+    assert len(r["pontos"]) == 4 and r["pontos"][0]["floracao"] is True

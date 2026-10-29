@@ -8,9 +8,12 @@ import numpy as np
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from pydantic import create_model
 
 from algamar_ml import config
+from algamar_ml.api_ambiente import router as router_ambiente
+from algamar_ml.api_condicoes import router as router_condicoes
 from algamar_ml.api_dashboard import router as router_dashboard
 from algamar_ml.api_previsao import dados as dados_previsao
 from algamar_ml.api_previsao import router as router_previsao
@@ -36,6 +39,9 @@ app.add_middleware(
 app.include_router(router_previsao)
 # Mesmo formato do GET /api/ml/coastal-risks do backend (o backend só repassa): /coastal-risks
 app.include_router(router_dashboard)
+app.include_router(router_condicoes)
+# Condições do mar mês a mês (tela Previsões): /condicoes-ambientais
+app.include_router(router_ambiente)
 # Teste da previsão no passado: página /testar, /teste/meses e /teste/hindcast?emissao=AAAA-MM
 app.include_router(router_teste)
 
@@ -134,6 +140,12 @@ def num(valor, casas):
 def raiz():
     return {"mensagem": "API AlgarMar funcionando. Previsão dos próximos 12 meses em /forecast; /docs para testar.",
             "modelo_sazonal_antigo": "indisponível" if LEGADO_ERRO else "carregado"}
+
+
+@app.get("/previsao", response_class=HTMLResponse, include_in_schema=False)
+def pagina_previsao():
+    """Página do mapa: previsão de hoje até 3 meses e o que o satélite mediu no último mês."""
+    return HTMLResponse((BASE_DIR / "previsao_12_meses.html").read_text(encoding="utf-8"))
 
 
 @app.get("/health")
