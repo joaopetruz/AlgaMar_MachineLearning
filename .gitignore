@@ -4,7 +4,6 @@ __pycache__/
 .env
 .venv
 
-
 __pycache__/
 *.pyc
 
@@ -13,3 +12,19 @@ __pycache__/
 *.txt
 *.nc
 !requirements.txt
+# dados locais e features do CROCO (ficam fora do Git; ver contrato_croco/LEIAME.md)
+dados/
+*.parquet
+/modelos/
+/previsoes/
+/saidas/
+/logs/
+
+# caches e ferramentas locais
+.pytest_cache/
+.claude/
+*.log
+# experimento de treino de produção (2026-10-22): modelo v3 não adotado, fica só local
+config/ml_producao.toml
+# dados da estação do CEBIMar/USP: reprodução não permitida pela fonte, ficam só locais
+dados/cebimar/
