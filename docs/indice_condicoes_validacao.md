@@ -1,6 +1,8 @@
-# Índice de condições propícias: validação (v2, 24/10/2026)
+# Índice de condições propícias: validação (v3, 06/11/2026)
 
 Gerado por `indice_condicoes.py`. Regras e fontes: [fichas_especies_condicoes.md](fichas_especies_condicoes.md).
+
+> **v3 (06/11/2026):** a conferência com o PEMMOBI (seção própria, abaixo) mudou duas regras de *Dinophysis*: salinidade baixa com anomalia ≤ −0,5 (era −1) e estratificação com peso 0,6 (era 1). As tabelas das seções seguintes são da v2, salvo indicação.
 
 ## O que foi feito
 
@@ -143,6 +145,75 @@ Atenção: a condição foi escolhida **depois** de olhar esses mesmos 4 eventos
 
 **Antes de florações em SP:** em jan/2014, houve *Mesodinium* em Ilhabela, presa de *Dinophysis*, mas sem *Dinophysis* tóxico registrado depois. O índice de *Dinophysis* de Ilhabela ficou "desfavorável" de jan a jul/2014 (0,16–0,48), coerente com nenhum evento.
 
+## Conferência com o PEMMOBI (Defesa Agropecuária SP, 2023–2026) e v3
+
+**Fonte:** Programa Estadual de Monitoramento de Moluscos Bivalves (PEMMOBI), da Defesa Agropecuária do Estado de SP. As tabelas de toxinas vão de mar/2023 a jul/2026 e cobrem 15 áreas de cultivo em Ilhabela, Ubatuba, São Sebastião, Caraguatatuba e Cananéia. Os dados brutos **não** estão no repositório; só a leitura feita aqui.
+
+Pela primeira vez há **ausência** medida, e não só presença: um mês com amostra liberada é um mês em que a toxina ficou abaixo do limite. Isso permite medir o alarme falso. Ficaram 138 meses-município com análise.
+
+**Os 6 meses com toxina acima do limite (retirada suspensa).** Todos são diarreica (DSP, ácido ocadaico), o que aponta para *Dinophysis*. O limite é 160 µg/kg.
+
+| município (área) | mês | DSP (µg/kg) | índice v2 | índice v3 |
+|---|---|---|---|---|
+| Ubatuba (9) | mar/2023 | 297,5 | 0,29 | 0,43 |
+| Ubatuba (9) | mai/2023 | 615 | 0,38 | 0,50 |
+| Caraguatatuba (4) | set/2024 | 256,2 | 0,29 | 0,41 |
+| Ubatuba (7) | nov/2024 | 197,5 | 0,53 | 0,49 |
+| Ubatuba (9) | fev/2026 | 200 | 0,26 | 0,28 |
+| Ubatuba (9) | mai/2026 | 225 | 0,26 | 0,43 |
+
+**O que estes eventos têm de diferente das florações do Sul:**
+- São **locais e recorrentes**: 4 dos 6 são na mesma área (Ubatuba 9). Os valores ficam perto do limite, e não há floração no Sul nem no resto do litoral no mesmo mês.
+- **Não há água fria.** A anomalia de temperatura foi positiva em 4 dos 6; em fev/2026 a água estava 3,9 °C acima do normal.
+- O que se repete é **salinidade um pouco abaixo do normal**: anomalias de −0,3 a −0,8. Em 4 dos 6, a salinidade ficou entre os 26% mais baixos dos meses sem toxina.
+- Em todos os 6, a salinidade também caiu em relação ao mês anterior (percentil ≤ 41).
+- 2 dos 6 caem **fora da época mar–set** (fev e nov).
+- **A chuva local (CEBIMar), conferida pela primeira vez com eventos novos, não se sustentou.** Nos 4 positivos com dado da estação, não choveu acima do limiar em nenhum, contra 24% dos meses sem toxina. A condição foi mantida (2016 e 2018 seguem), mas deixou de ser evidência.
+- Os resultados microbiológicos (*E. coli*) e os de HPA e metais não separam os meses com toxina. A área 9 de Ubatuba tem *E. coli* alta quase sempre. Não foram usados.
+
+**Com a v2, o índice não separava estes meses:** a média foi 0,34 com toxina e 0,35 sem, e só 1 dos 6 ficou em "parcialmente propício" ou acima. Os limiares da ficha vêm de florações do Sul com quedas de 6–8 de salinidade. A média mensal do modelo de 9 km mostra essas quedas como décimos.
+
+**Variantes testadas** (bancada fora do repositório; "AUC" = chance de um mês com evento ter índice maior que um mês sem evento):
+
+| variante | PEMMOBI: AUC | PEMMOBI: positivos ≥ 0,4 | SP 2016–19: % "propício" | SP mar–set sem evento: % "propício" | Sul: AUC | Sul mar–set sem evento: % "propício" |
+|---|---|---|---|---|---|---|
+| v2 | 0,46 | 1/6 | 24% | 5,0% | 0,71 | 8,8% |
+| sem a chuva | 0,51 | 2/6 | 16% | 4,9% | 0,71 | 8,8% |
+| salinidade ≤ −0,5 | 0,61 | 5/6 | 56% | 6,9% | 0,71 | 9,0% |
+| salinidade ≤ −0,3 | 0,59 | 5/6 | 60% | 7,2% | 0,74 | 9,4% |
+| época fev–nov | 0,48 | 2/6 | 24% | 5,0% | 0,71 | 8,8% |
+| **salinidade ≤ −0,5 + estratificação peso 0,6 (v3)** | **0,64** | **5/6** | **64%** | 7,8% | **0,72** | **7,3%** |
+
+**Por que a v3:**
+- Melhora os três conjuntos independentes ao mesmo tempo: PEMMOBI, episódios oficiais de SP e florações do Sul.
+- O limiar −0,5 não foi ajustado só nos 6 eventos novos: os episódios de 2016–2019, que já existiam, também passam de 24% para 64% em "propício".
+- A estratificação já não separava os eventos na v2 (41% contra 43% no Sul; 29% contra 44% em SP). A confiança caiu para média: a literatura a mantém, mas o dado mensal não enxerga.
+- O custo: em SP, "propício" nos meses de mar–set sem evento sobe de 5,0% para 7,8%.
+
+**Resultado v3 no PEMMOBI:**
+
+| | meses com toxina (6) | meses liberados (132) |
+|---|---|---|
+| índice médio | 0,42 | 0,37 |
+| pelo menos "parcialmente propício" | 83% | 42% |
+| "propício" | 0% | 2% |
+
+**Episódios de SP com a v3:**
+- jun/2016: 0,90 em Santos, Peruíbe e São Sebastião (era 0,68);
+- mar/2019 em São Sebastião: 0,66;
+- mai/2018 em Ubatuba: segue "desfavorável" (0,34).
+
+**Leitura honesta:**
+- A separação melhorou, mas segue fraca para os eventos locais. Nenhum chegou a "propício", e 42% dos meses liberados ficam em "parcialmente propício".
+- Para florações locais de baixa intensidade, o índice diz "atenção", não "alerta".
+- São 6 eventos, e o limiar foi escolhido depois de olhar para eles. A próxima tabela do PEMMOBI (ago/2026 em diante) é o teste de verdade.
+- **Não foram mudados:** a época mar–set (o Sul e 2016–2019 são todos de mar–jul) e a água fria (o sinal mais forte das florações regionais).
+
+***Gymnodinium catenatum* e *Pseudo-nitzschia* no PEMMOBI:**
+- Não houve nenhuma toxina paralisante (PSP) nem amnésica (ASP) acima do limite em 3,5 anos. Isso supõe que o painel do PEMMOBI inclui as três toxinas: as tabelas só nomeiam a DSP dos positivos.
+- Mesmo assim, nos 132 meses liberados o índice ficou em "propício" em 40% dos meses para *G. catenatum* e em 23% para *Pseudo-nitzschia*.
+- Sem nenhum positivo não há como ajustar as regras. Esses números ficam como a taxa de alarme sem toxina das duas espécies.
+
 ## *Pseudo-nitzschia* (ficha v2, 24/10/2026)
 
 - **v1:** no litoral de SP, a temperatura passa de 17 °C e a salinidade de 30 o ano inteiro. O índice ficava "propício" em 58% dos meses, sempre de out a abr, e virava um calendário.
@@ -174,11 +245,11 @@ Fontes: Tavares et al. 2009, Schramm et al. 2006, Band-Schmidt et al. 2019 e Mé
 - A superfície do mar de SP nunca chegou a 9–16 °C de 2000 a 2026, então o índice fica **"desfavorável" o tempo todo em SP**. Nas zonas de SC, isso aconteceu em 0,6% dos meses.
 - Pela literatura, o risco dessa espécie está no RS e no Uruguai. Esse índice não cobre os *Alexandrium* de água quente do Brasil (*A. minutum*, *A. tamiyavanichi*), que não têm dados de campo.
 
-## Previsão atual (gerada em 24/10/2026, `saidas/condicoes_propicias.json`, v2)
+## Previsão atual (gerada em 06/11/2026, `saidas/condicoes_propicias.json`, v3)
 
 - ***Dinophysis*:** fim da época.
-  - Out/2026: "parcialmente propício" nos 14 municípios. Santos tem o índice mais alto (0,64), com a salinidade 2,4 abaixo do normal.
-  - Nov/2026 a jan/2027: "desfavorável" na maioria dos municípios, e "parcialmente propício" de Bertioga a Iguape em novembro.
+  - Out/2026: "parcialmente propício" de Santos a Cananéia. Santos, Praia Grande, Mongaguá e Itanhaém têm o índice mais alto (0,55). No Litoral Norte, Bertioga e Guarujá, ficou "desfavorável" (0,38).
+  - Nov/2026 a jan/2027: "desfavorável" nos 14 municípios.
 - ***Pseudo-nitzschia*:** out/2026 "parcialmente propício" (0,69, sem sinal de nutrientes no mês); nov/2026 a jan/2027 "propício" (0,80–0,88), pela época de verão.
 - ***Gymnodinium catenatum*:** "parcialmente propício" de out/2026 a jan/2027 (0,46–0,69), fora da época dela (fev–jun).
 - ***Alexandrium catenella*:** "desfavorável" em todos os municípios (água quente demais).

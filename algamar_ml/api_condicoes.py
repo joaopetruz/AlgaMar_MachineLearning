@@ -19,7 +19,7 @@ router = APIRouter(tags=["dashboard"])
 
 
 def arquivo():
-    return Path(config.carrega()["caminhos"].get("saidas", "saidas")) / "condicoes_propicias.json"
+    return config.RAIZ / config.carrega()["pipeline"]["saidas"] / "condicoes_propicias.json"
 
 
 def monta(especie=None, region=None):

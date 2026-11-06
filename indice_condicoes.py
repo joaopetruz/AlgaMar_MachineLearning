@@ -68,10 +68,13 @@ ESPECIES = {
         "toxina": "diarreica (DSP)",
         "condicoes": [
             ("época (mar–set)", 1.0, _cond(lambda r: 3 <= r["m"] <= 9)),
-            ("salinidade baixa (anomalia ≤ −1 ou < 33)", 1.0,
-             _cond(lambda r: None if np.isnan(r["sal_a"]) else (r["sal_a"] <= -1 or r["sal"] < 33))),
+            # limiar −0,5 (era −1): a média mensal do modelo de 9 km suaviza as quedas medidas na costa; nos 6 meses com DSP
+            # do PEMMOBI (2023–26) a anomalia ficou entre −0,3 e −0,8 (docs/indice_condicoes_validacao.md)
+            ("salinidade baixa (anomalia ≤ −0,5 ou < 33)", 1.0,
+             _cond(lambda r: None if np.isnan(r["sal_a"]) else (r["sal_a"] <= -0.5 or r["sal"] < 33))),
             ("água mais fria que o normal (≤ −1 °C)", 1.0, _cond(lambda r: None if np.isnan(r["sst_a"]) else r["sst_a"] <= -1)),
-            ("coluna estratificada (MLD no percentil ≤ 40)", 1.0, _cond(lambda r: None if np.isnan(r["mld_p"]) else r["mld_p"] <= 40)),
+            # peso 0,6 (era 1): na média mensal do modelo não separou os eventos no Sul, em SP nem no PEMMOBI
+            ("coluna estratificada (MLD no percentil ≤ 40)", 0.6, _cond(lambda r: None if np.isnan(r["mld_p"]) else r["mld_p"] <= 40)),
             ("vento de sul (componente norte > 0)", 0.6, _cond(lambda r: None if np.isnan(r["v"]) else r["v"] > 0)),
             # "quedas bruscas de salinidade" e "cold spells" [1]: queda contra o mês anterior (limiares: escolha do projeto)
             ("mudança brusca (esfriou ≥ 1 °C ou salinidade caiu ≥ 0,5 desde o mês anterior)", 1.0,
@@ -285,7 +288,7 @@ def prob_condicoes(df, t0, h, especie, pers):
     P = {}
     if especie == "Dinophysis":
         P["época (mar–set)"] = float(3 <= m <= 9)
-        P["salinidade baixa (anomalia ≤ −1 ou < 33)"] = float(norm.cdf((max(sal_c - 1, 33) - sal_mu) / sal_sd))
+        P["salinidade baixa (anomalia ≤ −0,5 ou < 33)"] = float(norm.cdf((max(sal_c - 0.5, 33) - sal_mu) / sal_sd))
         P["água mais fria que o normal (≤ −1 °C)"] = float(norm.cdf((sst_c - 1 - sst_mu) / sst_sd))
         P["coluna estratificada (MLD no percentil ≤ 40)"] = float((bm.mld_p <= 40).mean())
         P["vento de sul (componente norte > 0)"] = float((bm.v.dropna() > 0).mean())
