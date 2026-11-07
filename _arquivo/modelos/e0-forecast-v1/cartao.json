@@ -1,0 +1,102 @@
+{
+ "versao": "e0-forecast-v1",
+ "tipo": "previsão direta multi-horizonte, arquitetura B_12_modelos",
+ "alvo": {
+  "variavel": "clorofila_maxima",
+  "limiar": 1.5,
+  "nome": "floracao"
+ },
+ "features": [
+  "h",
+  "mes_alvo",
+  "latitude",
+  "longitude",
+  "dist_hotspot",
+  "chl_media_alvo_ano_anterior",
+  "chl_max_alvo_ano_anterior",
+  "sst_alvo_ano_anterior",
+  "sss_alvo_ano_anterior",
+  "clim_chl_media_alvo",
+  "clim_sss_alvo",
+  "chl_media_36m",
+  "sss_36m"
+ ],
+ "hotspots_H2": [
+  [
+   -24.187504,
+   -46.77083
+  ],
+  [
+   -23.85417,
+   -46.062496
+  ]
+ ],
+ "hiperparametros": {
+  "n_estimators": 300,
+  "max_depth": 6,
+  "learning_rate": 0.1,
+  "random_state": 42,
+  "n_jobs": -1,
+  "eval_metric": "logloss",
+  "tree_method": "hist"
+ },
+ "scale_pos_weight": "negativos/positivos do treino (por horizonte em B)",
+ "split": {
+  "fim_treino": "2018-12",
+  "inicio_validacao": "2019-01",
+  "fim_validacao": "2021-12",
+  "inicio_teste": "2022-01"
+ },
+ "limiares_por_horizonte": {
+  "1": 0.68,
+  "2": 0.75,
+  "3": 0.75,
+  "4": 0.74,
+  "5": 0.75,
+  "6": 0.78,
+  "7": 0.79,
+  "8": 0.7,
+  "9": 0.69,
+  "10": 0.83,
+  "11": 0.88,
+  "12": 0.8
+ },
+ "regra_limiar": "máximo F1 na validação, por horizonte",
+ "risco": {
+  "ALTO": "prob >= limiar do horizonte",
+  "MODERADO": "prob >= 0.5 × limiar",
+  "BAIXO": "resto"
+ },
+ "validacao_arquiteturas_pr_auc": {
+  "A_um_modelo_h_feature": {
+   "1": 0.7377942170711564,
+   "2": 0.7333627770723063,
+   "3": 0.7247197826925834,
+   "4": 0.7184084462561074,
+   "5": 0.7243001965822399,
+   "6": 0.7242503903615745,
+   "7": 0.7210266848414574,
+   "8": 0.7213942987493757,
+   "9": 0.6885343374304157,
+   "10": 0.6940161297926202,
+   "11": 0.6954278208071277,
+   "12": 0.6971769234685479,
+   "media": 0.7150343337604594
+  },
+  "B_12_modelos": {
+   "1": 0.7557095186080637,
+   "2": 0.7454817569316358,
+   "3": 0.7258551117755262,
+   "4": 0.7179063440706552,
+   "5": 0.7293720598584954,
+   "6": 0.7300793454793751,
+   "7": 0.7240684391122796,
+   "8": 0.7176112435336456,
+   "9": 0.6944416680186096,
+   "10": 0.6921150607446726,
+   "11": 0.7073974515770431,
+   "12": 0.709886619815481,
+   "media": 0.7208270516271237
+  }
+ }
+}

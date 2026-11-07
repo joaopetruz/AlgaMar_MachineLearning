@@ -1,0 +1,30 @@
+{
+ "etapa": "13.2B",
+ "data_utc": "2026-10-09T05:53:57+00:00",
+ "python": "3.13.2",
+ "pandas": "2.3.3",
+ "numpy": "2.5.3",
+ "sklearn": "1.9.1",
+ "xgboost": "3.4.1",
+ "scipy": "1.18.1",
+ "seed": 42,
+ "commit": "ae7371dd532c614416137ed4e79030775172f724",
+ "arquivos_modificados_nao_commitados": [
+  "M algamar_ml/avaliacao.py",
+  " M algamar_ml/features/sazonal.py",
+  "?? docs/etapa13_02b_baseline_corrigido.md",
+  "?? etapa13_02b_baseline.py",
+  "?? etapa13_02b_hotspots.py",
+  "?? resultados/etapa13_02b/",
+  "?? tests/test_baseline_13_2b.py"
+ ],
+ "dataset_mensal": {
+  "arquivo": "dados\\dados_mensais_2000_2024_sp_com_salinidade.csv",
+  "sha256": "f58dcfa8d7253c8d3366898e850dbe39a154459075bd26cbb2c17527f8f7b751",
+  "linhas": 523425
+ },
+ "features_E0_original_sha256_conteudo": "635d8e8530cbb3f1183be18223cd012418cae15ad41b70e90319b6bf73296431",
+ "features_E0_corrigido_sha256_conteudo": "2fbdb176456597707d66937c0bf93c7ef26d3e4a0845fe6318fe0d4a16db3dc5",
+ "linhas_comuns": 501870,
+ "comando": "python.exe etapa13_02b_baseline.py --hotspot H2"
+}

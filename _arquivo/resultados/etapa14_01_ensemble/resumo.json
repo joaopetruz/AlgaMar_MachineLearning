@@ -1,0 +1,148 @@
+{
+ "oficial": "risco-sat-clim-sp-v1",
+ "nova": "risco-sat-clim-sp-v2-ens",
+ "ensemble": {
+  "k": 8,
+  "seed_mestra": 42,
+  "calibracao": "isotonica",
+  "seeds": [
+   {
+    "membro": 0,
+    "spawn_key": [
+     0
+    ],
+    "seed_permutacao": 3142992634,
+    "seed_xgboost": 1761329062
+   },
+   {
+    "membro": 1,
+    "spawn_key": [
+     1
+    ],
+    "seed_permutacao": 1174127800,
+    "seed_xgboost": 500939758
+   },
+   {
+    "membro": 2,
+    "spawn_key": [
+     2
+    ],
+    "seed_permutacao": 1587909317,
+    "seed_xgboost": 439585158
+   },
+   {
+    "membro": 3,
+    "spawn_key": [
+     3
+    ],
+    "seed_permutacao": 2553837471,
+    "seed_xgboost": 1282688489
+   },
+   {
+    "membro": 4,
+    "spawn_key": [
+     4
+    ],
+    "seed_permutacao": 2195756909,
+    "seed_xgboost": 986897918
+   },
+   {
+    "membro": 5,
+    "spawn_key": [
+     5
+    ],
+    "seed_permutacao": 1650807020,
+    "seed_xgboost": 362584891
+   },
+   {
+    "membro": 6,
+    "spawn_key": [
+     6
+    ],
+    "seed_permutacao": 596529004,
+    "seed_xgboost": 1724870647
+   },
+   {
+    "membro": 7,
+    "spawn_key": [
+     7
+    ],
+    "seed_permutacao": 809467331,
+    "seed_xgboost": 1652601774
+   }
+  ]
+ },
+ "limiar_oficial": 0.48,
+ "limiar_v2": 0.38,
+ "limiar_v2_bruto": 0.48,
+ "isotonica_nos": 188,
+ "melhores_iteracoes_v2": [
+  8,
+  23,
+  23,
+  9,
+  12,
+  18,
+  25,
+  18
+ ],
+ "seeds_extra_variancia": [
+  1,
+  2,
+  3,
+  4
+ ],
+ "reamostragens_bootstrap": 200,
+ "geral": {
+  "h": "todos",
+  "n": 1458036.0,
+  "taxa_obs": 0.2702882507702142,
+  "pr_auc_oficial": 0.8800714204892406,
+  "roc_auc_oficial": 0.9336852521299059,
+  "brier_oficial": 0.08238253742456436,
+  "log_loss_oficial": 0.2717629373073578,
+  "f1_oficial": 0.7732038851027366,
+  "pr_auc_v2_ens_iso": 0.8720280258586903,
+  "roc_auc_v2_ens_iso": 0.9328683233298471,
+  "brier_v2_ens_iso": 0.0839702357905162,
+  "log_loss_v2_ens_iso": 0.27929378685566814,
+  "f1_v2_ens_iso": 0.7730813440914214,
+  "pr_auc_v2_ens_bruto": 0.8796789361173974,
+  "roc_auc_v2_ens_bruto": 0.932850219210203,
+  "brier_v2_ens_bruto": 0.08231958032204591,
+  "log_loss_v2_ens_bruto": 0.2720759841563568,
+  "f1_v2_ens_bruto": 0.7730458612569174,
+  "pr_auc_climatologia": 0.8731848166545719,
+  "roc_auc_climatologia": 0.9297122949608886,
+  "brier_climatologia": 0.08365667131368923,
+  "log_loss_climatologia": 0.27846954223429093,
+  "delta_pr_v2_of": -0.00804339463055026,
+  "delta_pr_v2b_of": -0.0003924843718431381,
+  "delta_brier_v2_of": 0.0015876983659518368,
+  "delta_pr_v2_clim": -0.0011567907958816015,
+  "delta_pr_of_clim": 0.006886603834668659,
+  "ic95_pr_v2_of": [
+   -0.010920584293469102,
+   -0.005149284772341893
+  ],
+  "ic95_brier_v2_of": [
+   -0.0030982422448130255,
+   0.006714694376743828
+  ],
+  "ic95_pr_v2_clim": [
+   -0.004858720742184544,
+   0.0026526860864871334
+  ],
+  "ic95_pr_of_clim": [
+   0.0018785669316636973,
+   0.011387119946621161
+  ],
+  "ic95_pr_v2b_of": [
+   -0.001987334880365524,
+   0.0011368031221132564
+  ]
+ },
+ "criterio_promocao": "IC 95 % do Δ PR-AUC (v2 − oficial) acima de zero e Δ Brier ≤ 0",
+ "passa_criterio": false,
+ "segundos": 1972
+}

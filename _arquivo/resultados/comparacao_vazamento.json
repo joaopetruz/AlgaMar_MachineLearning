@@ -1,0 +1,134 @@
+{
+ "linhas_comuns": 501870,
+ "protocolo_antigo_features_antigas": {
+  "n": 64440,
+  "positivos": 13446,
+  "pr_auc": 0.7997722037751794,
+  "roc_auc": 0.9107632114993759,
+  "brier": 0.09367454051971436,
+  "limiar": 0.5,
+  "f1": 0.7019193106149628,
+  "recall": 0.7330060984679458,
+  "precision": 0.6733620277379244,
+  "matriz_confusao": [
+   [
+    46213,
+    4781
+   ],
+   [
+    3590,
+    9856
+   ]
+  ]
+ },
+ "protocolo_novo_features_antigas": {
+  "split": {
+   "treino": "<= 2018",
+   "validacao": "2019-2021",
+   "teste": "> 2021"
+  },
+  "linhas": {
+   "treino": 373140,
+   "validacao": 64290,
+   "teste": 64440
+  },
+  "limiar_escolhido_na_validacao": 0.71,
+  "validacao": {
+   "n": 64290,
+   "positivos": 11944,
+   "pr_auc": 0.7750356861459439,
+   "roc_auc": 0.9037860849580676,
+   "brier": 0.1061752438545227,
+   "limiar": 0.71,
+   "f1": 0.6845768714128709,
+   "recall": 0.7040354989953115,
+   "precision": 0.6661649370197259,
+   "matriz_confusao": [
+    [
+     48132,
+     4214
+    ],
+    [
+     3535,
+     8409
+    ]
+   ]
+  },
+  "teste": {
+   "n": 64440,
+   "positivos": 13446,
+   "pr_auc": 0.7777634395896701,
+   "roc_auc": 0.902467708867249,
+   "brier": 0.11298739910125732,
+   "limiar": 0.71,
+   "f1": 0.6861826697892272,
+   "recall": 0.6973077495165848,
+   "precision": 0.675407001872929,
+   "matriz_confusao": [
+    [
+     46488,
+     4506
+    ],
+    [
+     4070,
+     9376
+    ]
+   ]
+  }
+ },
+ "protocolo_novo_features_corrigidas_E0": {
+  "split": {
+   "treino": "<= 2018",
+   "validacao": "2019-2021",
+   "teste": "> 2021"
+  },
+  "linhas": {
+   "treino": 373140,
+   "validacao": 64290,
+   "teste": 64440
+  },
+  "limiar_escolhido_na_validacao": 0.71,
+  "validacao": {
+   "n": 64290,
+   "positivos": 11944,
+   "pr_auc": 0.7539450898366173,
+   "roc_auc": 0.8928771853821637,
+   "brier": 0.11464539915323257,
+   "limiar": 0.71,
+   "f1": 0.6670454084324149,
+   "recall": 0.6881279303415941,
+   "precision": 0.6472163162453737,
+   "matriz_confusao": [
+    [
+     47866,
+     4480
+    ],
+    [
+     3725,
+     8219
+    ]
+   ]
+  },
+  "teste": {
+   "n": 64440,
+   "positivos": 13446,
+   "pr_auc": 0.7255218767424128,
+   "roc_auc": 0.8927143302641333,
+   "brier": 0.11937420070171356,
+   "limiar": 0.71,
+   "f1": 0.6795528308690948,
+   "recall": 0.7007288412910903,
+   "precision": 0.6596191542985158,
+   "matriz_confusao": [
+    [
+     46132,
+     4862
+    ],
+    [
+     4024,
+     9422
+    ]
+   ]
+  }
+ }
+}

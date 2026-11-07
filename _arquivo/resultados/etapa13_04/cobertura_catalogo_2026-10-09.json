@@ -1,0 +1,38 @@
+{
+ "cmems_obs-oc_glo_bgc-plankton_my_l4-gapfree-multi-4km_P1D": [
+  "1997-09-04",
+  "2026-10-01"
+ ],
+ "cmems_obs-oc_glo_bgc-plankton_nrt_l4-gapfree-multi-4km_P1D": [
+  "2026-09-30",
+  "2026-10-07"
+ ],
+ "METOFFICE-GLO-SST-L4-REP-OBS-SST": [
+  "1981-10-01",
+  "2026-03-31"
+ ],
+ "METOFFICE-GLO-SST-L4-NRT-OBS-SST-V2": [
+  "2024-01-17",
+  "2026-10-07"
+ ],
+ "cmems_obs-mob_glo_phy-sss_my_multi_P1D": [
+  "1993-01-01",
+  "2024-12-15"
+ ],
+ "cmems_obs-mob_glo_phy-sss_nrt_multi_P1D": [
+  "2024-01-01",
+  "2026-10-03"
+ ],
+ "cmems_mod_glo_phy_my_0.083deg_P1D-m": [
+  "1993-01-01",
+  "2026-08-25"
+ ],
+ "cmems_mod_glo_phy-cur_anfc_0.083deg_P1D-m": [
+  "2022-06-01",
+  "2026-10-18"
+ ],
+ "cmems_obs-wind_glo_phy_nrt_l4_0.125deg_PT1H": [
+  "2024-06-13",
+  "2026-10-07"
+ ]
+}

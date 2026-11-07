@@ -1,0 +1,148 @@
+# Configuração do Mapa de Risco de Floração AlgaMar (risco mensal de floração para os próximos 12 meses).
+# Lida por algamar_ml/config.py. Caminhos relativos à raiz do repositório.
+
+versao_config = "1.1.0"   # 1.1.0 (fechamento 2026-10-09): [produto], versão enxuta, grupos físicos sem sinal bloqueados
+
+[produto]
+# O produto NÃO é um modelo Navier–Stokes: a física (CROCO/GLORYS) foi testada e não melhorou a previsão
+# (docs/RELATORIO_FECHAMENTO_RISCO_FLORACAO.md). O que entrega é risco climatológico ajustado pelo satélite.
+nome = "Mapa de Risco de Floração AlgaMar"
+id = "algamar-risco-floracao"
+descricao = "Probabilidade mensal de floração (CHL máx > 1,5 mg/m³) por ponto de 4 km no litoral de SP, 1 a 12 meses à frente, a partir de clorofila e temperatura de satélite e da climatologia histórica."
+fontes_de_dados = ["clorofila de satélite (Copernicus L4 4 km)", "temperatura da superfície de satélite (OSTIA L4)", "climatologia histórica 2000–t0 (calculada do próprio painel)"]
+status_modelo = "HINDCAST_VALIDADO: equivale à climatologia; sem previsão em tempo real verificada"
+
+[caminhos]
+brutos = "dados/brutos_sp_total"              # NetCDF mensais da Copernicus a partir de 2025 (caixa SP total; antes: dados/brutos)
+brutos_historicos = "dados/brutos_sp_total_historico"  # NetCDF anuais MY/REP 2000–2024 da caixa SP total (baixar_litoral_sp_total.py)
+# 2026-10-09: histórico do litoral de SP inteiro (construir_historico_sp_total.py). O CSV da equipe
+# (dados/dados_mensais_2000_2024_sp_com_salinidade.csv) e o painel antigo (painel_mensal.parquet) ficam como estavam.
+historico_equipe = "dados/historico_sp_total_2000_2024.csv"
+painel = "dados/processados/painel_mensal_sp_total.parquet"
+feature_store = "dados/feature_store"         # features externas (Navier-Stokes/CROCO) já validadas
+croco_mensal = "dados/croco/croco_mensal.parquet"  # 13.5: tabela mensal do contrato 13.0 (produção CROCO)
+glorys_mensal = "dados/brutos/glorys_mensal/glorys_mensal_2000_2024.nc"   # 13.7
+modelos = "modelos"
+previsoes = "previsoes"
+
+[area]
+# 2026-10-09: caixa ampliada para todo o litoral de SP (a da equipe, lon −47,0…−44,8 e lat −25,3…−23,3, deixava
+# Iguape, Ilha Comprida e Cananéia fora). Pontos = caixa da equipe + extensão sul (lon < −47,0) do lado paulista da
+# divisa SP/PR (algamar_ml/espacial.py: dentro_sp). Grade CHL L4 de 4 km.
+lon_min = -48.2
+lon_max = -44.8
+lat_min = -25.7
+lat_max = -23.3
+caixa_equipe = [-47.0, -44.8, -25.3, -23.3]   # lon_min, lon_max, lat_min, lat_max
+# T e S são baixadas numa caixa maior (margem para interpolar até a borda)
+margem_graus = 0.5
+
+[alvo]
+# DÚVIDA 1 (aguardando o Tulio): alvo atual da equipe, mantido
+variavel = "clorofila_maxima"      # máximo mensal da CHL diária no ponto (mg m-3)
+limiar = 1.5
+nome = "floracao"
+
+[previsao]
+horizontes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]   # meses à frente do mês de emissão t0
+# Nível de risco: ALTO >= limiar escolhido na validação; MODERADO >= fracao_moderado * limiar
+fracao_moderado = 0.5
+
+[split]
+# Por data-alvo e data de emissão (nenhum alvo de um conjunto cai em outro)
+fim_treino = "2018-12"        # alvos do treino <= este mês
+inicio_validacao = "2019-01"  # emissões da validação >= este mês
+fim_validacao = "2021-12"     # alvos da validação <= este mês
+inicio_teste = "2022-01"      # emissões do teste >= este mês (alvos até o último mês observado)
+
+[modelo]
+# Modelo de previsão oficial (Etapa 13.3, opção A, decidida em 2026-10-09). Referência até o retreino com CROCO.
+oficial = "risco-sat-clim-sp-v2-ens-bruto"
+# 2026-10-09 (Etapa 14.1, confirmado pelo Tulio): ensemble de 8 ordens sem calibração; mesma habilidade do v1,
+# reprodutível e com ECE menor. Para voltar: oficial = "risco-sat-clim-sp-v1" (continua no registro, imutável).
+# 2026-10-09: o oficial passou a ser a versão enxuta treinada no litoral de SP inteiro (2 406 pontos). Antes:
+# baseline-hist-api-v1 (área da equipe, 1 790 pontos; continua no registro, imutável). Para voltar, troque esta linha.
+algoritmo = "xgboost"
+n_estimators = 400
+max_depth = 6
+learning_rate = 0.05
+subsample = 0.8
+colsample_bytree = 0.8
+seed = 42
+# O modelo parte da climatologia do ponto/mês (log-odds) e aprende o desvio explicado pelo estado atual.
+base_climatologica = true
+min_child_weight = 50
+# Sem peso de classe: a saída é usada como probabilidade (calibração é medida e reportada)
+
+[ensemble]
+# 14.1: ensemble de ordens (algamar_ml/modelos/ensemble.py). A 13.6 mediu que só a ordem das linhas de treino muda a
+# PR-AUC em até ~0,02; o ensemble faz a média de k XGBoost (mesmos hiperparâmetros de [modelo]) treinados em k ordens.
+# Seeds derivadas de numpy SeedSequence(seed_mestra).spawn(k), gravadas no cartão. ativo = true (ou
+# `algamar.py treinar --ensemble`) faz o treino registrar um ensemble; os modelos já registrados não mudam.
+ativo = false
+k = 8
+seed_mestra = 42
+calibracao = ""                # "" = nenhuma (14.1: a isotônica da validação piorou o teste); "isotonica" = ajustada só na validação
+
+[features]
+# Feature flags: permitem comparar o ML sem física × com física
+use_baseline_features = true       # 13.5: nome novo de use_historical_features (padrão histórico do mês-alvo)
+use_historical_features = true     # climatologia e frequência histórica de floração por ponto/mês
+use_api_features = true            # estado atual (CHL, SST, SSS) no mês de emissão e meses anteriores
+# SSS desligada: o produto NRT (único disponível depois de 2024-12) tem viés de +0,6 PSU (até +1,9 em out)
+# e correlação 0,61 com o MY em 2024 (resultados/consistencia_nrt_2024.json). Religar se houver SSS consistente.
+use_salinity = false
+# Fechamento: a versão enxuta tira o estado em t0 que repete as médias de 3 meses e as anomalias
+# (algamar_ml/features/horizonte.py REDUNDANTES). O baseline-hist-api-v1 foi treinado com true (25 features).
+use_features_redundantes = false
+# Grupos físicos SEM SINAL: pioraram o modelo (abaixo do controle embaralhado) ou deram Δ PR-AUC = 0.
+# Ligar um deles faz o treino recusar; permitir_sem_sinal = true só para reproduzir experimentos antigos.
+sem_sinal = ["use_croco_current", "use_croco_dynamics", "use_glorys_ts", "use_navier_stokes_features"]
+permitir_sem_sinal = false
+use_navier_stokes_features = false # feature store legada (fisica/); preferir os grupos use_croco_* abaixo
+# 13.5: grupos CROCO (algamar_ml/croco_ml.py), estado físico no mês de emissão t0; todos desligados = baseline puro
+use_croco_ts = false               # T e S de superfície (piloto: sinal fraco e instável, 41 dias)
+use_croco_core = false             # TS + MLD + N² máx (piloto: +0,057 só por 1 de 3 meses; não confirmado)
+use_croco_vertical = false         # T e S a 20 m, 50 m e no fundo (piloto: IC cruza zero)
+use_croco_current = false          # SEM SINAL: u, v, velocidade pioraram (−0,055, pior que embaralhado)
+use_croco_dynamics = false         # SEM SINAL: SSH, W, vorticidade, divergência, HBL, transportes (−0,061)
+# 13.7: GLORYS12 mensal (reanálise) no mês de emissão t0 (algamar_ml/glorys_ml.py); desligados = baseline puro
+use_glorys_ts = false               # SEM SINAL: T e S GLORYS no oficial, Δ PR-AUC −0,000
+use_glorys_mld = false              # MLD GLORYS: +0,003 no oficial (pequeno; sem fonte operacional no mês t0)
+navier_stokes_conjunto = "NS_CORE" # conjunto em contrato/features_fisicas.csv
+navier_stokes_fonte = "croco_d2"   # subpasta da feature store
+
+[regioes]
+# DÚVIDA 2 (aguardando o Tulio): setores provisórios por longitude (os mesmos da auditoria 13.2A)
+tipo = "setores_longitude"
+[[regioes.setores]]
+nome = "extremo sul (Cananéia–Ilha Comprida–Iguape)"   # 2026-10-09, com a caixa SP total; divisa Iguape/Peruíbe ≈ −47,08
+lon_max = -47.08
+[[regioes.setores]]
+nome = "sul (Peruíbe–Itanhaém–Mongaguá)"
+lon_max = -46.6
+[[regioes.setores]]
+nome = "centro (Praia Grande–Santos–Guarujá–Bertioga)"
+lon_max = -45.6
+[[regioes.setores]]
+nome = "norte (São Sebastião–Ilhabela–Caraguatatuba–Ubatuba)"
+lon_max = 0.0
+
+# ------------------------------------------------------------------ 13.8: pipeline final (algamar.py)
+[pipeline]
+versao_schema_saida = "1.1.0"          # contrato/saida_previsao_v1.json (1.1.0: campo "produto")
+saidas = "saidas"                       # previsões padronizadas (Parquet + JSON) para dashboard/API
+logs = "logs/execucoes"                 # um JSON por execução + execucoes.jsonl
+inicio_emissoes = "2001-01"             # 1ª emissão das linhas de treino (2000 só alimenta climatologias)
+hoje = ""                               # "" = data do sistema; "AAAA-MM-DD" fixa a data (reprodução/testes)
+seeds = [42]                            # seed(s) do treino; a 1ª é usada no modelo registrado
+# limiar de classe: "cartao" = o limiar escolhido na validação e gravado no cartão do modelo (nunca no teste)
+limiar = "cartao"
+# APIs consultadas na ingestão (catálogo Copernicus Marine; produtos em algamar_ml/apis/copernicus.py)
+apis = ["clorofila", "temperatura", "salinidade"]
+max_atraso_meses = 2                    # t0 mais antigo que isto → DESATUALIZADO (emite com flag)
+max_recuo_meses = 3                     # recua até isto procurando um mês válido; senão DADOS_INSUFICIENTES
+# estado em t0 sem o qual o ponto NÃO recebe probabilidade (nunca se inventa previsão)
+features_obrigatorias_t0 = ["chl_media_t0", "chl_max_t0", "sst_t0"]
+frac_max_pontos_insuficientes = 0.5     # acima disto a execução inteira vira DADOS_INSUFICIENTES
+classificacao_produto = "HINDCAST_VALIDADO"   # rótulo gravado em cada previsão (13.7); não é SISTEMA OPERACIONAL

@@ -1,0 +1,43 @@
+{
+ "pontos_ml": 1790,
+ "pontos_croco_casados": 1790,
+ "pontos_ml_sem_croco": 0,
+ "pontos_nao_usar_excluidos": 4,
+ "meses_t0": {
+  "2014-01": "PROD_201401_PARCIAL",
+  "2017-11": "PILOTO_13_1",
+  "2017-12": "PILOTO_13_1",
+  "2024-01": "REST_JAN2024_PRE_OFICIAL"
+ },
+ "linhas_por_t0": {
+  "2014-01": 1712,
+  "2017-11": 1786,
+  "2017-12": 1786,
+  "2024-01": 1786
+ },
+ "linhas_total": 7070,
+ "positivos_por_alvo": {
+  "2014-02": {
+   "sum": 884.0,
+   "mean": 0.515999972820282
+  },
+  "2017-12": {
+   "sum": 59.0,
+   "mean": 0.032999999821186066
+  },
+  "2018-01": {
+   "sum": 139.0,
+   "mean": 0.07800000160932541
+  },
+  "2024-02": {
+   "sum": 184.0,
+   "mean": 0.10300000011920929
+  }
+ },
+ "dias_croco_por_mes": {
+  "2017-11 PILOTO_13_1": 13,
+  "2017-12 PILOTO_13_1": 17,
+  "2014-01 PROD_201401_PARCIAL": 4,
+  "2024-01 REST_JAN2024_PRE_OFICIAL": 7
+ }
+}

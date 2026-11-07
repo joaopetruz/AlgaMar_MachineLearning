@@ -1,0 +1,115 @@
+{
+ "arquivo_croco": "..\\..\\cfd_navier_stokes\\outputs\\etapa13_01_piloto_producao\\features_mensais\\features_mensais_auditoria.parquet",
+ "linhas": 3706,
+ "cobertura": {
+  "de": "2017-11",
+  "ate": "2017-12",
+  "meses": 2,
+  "meses_faltando": []
+ },
+ "avisos": [
+  "há meses incompletos (mes_completo = False): mantidos com a flag"
+ ],
+ "validade_pontos": {
+  "D2_VALIDO": 1695,
+  "NAO_USAR_ESTUARIO_CANAL": 12,
+  "NAO_VALIDADO_COSTEIRO": 146
+ },
+ "pontos_ml_sem_croco": 0,
+ "pontos_croco_fora_do_ml": 63,
+ "nan_por_feature": {
+  "temperature_surface": 0,
+  "salinity_surface": 0,
+  "mld": 0,
+  "n2_max": 0,
+  "temperature_20m": 324,
+  "salinity_20m": 324,
+  "temperature_50m": 1304,
+  "salinity_50m": 1304,
+  "temperature_bottom": 0,
+  "salinity_bottom": 0,
+  "u_east_surface": 0,
+  "v_north_surface": 0,
+  "speed_of_mean_current": 0,
+  "ssh": 0,
+  "w_10m": 116,
+  "w_50m": 1304,
+  "relative_vorticity_surface": 156,
+  "normalized_vorticity_surface": 156,
+  "horizontal_divergence_surface": 130,
+  "hbl": 0,
+  "transport_east": 0,
+  "transport_north": 0
+ },
+ "proveniencia_exemplo": {
+  "croco_temperature_surface_t0": {
+   "source": "CROCO",
+   "coluna_contrato": "temperature_surface_mean",
+   "feature_version": "13.0.0",
+   "unit": "degC",
+   "status_validation": "VALIDADA",
+   "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+   "grid_version": {
+    "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+    "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+    "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+    "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+    "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+   },
+   "periodo": "2017-11 → 2017-12"
+  },
+  "croco_salinity_surface_t0": {
+   "source": "CROCO",
+   "coluna_contrato": "salinity_surface_mean",
+   "feature_version": "13.0.0",
+   "unit": "1",
+   "status_validation": "VALIDADA",
+   "timestamp": "média do mês civil UTC (ano, mes); valor do mês de emissão t0",
+   "grid_version": {
+    "build_croco": "build_d2_algamar_final_v1 (D2 oficial v1, Etapa 12.29), sem recompilar",
+    "commit_croco": "ab63b583c9f9e1faceb838e7063b71f1ab9bd56f (v2.1.3, fonte sem modificação)",
+    "sha256_executavel": "f5fb36e6afddd4efcd5959255ce744c09ee35855d74ab0f557c18ad3c27b05c1",
+    "grade": "/home/tulio/CONFIGS/ALGAMAR_D2_REST/prepro/CROCO_FILES/croco_grd_d2_talude.nc (D2_SP_TOTAL + D2_TALUDE_SMOOTH)",
+    "sha256_grade": "e734675234268fb86157d9044e7687ef8f89f91478a1b4b1646ce7db7cdc72a6"
+   },
+   "periodo": "2017-11 → 2017-12"
+  }
+ },
+ "cubo": {
+  "pontos_nao_usar": 4,
+  "linhas_casadas": 3580
+ },
+ "pontos_NAO_USAR_no_cubo": 4,
+ "linhas_previsao_2017_11_12": 42960,
+ "valores_croco_nao_nan": {
+  "croco_temperature_surface_t0": 42864,
+  "croco_salinity_surface_t0": 42864,
+  "croco_mld_t0": 42864,
+  "croco_n2_max_t0": 42864,
+  "croco_temperature_20m_t0": 40488,
+  "croco_salinity_20m_t0": 40488,
+  "croco_temperature_50m_t0": 28824,
+  "croco_salinity_50m_t0": 28824,
+  "croco_temperature_bottom_t0": 42864,
+  "croco_salinity_bottom_t0": 42864,
+  "croco_u_east_surface_t0": 42864,
+  "croco_v_north_surface_t0": 42864,
+  "croco_speed_of_mean_current_t0": 42864,
+  "croco_ssh_t0": 42864,
+  "croco_w_10m_t0": 42504,
+  "croco_w_50m_t0": 28824,
+  "croco_relative_vorticity_surface_t0": 42072,
+  "croco_normalized_vorticity_surface_t0": 42072,
+  "croco_horizontal_divergence_surface_t0": 42240,
+  "croco_hbl_t0": 42864,
+  "croco_transport_east_t0": 42864,
+  "croco_transport_north_t0": 42864
+ },
+ "fisica_igual_em_todos_os_h_da_mesma_emissao": true,
+ "nao_usar_todo_nan": true,
+ "baseline_sem_croco": {
+  "features_fisicas": [],
+  "previsao_identica_a_13_4": true,
+  "features": 25
+ }
+}

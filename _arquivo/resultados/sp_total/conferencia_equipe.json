@@ -1,0 +1,34 @@
+{
+ "pontos_equipe": 1790,
+ "pontos_equipe_no_novo": 1790,
+ "pontos_novo": 2406,
+ "linhas_comparadas": 523425,
+ "clorofila_media": {
+  "dif_abs_mediana": 1.9188690192351032e-08,
+  "dif_abs_p99": 2.606475830724264e-07,
+  "dif_abs_max": 2.2931518550706187e-06,
+  "iguais_1e-4": 1.0,
+  "nan_novo_com_equipe_valido": 0
+ },
+ "clorofila_maxima": {
+  "dif_abs_mediana": 4.825439436917378e-09,
+  "dif_abs_p99": 1.7297363321233662e-07,
+  "dif_abs_max": 1.8920898412488896e-06,
+  "iguais_1e-4": 1.0,
+  "nan_novo_com_equipe_valido": 0
+ },
+ "temperatura_media": {
+  "dif_abs_mediana": 3.552713678800501e-15,
+  "dif_abs_p99": 1.0658141036401503e-14,
+  "dif_abs_max": 2.4868995751603507e-14,
+  "iguais_1e-4": 1.0,
+  "nan_novo_com_equipe_valido": 0
+ },
+ "salinidade_media": {
+  "dif_abs_mediana": 7.105427357601002e-15,
+  "dif_abs_p99": 1.4210854715202004e-14,
+  "dif_abs_max": 3.552713678800501e-14,
+  "iguais_1e-4": 1.0,
+  "nan_novo_com_equipe_valido": 0
+ }
+}

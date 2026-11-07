@@ -1,0 +1,40 @@
+{
+ "chave": [
+  "latitude",
+  "longitude",
+  "ano",
+  "mes"
+ ],
+ "arredondamento": "round(5) nos dois lados, como o ML (processar_dados_historicos.py:49-50) e a 13.0",
+ "lado_ml": "dados_features_sazonal_sp_com_salinidade.csv (sha256 fb7e1579…): 501 945 linhas, 1 790 pontos, 0 duplicatas exatas e 0 após round(5); coordenadas gravadas com 6 casas (MEDIDO)",
+ "pontos_ml_vs_13_0": "os 1 790 pontos do ML casam todos com os 1 853 da 13.0 após round(5): 1 691 D2_VALIDO, 95 NAO_VALIDADO_COSTEIRO, 4 NAO_USAR_ESTUARIO_CANAL (971 linhas); o ponto em terra no D2 (−23,771; −46,646) NÃO está no dataset do ML (MEDIDO)",
+ "lado_croco": "Parquet mensal exportado pela 13.0 nos 1 854 pontos da grade CHL (outputs/etapa12/cobertura_pontos_ml.csv; 0 chaves duplicadas após round(5), MEDIDO)",
+ "tipo": "left join a partir do ML, validado como one_to_one (pandas merge validate='one_to_one')",
+ "esperado": {
+  "many_to_many": 0,
+  "duplicatas_ml": 0,
+  "duplicatas_croco": 0,
+  "ml_sem_croco": "apenas (a) pontos NAO_USAR_ESTUARIO_CANAL removidos antes do join, (b) o ponto (−23,771; −46,646) em terra no D2 (rejeitado na 13.0), (c) meses fora da produção CROCO ou de spin-up",
+  "croco_sem_ml": "pontos/meses removidos pelo dropna do ML"
+ },
+ "filtros_obrigatorios": {
+  "NAO_USAR_ESTUARIO_CANAL": "excluídos do experimento padrão; 12 pontos na amostra 13.0 (Canal de São Sebastião e Santos–Bertioga) × meses",
+  "NAO_VALIDADO_COSTEIRO": "mantidos com flag; métricas com e sem (146 pontos na amostra 13.0)"
+ },
+ "nota_dominio": "a caixa do ML (lon −47,0..−44,8; lat −25,3..−23,3) não inclui Cananéia/Mar Pequeno (−47,9): o filtro de estuário no ML atinge só Santos–Bertioga e o Canal de São Sebastião",
+ "join_report_campos": [
+  "linhas_ml",
+  "linhas_croco",
+  "matches",
+  "ml_sem_croco",
+  "croco_sem_ml",
+  "duplicatas_ml",
+  "duplicatas_croco",
+  "many_to_many",
+  "pontos_NAO_USAR",
+  "linhas_NAO_USAR_removidas",
+  "pontos_NAO_VALIDADO_COSTEIRO",
+  "linhas_NAO_VALIDADO_COSTEIRO"
+ ],
+ "validador": "scripts/valida_dataset_croco_ml.py --ml <csv mensal do ML> gera join_report.json"
+}

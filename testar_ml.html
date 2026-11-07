@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Testar o ML</title>
+<style>
+  :root {
+    color-scheme: light;
+    --surface-0: #f3f3f1; --surface-1: #fcfcfb; --border: #dddcd7; --grid: #e8e7e3;
+    --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #77766f;
+    --accent: #2a78d6; --accent-ink: #ffffff;
+    --s-prev: #2a78d6; --s-clim: #eb6834; --s-real: #1baf7a;
+    --ok-bg: #e6f4ec; --ok-ink: #11643f; --warn-bg: #fdf1dc; --warn-ink: #7a4b00; --err-bg: #fbe7e6; --err-ink: #8f1d1c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --surface-0: #121211; --surface-1: #1a1a19; --border: #33332f; --grid: #2a2a27;
+      --text-primary: #f0efec; --text-secondary: #c3c2b7; --text-muted: #8f8e86;
+      --accent: #3987e5; --accent-ink: #ffffff;
+      --s-prev: #3987e5; --s-clim: #d95926; --s-real: #199e70;
+      --ok-bg: #12301f; --ok-ink: #8fdcb3; --warn-bg: #36280c; --warn-ink: #f2c776; --err-bg: #3a1615; --err-ink: #f3a3a2;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --surface-0: #121211; --surface-1: #1a1a19; --border: #33332f; --grid: #2a2a27;
+    --text-primary: #f0efec; --text-secondary: #c3c2b7; --text-muted: #8f8e86;
+    --accent: #3987e5; --accent-ink: #ffffff;
+    --s-prev: #3987e5; --s-clim: #d95926; --s-real: #199e70;
+    --ok-bg: #12301f; --ok-ink: #8fdcb3; --warn-bg: #36280c; --warn-ink: #f2c776; --err-bg: #3a1615; --err-ink: #f3a3a2;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--surface-0); color: var(--text-primary);
+         font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 1040px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  h2 { font-size: 17px; margin: 0 0 12px; }
+  .sub { color: var(--text-secondary); margin: 0 0 20px; }
+  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .tab { background: none; border: 0; border-bottom: 2px solid transparent; padding: 10px 14px; cursor: pointer;
+         color: var(--text-secondary); font: inherit; font-weight: 600; }
+  .tab[aria-selected="true"] { color: var(--text-primary); border-bottom-color: var(--accent); }
+  .card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+  label { display: grid; gap: 4px; font-size: 13px; color: var(--text-secondary); font-weight: 600; }
+  select, button.go { font: inherit; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border);
+                      background: var(--surface-1); color: var(--text-primary); min-height: 38px; }
+  button.go { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; cursor: pointer; }
+  button.go:disabled { opacity: .6; cursor: wait; }
+  .hint { color: var(--text-muted); font-size: 13px; margin: 10px 0 0; }
+  .banner { border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; font-size: 14px; }
+  .banner.ok { background: var(--ok-bg); color: var(--ok-ink); }
+  .banner.warn { background: var(--warn-bg); color: var(--warn-ink); }
+  .banner.err { background: var(--err-bg); color: var(--err-ink); }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 12px; margin-bottom: 16px; }
+  .tile { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .tile .k { font-size: 13px; color: var(--text-secondary); }
+  .tile .v { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.2; margin: 2px 0; }
+  .tile .d { font-size: 13px; color: var(--text-muted); }
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend svg { flex: none; }
+  .chart-scroll { overflow-x: auto; }
+  .chart-wrap { position: relative; min-width: 640px; }
+  #chart { display: block; width: 100%; height: auto; overflow: visible; }
+  .row > label { flex: 1 1 180px; }
+  .row select { width: 100%; }
+  .tip { position: absolute; pointer-events: none; background: var(--surface-1); border: 1px solid var(--border);
+         border-radius: 8px; padding: 8px 10px; font-size: 13px; box-shadow: 0 4px 16px rgba(0,0,0,.12);
+         min-width: 190px; display: none; z-index: 2; }
+  .tip b { display: block; margin-bottom: 4px; }
+  .tip .ln { display: flex; justify-content: space-between; gap: 12px; color: var(--text-secondary); }
+  .tip .ln i { font-style: normal; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .table-scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+  th, td { text-align: right; padding: 7px 8px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  th { color: var(--text-secondary); font-weight: 600; }
+  td.na { color: var(--text-muted); }
+  .api-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .api-buttons button { font: inherit; font-size: 13px; padding: 7px 12px; border-radius: 8px; border: 1px solid var(--border);
+                        background: var(--surface-1); color: var(--text-primary); cursor: pointer; }
+  .api-buttons button[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+  pre { background: var(--surface-0); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin: 0;
+        max-height: 520px; overflow: auto; font-size: 12px; line-height: 1.45; }
+  code { font-size: 13px; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Testar o ML</h1>
+  <p class="sub" id="sub">Conectando à API…</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="passado">Teste no passado</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="api">Resposta atual da API</button>
+  </div>
+
+  <!-- Aba 1: hindcast -->
+  <section id="tab-passado">
+    <div class="card">
+      <div class="row">
+        <label>Mês da previsão (o modelo só vê até aqui)
+          <select id="emissao"></select>
+        </label>
+        <label>Região
+          <select id="regiao">
+            <option>Litoral todo</option><option>Litoral Norte</option><option>Baixada Santista</option><option>Litoral Sul</option>
+          </select>
+        </label>
+        <button class="go" id="rodar">Rodar teste</button>
+      </div>
+      <p class="hint">O painel é cortado no mês escolhido antes de o modelo prever, então ele não tem como ver o futuro.
+        Depois a previsão é comparada com o que o satélite mediu nos 12 meses seguintes.</p>
+    </div>
+
+    <div id="resultado" hidden>
+      <div class="banner" id="banner"></div>
+      <div class="tiles" id="tiles"></div>
+      <div class="card">
+        <h2 id="titulo-grafico">Probabilidade de floração por mês</h2>
+        <div class="legend">
+          <span><svg width="22" height="10" aria-hidden="true"><line x1="0" y1="5" x2="22" y2="5" stroke="var(--s-prev)" stroke-width="2"/></svg>Previsão do ML</span>
+          <span><svg width="22" height="10" aria-hidden="true"><line x1="0" y1="5" x2="22" y2="5" stroke="var(--s-clim)" stroke-width="2" stroke-dasharray="5 3"/></svg>Climatologia (o que costuma acontecer)</span>
+          <span><svg width="22" height="10" aria-hidden="true"><line x1="0" y1="5" x2="22" y2="5" stroke="var(--s-real)" stroke-width="2"/><circle cx="11" cy="5" r="4" fill="var(--s-real)" stroke="var(--surface-1)" stroke-width="2"/></svg>Real (fração dos pontos que floresceram)</span>
+        </div>
+        <div class="chart-scroll">
+          <div class="chart-wrap" id="chart-wrap">
+            <svg id="chart" viewBox="0 0 960 340" role="img" aria-label="Gráfico de linhas: previsão, climatologia e real por mês"></svg>
+            <div class="tip" id="tip"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Tabela</h2>
+        <div class="table-scroll"><table id="tabela"></table></div>
+        <p class="hint">“Alertas” são pontos com probabilidade ≥ limiar ALTO do modelo. “Alertas certos” = desses, quantos floresceram de fato.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Aba 2: resposta da API -->
+  <section id="tab-api" hidden>
+    <div class="card">
+      <div class="api-buttons" id="api-buttons">
+        <button data-url="/coastal-risks" aria-pressed="true">/coastal-risks (dashboard)</button>
+        <button data-url="/forecast/meta">/forecast/meta</button>
+        <button data-url="/forecast/regioes">/forecast/regioes</button>
+        <button data-url="/predictions?limit=5">/predictions?limit=5</button>
+        <button data-url="/marine-data?limit=5">/marine-data?limit=5</button>
+      </div>
+      <div class="tiles" id="api-tiles"></div>
+      <p class="hint" id="api-status"></p>
+      <pre id="api-json"></pre>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  // Servida pela própria API em /testar → mesma origem. Aberta como arquivo → API local padrão.
+  const API = location.protocol.startsWith("http") ? "" : "http://127.0.0.1:8000";
+  const $ = (id) => document.getElementById(id);
+  const pct = (v) => (v == null ? "—" : `${Math.round(v * 100)}%`);
+  const n2 = (v) => (v == null ? "—" : v.toFixed(3));
+  const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+  const rotulo = (am) => { const [a, m] = am.split("-"); return `${MESES[+m - 1]}/${a.slice(2)}`; };
+  let info = null, ultimo = null;
+
+  async function get(url) {
+    const r = await fetch(API + url);
+    const corpo = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(corpo.detail || `HTTP ${r.status}`);
+    return corpo;
+  }
+
+  // ---------------- abas
+  document.querySelectorAll(".tab").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
+    $("tab-passado").hidden = b.dataset.tab !== "passado";
+    $("tab-api").hidden = b.dataset.tab !== "api";
+    if (b.dataset.tab === "api" && !$("api-json").textContent) chamaApi("/coastal-risks");
+  }));
+
+  // ---------------- meses testáveis
+  function preencheMeses() {
+    const [a0, m0] = info.primeira_emissao.split("-").map(Number);
+    const [a1, m1] = info.ultima_emissao.split("-").map(Number);
+    const sel = $("emissao");
+    for (let t = a1 * 12 + m1 - 1; t >= a0 * 12 + m0 - 1; t--) {
+      const am = `${Math.floor(t / 12)}-${String((t % 12) + 1).padStart(2, "0")}`;
+      const cego = am >= info.primeira_emissao_as_cegas;
+      const o = new Option(`${rotulo(am)}${cego ? "" : "  (modelo já viu)"}`, am);
+      sel.add(o);
+    }
+    // padrão: emissão às cegas com os 12 meses seguintes já observados
+    const [au, mu] = info.ultimo_mes_observado.split("-").map(Number);
+    const t = au * 12 + mu - 1 - 12;
+    sel.value = `${Math.floor(t / 12)}-${String((t % 12) + 1).padStart(2, "0")}`;
+  }
+
+  // ---------------- teste no passado
+  async function rodar() {
+    const b = $("rodar");
+    b.disabled = true; b.textContent = "Rodando…";
+    try {
+      ultimo = await get(`/teste/hindcast?emissao=${$("emissao").value}`);
+      desenha();
+    } catch (e) {
+      $("resultado").hidden = false;
+      $("banner").className = "banner err";
+      $("banner").textContent = `Erro: ${e.message}`;
+      $("tiles").innerHTML = ""; $("chart").innerHTML = ""; $("tabela").innerHTML = "";
+    } finally {
+      b.disabled = false; b.textContent = "Rodar teste";
+    }
+  }
+
+  function desenha() {
+    const r = ultimo, reg = $("regiao").value, linhas = r.regioes[reg] || [];
+    $("resultado").hidden = false;
+    const ban = $("banner");
+    if (r.as_cegas) {
+      ban.className = "banner ok";
+      ban.textContent = `Teste às cegas: o modelo ${r.modelo} nunca viu nenhum destes meses (treino e validação vão até ${r.alvos_vistos_no_treino_ate}).`;
+    } else {
+      ban.className = "banner warn";
+      ban.textContent = `Atenção: ${r.meses_ja_vistos_no_treino} dos 12 meses caem até ${r.alvos_vistos_no_treino_ate}, período que o modelo já viu no treino/validação. ` +
+        `O resultado tende a parecer melhor do que é. Para um teste honesto, escolha a partir de ${rotulo(info.primeira_emissao_as_cegas)}.`;
+    }
+
+    // indicadores da região escolhida (contagens) + ranking geral do litoral
+    const obs = linhas.filter((l) => l.observado);
+    const soma = (k) => obs.reduce((s, l) => s + l[k], 0);
+    const alertas = soma("pontos_alerta"), certos = soma("alertas_certos"), reais = soma("pontos_floracao_real");
+    const m = r.metricas;
+    const ganhou = m && m.modelo.pr_auc != null ? m.modelo.pr_auc - m.climatologia.pr_auc : null;
+    const tiles = [
+      ["Florações que o ML pegou", reais ? pct(certos / reais) : "—", `${certos} de ${reais} pontos-mês que floresceram (${reg})`],
+      ["Alertas que se confirmaram", alertas ? pct(certos / alertas) : "—", `${certos} de ${alertas} alertas ALTO (${reg})`],
+      ["Nota do ML (PR-AUC, litoral todo)", m ? n2(m.modelo.pr_auc) : "—", m ? `climatologia: ${n2(m.climatologia.pr_auc)} · 1 = perfeito` : "nenhum mês observado ainda"],
+      ["ML × climatologia", ganhou == null ? "—" : `${ganhou >= 0 ? "+" : ""}${ganhou.toFixed(3)}`,
+        ganhou == null ? "" : ganhou > 0.005 ? "o ML foi melhor que “o que costuma acontecer”" : ganhou < -0.005 ? "o ML foi pior que “o que costuma acontecer”" : "empate prático com “o que costuma acontecer”"],
+    ];
+    $("tiles").innerHTML = tiles.map(([k, v, d]) => `<div class="tile"><div class="k">${k}</div><div class="v">${v}</div><div class="d">${d}</div></div>`).join("");
+    if (obs.length < linhas.length) {
+      $("tiles").insertAdjacentHTML("beforeend", `<div class="tile"><div class="k">Ainda sem resposta</div><div class="v">${linhas.length - obs.length}</div><div class="d">meses depois de ${rotulo(r.ultimo_mes_observado)} ainda não aconteceram</div></div>`);
+    }
+    $("titulo-grafico").textContent = `Probabilidade de floração por mês: ${reg}, previsão feita em ${rotulo(r.emissao)}`;
+    grafico(linhas);
+    tabela(linhas);
+  }
+
+  function grafico(linhas) {
+    const W = 960, H = 340, L = 48, R = 120, T = 16, B = 40;
+    const x = (i) => L + (i * (W - L - R)) / Math.max(linhas.length - 1, 1);
+    const y = (v) => T + (1 - v) * (H - T - B);
+    const svg = $("chart");
+    let s = "";
+    for (let v = 0; v <= 1.0001; v += 0.25) {
+      s += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--grid)" stroke-width="1"/>`;
+      s += `<text x="${L - 8}" y="${y(v) + 4}" text-anchor="end" font-size="12" fill="var(--text-muted)">${Math.round(v * 100)}%</text>`;
+    }
+    linhas.forEach((l, i) => {
+      s += `<text x="${x(i)}" y="${H - B + 20}" text-anchor="middle" font-size="12" fill="var(--text-muted)">${rotulo(l.alvo)}</text>`;
+    });
+    const caminho = (k) => {
+      let d = "", aberto = false;
+      linhas.forEach((l, i) => {
+        if (l[k] == null) { aberto = false; return; }
+        d += `${aberto ? "L" : "M"}${x(i).toFixed(1)},${y(l[k]).toFixed(1)}`; aberto = true;
+      });
+      return d;
+    };
+    s += `<path d="${caminho("prob_climatologica")}" fill="none" stroke="var(--s-clim)" stroke-width="2" stroke-dasharray="6 4"/>`;
+    s += `<path d="${caminho("prob_prevista")}" fill="none" stroke="var(--s-prev)" stroke-width="2"/>`;
+    s += `<path d="${caminho("fracao_real")}" fill="none" stroke="var(--s-real)" stroke-width="2"/>`;
+    linhas.forEach((l, i) => {
+      if (l.fracao_real != null) s += `<circle cx="${x(i)}" cy="${y(l.fracao_real)}" r="4.5" fill="var(--s-real)" stroke="var(--surface-1)" stroke-width="2"/>`;
+    });
+    // rótulos diretos no fim de cada linha (último valor existente), afastados para não colidir
+    const fim = [["prob_prevista", "Previsão"], ["prob_climatologica", "Climatologia"], ["fracao_real", "Real"]]
+      .map(([k, nome]) => { const i = linhas.map((l) => l[k] != null).lastIndexOf(true); return i < 0 ? null : { k, nome, i, yy: y(linhas[i][k]) }; })
+      .filter(Boolean).sort((a, b) => a.yy - b.yy);
+    for (let j = 1; j < fim.length; j++) if (fim[j].yy - fim[j - 1].yy < 15) fim[j].yy = fim[j - 1].yy + 15;
+    fim.forEach((f) => { s += `<text x="${x(f.i) + 10}" y="${f.yy + 4}" font-size="12" fill="var(--text-secondary)">${f.nome}</text>`; });
+    s += `<line id="cross" x1="0" x2="0" y1="${T}" y2="${H - B}" stroke="var(--text-muted)" stroke-width="1" visibility="hidden"/>`;
+    s += `<rect id="hit" x="${L - 20}" y="0" width="${W - L - R + 40}" height="${H}" fill="transparent"/>`;
+    svg.innerHTML = s;
+
+    const hit = svg.querySelector("#hit"), cross = svg.querySelector("#cross"), tip = $("tip");
+    hit.addEventListener("pointermove", (ev) => {
+      const pt = svg.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY;
+      const px = pt.matrixTransform(svg.getScreenCTM().inverse()).x;
+      const i = Math.max(0, Math.min(linhas.length - 1, Math.round(((px - L) / (W - L - R)) * (linhas.length - 1))));
+      const l = linhas[i];
+      cross.setAttribute("x1", x(i)); cross.setAttribute("x2", x(i)); cross.setAttribute("visibility", "visible");
+      tip.innerHTML = `<b>${rotulo(l.alvo)} · ${l.h} ${l.h === 1 ? "mês" : "meses"} à frente</b>
+        <div class="ln">Previsão do ML <i>${pct(l.prob_prevista)}</i></div>
+        <div class="ln">Climatologia <i>${pct(l.prob_climatologica)}</i></div>
+        <div class="ln">Real <i>${l.observado ? pct(l.fracao_real) : "ainda não aconteceu"}</i></div>
+        <div class="ln">Alertas certos <i>${l.observado ? `${l.alertas_certos}/${l.pontos_alerta}` : "—"}</i></div>`;
+      tip.style.display = "block";
+      const wrap = $("chart-wrap").getBoundingClientRect();
+      let left = ev.clientX - wrap.left + 14;
+      if (left + tip.offsetWidth > wrap.width) left = ev.clientX - wrap.left - tip.offsetWidth - 14;
+      tip.style.left = `${Math.max(0, left)}px`;
+      tip.style.top = `${Math.max(0, ev.clientY - wrap.top - 20)}px`;
+    });
+    hit.addEventListener("pointerleave", () => { tip.style.display = "none"; cross.setAttribute("visibility", "hidden"); });
+  }
+
+  function tabela(linhas) {
+    const td = (v, f) => (v == null ? `<td class="na">—</td>` : `<td>${f(v)}</td>`);
+    $("tabela").innerHTML = `<thead><tr><th>Mês</th><th>Meses à frente</th><th>Previsão do ML</th><th>Climatologia</th><th>Real</th>
+      <th>Pontos</th><th>Alertas ALTO</th><th>Floresceram</th><th>Alertas certos</th></tr></thead><tbody>` +
+      linhas.map((l) => `<tr><td>${rotulo(l.alvo)}</td><td>${l.h}</td>${td(l.prob_prevista, pct)}${td(l.prob_climatologica, pct)}` +
+        `${l.observado ? td(l.fracao_real, pct) : `<td class="na">ainda não aconteceu</td>`}<td>${l.pontos}</td><td>${l.pontos_alerta}</td>` +
+        `${l.observado ? `<td>${l.pontos_floracao_real}</td><td>${l.alertas_certos}</td>` : `<td class="na">—</td><td class="na">—</td>`}</tr>`).join("") +
+      "</tbody>";
+  }
+
+  $("rodar").addEventListener("click", rodar);
+  $("regiao").addEventListener("change", () => ultimo && desenha());
+
+  // ---------------- resposta atual da API
+  async function chamaApi(url) {
+    document.querySelectorAll("#api-buttons button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.url === url)));
+    $("api-status").textContent = `GET ${API || location.origin}${url} …`;
+    $("api-tiles").innerHTML = "";
+    const t = performance.now();
+    try {
+      const j = await get(url);
+      $("api-status").textContent = `GET ${url}: OK em ${Math.round(performance.now() - t)} ms`;
+      $("api-json").textContent = JSON.stringify(j, null, 2);
+      if (url.startsWith("/coastal-risks") && j.summary) {
+        const s = j.summary;
+        const fut = j.data.filter((d) => d.tipo === "previsao"), obs = j.data.filter((d) => d.tipo === "observado");
+        const tiles = [
+          ["Previsão a partir de", s.issue_month ? rotulo(s.issue_month) : "—", `modelo ${s.model_version}`],
+          ["Próximo mês previsto", s.target_month ? rotulo(s.target_month) : "—", `status geral: ${s.general_status}`],
+          ["Pontos em ALTO", `${s.high_risk_count}`, `de ${s.total_monitored} pontos monitorados`],
+          ["Registros", `${j.data.length}`, `${fut.length} previstos · ${obs.length} observados`],
+        ];
+        $("api-tiles").innerHTML = tiles.map(([k, v, d]) => `<div class="tile"><div class="k">${k}</div><div class="v">${v}</div><div class="d">${d}</div></div>`).join("");
+      }
+    } catch (e) {
+      $("api-status").textContent = `GET ${url}: erro (${e.message})`;
+      $("api-json").textContent = "";
+    }
+  }
+  document.querySelectorAll("#api-buttons button").forEach((b) => b.addEventListener("click", () => chamaApi(b.dataset.url)));
+
+  // ---------------- início
+  get("/teste/meses").then((j) => {
+    info = j;
+    $("sub").textContent = `Modelo ${j.modelo} · dados observados até ${rotulo(j.ultimo_mes_observado)} · teste às cegas a partir de previsões feitas em ${rotulo(j.primeira_emissao_as_cegas)}`;
+    preencheMeses();
+    rodar();
+  }).catch((e) => {
+    $("sub").textContent = `Não consegui falar com a API (${e.message}). Suba com: uvicorn api:app --port 8000 e abra http://127.0.0.1:8000/testar`;
+  });
+})();
+</script>
+</body>
+</html>

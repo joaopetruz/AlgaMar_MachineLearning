@@ -1,0 +1,31 @@
+{
+ "schema": "1.1.0",
+ "descricao": "Saída padrão do pipeline final AlgaMar (Etapa 13.8) para dashboard/API: saidas/<run_id>/previsao.parquet + risco_regioes.parquet + previsao.json; saidas/ULTIMA.json aponta a execução mais recente.",
+ "previsao.parquet": {
+  "run_id": "string; id da execução (= nome do log em logs/execucoes)",
+  "prediction_date": "string AAAA-MM; mês de emissão t0 (último mês com estado observado validado)",
+  "target_date": "string AAAA-MM; t0 + horizon",
+  "horizon": "int16; 1..12 meses",
+  "point_id": "int32; índice do ponto na grade CHL 4 km do ML",
+  "latitude": "float; graus, 5 casas",
+  "longitude": "float; graus, 5 casas",
+  "regiao": "string; setor de config/ml.toml [regioes]",
+  "probabilidade": "float 0..1 ou NULO quando status_ponto = DADOS_INSUFICIENTES (nunca inventada)",
+  "probabilidade_climatologica": "float 0..1; frequência histórica de floração no ponto e mês-alvo (referência)",
+  "classe": "Int8 0/1 ou NULO; 1 se probabilidade >= limiar_alto do cartão do modelo (escolhido na validação)",
+  "nivel_de_risco": "BAIXO | MODERADO | ALTO | DADOS_INSUFICIENTES",
+  "status_ponto": "OK | DADOS_INSUFICIENTES",
+  "modelo": "string; família do modelo",
+  "versao": "string; versão registrada em modelos/<versao> (MANIFESTO.json com SHA256)",
+  "status_execucao": "OK | ATRASADO | DESATUALIZADO",
+  "classificacao_produto": "HINDCAST_VALIDADO (13.7); não é SISTEMA OPERACIONAL"
+ },
+ "risco_regioes.parquet": "regiao, target_date, horizon, prob_media, prob_max, prob_climatologica_media, pontos, frac_alto (só pontos OK)",
+ "previsao.json": "schema, run_id, status (OK | ATRASADO | DESATUALIZADO | DADOS_INSUFICIENTES | ERRO_DADOS | ERRO_MODELO | ERRO), motivo, produto {nome, id, descricao, fontes_de_dados}, modelo, periodo, arquivos, sha256, resumo",
+ "regra": "Com status diferente de OK/ATRASADO/DESATUALIZADO não há previsao.parquet: o dashboard deve mostrar o status e o motivo, nunca probabilidades.",
+ "ULTIMA.json": "run_id, status, produto (nome), pasta",
+ "historico_schema": {
+  "1.0.0": "13.8",
+  "1.1.0": "fechamento 2026-10-09: campo produto em previsao.json e ULTIMA.json; colunas do Parquet inalteradas"
+ }
+}

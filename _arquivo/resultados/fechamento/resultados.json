@@ -1,0 +1,71 @@
+{
+ "versoes": {
+  "oficial": "baseline-hist-api-v1",
+  "enxuta": "risco-sat-clim-v1"
+ },
+ "linhas_teste": 1084740,
+ "limiares": {
+  "oficial": 0.39,
+  "enxuta": 0.39,
+  "climatologia": null
+ },
+ "features": {
+  "oficial": [
+   "h",
+   "mes_emissao",
+   "mes_alvo",
+   "latitude",
+   "longitude",
+   "chl_media_t0",
+   "chl_max_t0",
+   "sst_t0",
+   "chl_media_t0m1",
+   "chl_media_t0m2",
+   "sst_t0m1",
+   "sst_t0m2",
+   "chl_media_3m",
+   "sst_3m",
+   "chl_media_36m",
+   "chl_media_anom_t0",
+   "chl_max_anom_t0",
+   "sst_anom_t0",
+   "clim_chl_media_alvo",
+   "clim_chl_max_alvo",
+   "freq_floracao_alvo",
+   "n_anos_alvo",
+   "clim_sst_alvo",
+   "chl_max_alvo_ano_anterior",
+   "floracao_alvo_ano_anterior"
+  ],
+  "enxuta": [
+   "h",
+   "mes_emissao",
+   "mes_alvo",
+   "latitude",
+   "longitude",
+   "chl_media_t0",
+   "sst_t0",
+   "chl_media_3m",
+   "sst_3m",
+   "chl_media_36m",
+   "chl_media_anom_t0",
+   "sst_anom_t0",
+   "clim_chl_media_alvo",
+   "clim_chl_max_alvo",
+   "freq_floracao_alvo",
+   "n_anos_alvo",
+   "clim_sst_alvo",
+   "chl_max_alvo_ano_anterior",
+   "floracao_alvo_ano_anterior"
+  ]
+ },
+ "retiradas": [
+  "chl_max_anom_t0",
+  "chl_max_t0",
+  "chl_media_t0m1",
+  "chl_media_t0m2",
+  "sst_t0m1",
+  "sst_t0m2"
+ ],
+ "segundos": 985
+}

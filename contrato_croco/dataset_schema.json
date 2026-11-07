@@ -1,0 +1,374 @@
+{
+ "versao_contrato": "13.0.0",
+ "formato_principal": "Apache Parquet (zstd), tabela longa",
+ "formato_opcional": "NetCDF-4 na grade nativa do D2 (export.escreve_netcdf), para preservar a grade física",
+ "csv": "só auditoria/amostra",
+ "chave_primaria": [
+  "time",
+  "latitude",
+  "longitude"
+ ],
+ "chave_ml_mensal": [
+  "latitude",
+  "longitude",
+  "ano",
+  "mes"
+ ],
+ "crs": "WGS84 / EPSG:4326; longitude −180..180",
+ "tempo": "UTC (timestamp com tz); instante físico da rodada; tipo_tempo = instantaneo | media_24h; janela_inicio/janela_fim",
+ "profundidade": "positiva para baixo, relativa ao nível médio do modelo (z = −prof); MLD relativa à superfície livre",
+ "particionamento_producao": "ano=AAAA/mes=MM/ (Parquet diário por ponto do ML) + arquivo mensal agregado",
+ "colunas": [
+  {
+   "nome": "time",
+   "tipo_arrow": "timestamp[us, tz=UTC]",
+   "unidade": "UTC",
+   "status": "chave/metadado",
+   "flags": "",
+   "anulavel": false,
+   "descricao": "instante representativo do registro (centro da janela da média ou instante do snapshot), timezone UTC"
+  },
+  {
+   "nome": "latitude",
+   "tipo_arrow": "double",
+   "unidade": "degrees_north",
+   "status": "chave/metadado",
+   "flags": "",
+   "anulavel": false,
+   "descricao": "ponto do ML (WGS84 / EPSG:4326, sul negativo)"
+  },
+  {
+   "nome": "longitude",
+   "tipo_arrow": "double",
+   "unidade": "degrees_east",
+   "status": "chave/metadado",
+   "flags": "",
+   "anulavel": false,
+   "descricao": "ponto do ML (−180..180, oeste negativo)"
+  },
+  {
+   "nome": "tipo_tempo",
+   "tipo_arrow": "large_string",
+   "unidade": "",
+   "status": "chave/metadado",
+   "flags": "",
+   "anulavel": false,
+   "descricao": "instantaneo | media_24h"
+  },
+  {
+   "nome": "janela_inicio",
+   "tipo_arrow": "timestamp[us, tz=UTC]",
+   "unidade": "UTC",
+   "status": "chave/metadado",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "início da janela da média (= time se instantâneo)"
+  },
+  {
+   "nome": "janela_fim",
+   "tipo_arrow": "timestamp[us, tz=UTC]",
+   "unidade": "UTC",
+   "status": "chave/metadado",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "fim da janela da média (= time se instantâneo)"
+  },
+  {
+   "nome": "temperature_surface",
+   "tipo_arrow": "double",
+   "unidade": "degC",
+   "status": "VALIDADA",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "nível σ superior (k = N−1; ~0,2–0,7 m abaixo de ζ)"
+  },
+  {
+   "nome": "temperature_bottom",
+   "tipo_arrow": "double",
+   "unidade": "degC",
+   "status": "VALIDADA",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "nível σ inferior (k = 0)"
+  },
+  {
+   "nome": "temperature_5m",
+   "tipo_arrow": "double",
+   "unidade": "degC",
+   "status": "VALIDADA",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "interpolação linear em z para z = −5 m; NaN se h < 5 m"
+  },
+  {
+   "nome": "temperature_10m",
+   "tipo_arrow": "double",
+   "unidade": "degC",
+   "status": "VALIDADA",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "interpolação linear em z para z = −10 m; NaN se h < 10 m"
+  },
+  {
+   "nome": "temperature_20m",
+   "tipo_arrow": "double",
+   "unidade": "degC",
+   "status": "VALIDADA",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "interpolação linear em z para z = −20 m; NaN se h < 20 m"
+  },
+  {
+   "nome": "temperature_50m",
+   "tipo_arrow": "double",
+   "unidade": "degC",
+   "status": "VALIDADA",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "interpolação linear em z para z = −50 m; NaN se h < 50 m"
+  },
+  {
+   "nome": "salinity_surface",
+   "tipo_arrow": "double",
+   "unidade": "1",
+   "status": "VALIDADA",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "nível σ superior"
+  },
+  {
+   "nome": "salinity_bottom",
+   "tipo_arrow": "double",
+   "unidade": "1",
+   "status": "VALIDADA",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "nível σ inferior"
+  },
+  {
+   "nome": "salinity_5m",
+   "tipo_arrow": "double",
+   "unidade": "1",
+   "status": "VALIDADA",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "interpolação linear em z para z = −5 m; NaN se h < 5 m"
+  },
+  {
+   "nome": "salinity_10m",
+   "tipo_arrow": "double",
+   "unidade": "1",
+   "status": "VALIDADA",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "interpolação linear em z para z = −10 m; NaN se h < 10 m"
+  },
+  {
+   "nome": "salinity_20m",
+   "tipo_arrow": "double",
+   "unidade": "1",
+   "status": "VALIDADA",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "interpolação linear em z para z = −20 m; NaN se h < 20 m"
+  },
+  {
+   "nome": "salinity_50m",
+   "tipo_arrow": "double",
+   "unidade": "1",
+   "status": "VALIDADA",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "interpolação linear em z para z = −50 m; NaN se h < 50 m"
+  },
+  {
+   "nome": "u_east_surface",
+   "tipo_arrow": "double",
+   "unidade": "m s-1",
+   "status": "NAO_VALIDADA_OBS",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "u, v → ρ (média de faces) → rotação pelo angle → leste"
+  },
+  {
+   "nome": "v_north_surface",
+   "tipo_arrow": "double",
+   "unidade": "m s-1",
+   "status": "NAO_VALIDADA_OBS",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "idem"
+  },
+  {
+   "nome": "current_speed_surface",
+   "tipo_arrow": "double",
+   "unidade": "m s-1",
+   "status": "NAO_VALIDADA_OBS",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "sqrt(u_east² + v_north²)"
+  },
+  {
+   "nome": "current_direction_to_surface",
+   "tipo_arrow": "double",
+   "unidade": "degree",
+   "status": "NAO_VALIDADA_OBS",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "atan2(u_east, v_north) mod 360; NaN se |v| < 1e-6"
+  },
+  {
+   "nome": "w_10m",
+   "tipo_arrow": "double",
+   "unidade": "m s-1",
+   "status": "NAO_VALIDADA_OBS",
+   "flags": "NAO_INTERPRETAR_COMO_UPWELLING_AUTOMATICAMENTE",
+   "anulavel": true,
+   "descricao": "interpolação em z = −10 m"
+  },
+  {
+   "nome": "w_50m",
+   "tipo_arrow": "double",
+   "unidade": "m s-1",
+   "status": "NAO_VALIDADA_OBS",
+   "flags": "NAO_INTERPRETAR_COMO_UPWELLING_AUTOMATICAMENTE",
+   "anulavel": true,
+   "descricao": "interpolação em z = −50 m"
+  },
+  {
+   "nome": "ssh",
+   "tipo_arrow": "double",
+   "unidade": "m",
+   "status": "NAO_VALIDADA_OBS",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "valor do registro"
+  },
+  {
+   "nome": "relative_vorticity_surface",
+   "tipo_arrow": "double",
+   "unidade": "s-1",
+   "status": "NAO_VALIDADA_OBS",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "circulação na célula ψ com métricas curvilíneas, média dos 4 ψ → ρ"
+  },
+  {
+   "nome": "normalized_vorticity_surface",
+   "tipo_arrow": "double",
+   "unidade": "1",
+   "status": "NAO_VALIDADA_OBS",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "ζ/f; NaN se |f| < 1e-5 s⁻¹"
+  },
+  {
+   "nome": "horizontal_divergence_surface",
+   "tipo_arrow": "double",
+   "unidade": "s-1",
+   "status": "NAO_VALIDADA_OBS",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "fluxos nas faces com métricas curvilíneas"
+  },
+  {
+   "nome": "n2_max",
+   "tipo_arrow": "double",
+   "unidade": "s-2",
+   "status": "DERIVADA_VALIDADA",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "máximo na coluna de (g/1025)·Δσθ/Δz entre níveis σ adjacentes; sem suavização"
+  },
+  {
+   "nome": "mld",
+   "tipo_arrow": "double",
+   "unidade": "m",
+   "status": "VALIDADA",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "Δσθ = 0,03 kg/m³ a partir de 10 m (metricas.diagnosticos_perfil) nos níveis σ"
+  },
+  {
+   "nome": "hbl",
+   "tipo_arrow": "double",
+   "unidade": "m",
+   "status": "NAO_VALIDADA_OBS",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "valor do registro"
+  },
+  {
+   "nome": "transport_east",
+   "tipo_arrow": "double",
+   "unidade": "m2 s-1",
+   "status": "NAO_VALIDADA_OBS",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "Σ u_east·Hz na coluna"
+  },
+  {
+   "nome": "transport_north",
+   "tipo_arrow": "double",
+   "unidade": "m2 s-1",
+   "status": "NAO_VALIDADA_OBS",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "Σ v_north·Hz"
+  },
+  {
+   "nome": "validade_espacial",
+   "tipo_arrow": "large_string",
+   "unidade": "",
+   "status": "chave/metadado",
+   "flags": "",
+   "anulavel": false,
+   "descricao": "D2_VALIDO | NAO_VALIDADO_COSTEIRO | NAO_USAR_ESTUARIO_CANAL"
+  },
+  {
+   "nome": "metodo_colocacao",
+   "tipo_arrow": "large_string",
+   "unidade": "",
+   "status": "chave/metadado",
+   "flags": "",
+   "anulavel": false,
+   "descricao": "bilinear | vizinho_mais_proximo | media_celula"
+  },
+  {
+   "nome": "dist_oceano_km",
+   "tipo_arrow": "double",
+   "unidade": "km",
+   "status": "chave/metadado",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "distância do ponto ao ρ oceânico mais próximo do D2"
+  },
+  {
+   "nome": "h_d2_m",
+   "tipo_arrow": "double",
+   "unidade": "m",
+   "status": "chave/metadado",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "profundidade do D2 no ponto (mesmos pesos)"
+  },
+  {
+   "nome": "mld_resolucao_m",
+   "tipo_arrow": "double",
+   "unidade": "m",
+   "status": "chave/metadado",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "espaçamento dos níveis σ logo acima do MLD"
+  },
+  {
+   "nome": "registro_id",
+   "tipo_arrow": "large_string",
+   "unidade": "",
+   "status": "chave/metadado",
+   "flags": "",
+   "anulavel": true,
+   "descricao": "identificador da rodada/arquivo/registro de origem"
+  }
+ ]
+}

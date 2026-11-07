@@ -1,0 +1,71 @@
+{
+ "split": {
+  "treino": "<= 2018",
+  "validacao": "2019-2021",
+  "teste": "> 2021"
+ },
+ "linhas": {
+  "treino": 373140,
+  "validacao": 64290,
+  "teste": 64440
+ },
+ "limiar_escolhido_na_validacao": 0.71,
+ "validacao": {
+  "n": 64290,
+  "positivos": 11944,
+  "pr_auc": 0.7539450898366173,
+  "roc_auc": 0.8928771853821637,
+  "brier": 0.11464539915323257,
+  "limiar": 0.71,
+  "f1": 0.6670454084324149,
+  "recall": 0.6881279303415941,
+  "precision": 0.6472163162453737,
+  "matriz_confusao": [
+   [
+    47866,
+    4480
+   ],
+   [
+    3725,
+    8219
+   ]
+  ]
+ },
+ "teste": {
+  "n": 64440,
+  "positivos": 13446,
+  "pr_auc": 0.7255218767424128,
+  "roc_auc": 0.8927143302641333,
+  "brier": 0.11937420070171356,
+  "limiar": 0.71,
+  "f1": 0.6795528308690948,
+  "recall": 0.7007288412910903,
+  "precision": 0.6596191542985158,
+  "matriz_confusao": [
+   [
+    46132,
+    4862
+   ],
+   [
+    4024,
+    9422
+   ]
+  ]
+ },
+ "features": [
+  "mes",
+  "latitude",
+  "longitude",
+  "dist_hotspot",
+  "clorofila_media_ano_anterior",
+  "clorofila_maxima_ano_anterior",
+  "temperatura_ano_anterior",
+  "salinidade_ano_anterior",
+  "clorofila_media_historica_mes",
+  "salinidade_media_historica_mes",
+  "clorofila_media_3anos",
+  "salinidade_media_3anos"
+ ],
+ "croco": null,
+ "modo": "FORECAST_SAZONAL"
+}

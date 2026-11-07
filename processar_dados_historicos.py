@@ -1,13 +1,10 @@
-import xarray as xr
+import numpy as np
 import pandas as pd
+import xarray as xr
+from scipy.spatial import cKDTree
 
 anos = list(range(2000, 2025))
 tabelas_mensais = []
-
-precipitacao = pd.read_csv("dados/precipitacao_2000_2024_sp.csv")
-# Arredondar coordenadas da precipitação para bater com a grade principal
-precipitacao["latitude"] = precipitacao["latitude"].round(5)
-precipitacao["longitude"] = precipitacao["longitude"].round(5)
 
 for ano in anos:
     print(f"Processando ano {ano}...")
@@ -45,26 +42,46 @@ for ano in anos:
         salinidade_media=("salinidade", "mean")
     ).reset_index()
 
-    # Arredondar as coordenadas da grade principal também, para bater exatamente
-    mensal["latitude"] = mensal["latitude"].round(5)
-    mensal["longitude"] = mensal["longitude"].round(5)
-
-    precip_ano = precipitacao[precipitacao["ano"] == ano]
-    mensal = mensal.merge(precip_ano, on=["latitude", "longitude", "ano", "mes"], how="left")
-
     tabelas_mensais.append(mensal)
     print(f"Ano {ano} processado: {len(mensal)} linhas mensais")
 
 tabela_final = pd.concat(tabelas_mensais, ignore_index=True)
 
+# O satélite de salinidade mascara a faixa costeira. Sem tratamento, o dropna()
+# abaixo apaga esses pontos (ex.: Santos fica a 11 km do dado mais próximo).
+# Aqui a salinidade que falta recebe o valor do ponto válido mais próximo no
+# mesmo mês, desde que esteja a até LIMITE_PREENCHIMENTO_GRAUS de distância.
+LIMITE_PREENCHIMENTO_GRAUS = 0.5
+tabela_final["salinidade_preenchida"] = False
+
+for _, indices in tabela_final.groupby(["ano", "mes"]).groups.items():
+    grupo = tabela_final.loc[indices]
+    validos = grupo[grupo["salinidade_media"].notna()]
+    faltando = grupo[grupo["salinidade_media"].isna()]
+    if validos.empty or faltando.empty:
+        continue
+
+    arvore = cKDTree(validos[["latitude", "longitude"]].to_numpy())
+    dist, pos = arvore.query(
+        faltando[["latitude", "longitude"]].to_numpy(),
+        distance_upper_bound=LIMITE_PREENCHIMENTO_GRAUS,
+    )
+    achou = np.isfinite(dist)
+    destino = faltando.index[achou]
+    tabela_final.loc[destino, "salinidade_media"] = validos["salinidade_media"].to_numpy()[pos[achou]]
+    tabela_final.loc[destino, "salinidade_preenchida"] = True
+
+print(f"\nLinhas com salinidade preenchida: {int(tabela_final['salinidade_preenchida'].sum())}")
+
 print(f"\nTotal de linhas: {len(tabela_final)}")
-print(f"\nValores faltando:")
+print("\nValores faltando:")
 print(tabela_final.isna().sum())
 
 tabela_final = tabela_final.dropna()
 print(f"\nLinhas finais: {len(tabela_final)}")
 
-tabela_final.to_csv("dados/dados_mensais_2000_2024_sp_precipitacao.csv", index=False)
-print("\nArquivo salvo: dados/dados_mensais_2000_2024_sp_precipitacao.csv")
+# Nome que o feature_engineering_sazonal.py espera ler
+tabela_final.to_csv("dados/dados_mensais_2000_2024_sp_com_salinidade.csv", index=False)
+print("\nArquivo salvo: dados/dados_mensais_2000_2024_sp_com_salinidade.csv")
 print("\nPrimeiras linhas:")
 print(tabela_final.head(10))

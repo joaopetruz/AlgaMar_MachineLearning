@@ -1,0 +1,25 @@
+{
+ "PROD_201401_PARCIAL": {
+  "arquivo": "\\\\wsl.localhost\\Ubuntu-24.04\\home\\tulio\\CONFIGS\\ALGAMAR_D2_FINAL\\producao_ml_v1\\runs\\201401\\parte1\\croco_avg.nc",
+  "registros": 4,
+  "centros": [
+   "2014-01-02 00:01:00+00:00",
+   "2014-01-03 00:01:00+00:00",
+   "2014-01-04 00:01:00+00:00",
+   "2014-01-05 00:01:00+00:00"
+  ]
+ },
+ "REST_JAN2024_PRE_OFICIAL": {
+  "arquivo": "\\\\wsl.localhost\\Ubuntu-24.04\\home\\tulio\\CONFIGS\\ALGAMAR_D2_REST\\runs\\GLORYS_ERA5_TIDES_RIOS_jan2024_7d\\croco_avg.nc",
+  "registros": 7,
+  "centros": [
+   "2024-01-02 12:01:00+00:00",
+   "2024-01-03 12:01:00+00:00",
+   "2024-01-04 12:01:00+00:00",
+   "2024-01-05 12:01:00+00:00",
+   "2024-01-06 12:01:00+00:00",
+   "2024-01-07 12:01:00+00:00",
+   "2024-01-08 12:01:00+00:00"
+  ]
+ }
+}

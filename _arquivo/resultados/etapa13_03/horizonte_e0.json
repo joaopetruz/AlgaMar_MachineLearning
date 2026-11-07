@@ -1,0 +1,176 @@
+{
+ "metodo": "Etapa 13.3 — prova empírica do horizonte do E0_original e do E0_corrigido (o que cada linha T realmente usa).\n\nMétodo: para uma amostra de linhas (ponto, T), muda os dados de UM mês M = T-k (k = 0, 1, 2, ..., 13) só naquele\nponto e verifica se alguma feature da linha T muda. O maior k para o qual nada muda... ao contrário: o MENOR k cujo\ndado afeta as features é o \"último mês usado\". Se k = 0 afeta, o modelo usa o próprio mês-alvo (NOWCAST);\nse o menor k é 1, ele precisa do mês anterior (FORECAST de no máximo 1 mês); etc.\nSaída: resultados/etapa13_03/horizonte_e0.json\n",
+ "linhas_testadas": [
+  [
+   -24.10417,
+   -44.812496,
+   2020,
+   7
+  ],
+  [
+   -24.10417,
+   -44.812496,
+   2023,
+   1
+  ],
+  [
+   -24.895836,
+   -46.812496,
+   2020,
+   7
+  ],
+  [
+   -24.895836,
+   -46.812496,
+   2023,
+   1
+  ],
+  [
+   -24.72917,
+   -45.437496,
+   2020,
+   7
+  ],
+  [
+   -24.72917,
+   -45.437496,
+   2023,
+   1
+  ]
+ ],
+ "E0_original": {
+  "features_afetadas_por_mudar_o_mes_T_menos_k": {
+   "0": [
+    "clorofila_media_3anos",
+    "clorofila_media_historica_mes",
+    "salinidade_media_3anos",
+    "salinidade_media_historica_mes"
+   ],
+   "1": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "2": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "3": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "4": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "5": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "6": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "7": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "8": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "9": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "10": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "11": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "12": [
+    "clorofila_maxima_ano_anterior",
+    "clorofila_media_3anos",
+    "clorofila_media_ano_anterior",
+    "clorofila_media_historica_mes",
+    "salinidade_ano_anterior",
+    "salinidade_media_3anos",
+    "salinidade_media_historica_mes",
+    "temperatura_ano_anterior"
+   ],
+   "13": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ]
+  },
+  "ultimo_mes_usado": "T-0",
+  "classe": "NOWCAST (usa o próprio mês-alvo)"
+ },
+ "E0_corrigido": {
+  "features_afetadas_por_mudar_o_mes_T_menos_k": {
+   "0": [],
+   "1": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "2": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "3": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "4": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "5": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "6": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "7": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "8": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "9": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "10": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "11": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ],
+   "12": [
+    "clorofila_maxima_ano_anterior",
+    "clorofila_media_3anos",
+    "clorofila_media_ano_anterior",
+    "clorofila_media_historica_mes",
+    "salinidade_ano_anterior",
+    "salinidade_media_3anos",
+    "salinidade_media_historica_mes",
+    "temperatura_ano_anterior"
+   ],
+   "13": [
+    "clorofila_media_3anos",
+    "salinidade_media_3anos"
+   ]
+  },
+  "ultimo_mes_usado": "T-1",
+  "classe": "FORECAST_1M no máximo (precisa do mês T-1)"
+ }
+}
